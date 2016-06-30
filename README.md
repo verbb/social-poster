@@ -19,6 +19,11 @@ Social Poster is a Craft CMS plugin for automatically posting entries to social 
 Please visit the [Wiki](https://github.com/engram-design/SocialPoster/wiki) for all documentation, a getting started guide, template tags, and developer resources.
 
 
+## Thanks / Contributions
+
+Big thanks to the [Dukt team](https://github.com/dukt) and their work on the [OAuth plugin](https://dukt.net/craft/oauth/), along with [@benjamindavid](https://github.com/benjamindavid) specifically with feedback, suggestions and troubleshooting.
+
+
 ### Changelog
 
 [View JSON Changelog](https://github.com/engram-design/SocialPoster/blob/master/changelog.json)
