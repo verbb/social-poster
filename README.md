@@ -19,13 +19,6 @@ SocialPoster is a Craft CMS plugin for automatically posting entries to social m
 Please visit the [Wiki](https://github.com/engram-design/SocialPoster/wiki) for all documentation, a getting started guide, template tags, and developer resources.
 
 
-## Roadmap
-- Entry diffs to compare previous and submitted entries.
-- Setting specific recipients for Publisher notifications - rather than entire Publisher group.
-- Better note-tracking per-version
-- Incorporate versions - tie each submission to a version
-
-
 ### Changelog
 
 [View JSON Changelog](https://github.com/engram-design/SocialPoster/blob/master/changelog.json)
