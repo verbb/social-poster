@@ -8,7 +8,7 @@ class SocialPoster_PluginService extends BaseApplicationComponent
 
     public function checkRequirements()
     {
-        $dependencies = craft()->social_plugin->getPluginDependencies();
+        $dependencies = craft()->socialPoster_plugin->getPluginDependencies();
 
         if (count($dependencies) > 0) {
             return $dependencies;
