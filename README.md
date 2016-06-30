@@ -1,6 +1,6 @@
-# SocialPoster
+# Social Poster
 
-SocialPoster is a Craft CMS plugin for automatically posting entries to social media.
+Social Poster is a Craft CMS plugin for automatically posting entries to social media.
 
 <img src="https://raw.githubusercontent.com/engram-design/SocialPoster/master/screenshots/entry-edit.png" />
 
