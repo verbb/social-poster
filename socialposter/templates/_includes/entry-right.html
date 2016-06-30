@@ -1,0 +1,186 @@
+{% includeCssResource "socialPoster/css/SocialPoster.css" %}
+
+{% import "_includes/forms" as forms %}
+
+<div class="pane social-poster-pane">
+    <nav id="tabs" class="tabs">
+        <ul>
+            {% for account in accounts %}
+                {% set previousPost = false %}
+                {% set oauthProvider = account.oauthProvider %}
+                {% set providerSettings = account.providerSettings[oauthProvider.handle] | default([]) %}
+
+                {# Check for previous post #}
+                {% if posts and posts[oauthProvider.handle] is defined %}
+                    {% set previousPost = posts[oauthProvider.handle] %}
+                {% endif %}
+
+                <li>
+                    <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ oauthProvider.handle }}-fields" tabindex="{{ loop.index0 }}">
+                        {% if providerSettings.enabled and not previousPost and account.token and context.entry.enabled %}
+                            <span class="status on"></span>
+                        {% else %}
+                            {% if previousPost and not previousPost.success %}
+                                <span class="status off"></span>
+                            {% else %}
+                                <span class="status"></span>
+                            {% endif %}
+                        {% endif %}
+
+                        {{ oauthProvider.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    {% for account in accounts %}
+        {% set previousPost = false %}
+        {% set oauthProvider = account.oauthProvider %}
+        {% set providerSettings = account.providerSettings[oauthProvider.handle] | default([]) %}
+
+        {# Check for previous post #}
+        {% if posts and posts[oauthProvider.handle] is defined %}
+            {% set previousPost = posts[oauthProvider.handle] %}
+        {% endif %}
+
+        {% namespace 'socialPoster[' ~ oauthProvider.handle ~ ']' %}
+
+        <div id="fields" data-id="{{ oauthProvider.handle }}" class="social-poster-tab {{ (loop.first) ? '' : 'hidden' }}">
+            {% if previousPost %}
+                {% if previousPost.success %}
+                    <div class="field">
+                        <span class="warning">
+                            {{ 'This entry was posted to {p} on {date}' | t({ p: oauthProvider.name, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="social-expand-pane" data-id="{{ oauthProvider.handle }}" href="#">{{ 'Post again?' | t }}</a>
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="field">
+                        <span class="error">
+                            {{ 'Could not post to {p}. Error: {resp}' | t({ p: oauthProvider.name, resp: previousPost.response | json_encode }) }}. <div><a class="social-expand-pane" data-id="{{ oauthProvider.handle }}" href="#">{{ 'Post again?' | t }}</a></div>
+                        </span>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            {% if not account.token %}
+                <div class="field">
+                    <span class="error">
+                        {{ 'Connect OAuth provider first via' | t }} <a href="{{ url('socialposter/accounts/' ~ oauthProvider.handle) }}">{{ 'settings' | t }}</a>
+                    </span>
+                </div>
+            {% else %}
+
+                <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
+                    {{ forms.lightswitchField({
+                        label: 'Post to {p}' | t({ p: oauthProvider.name }),
+                        instructions: 'Should entries be set to post to {p} by default?' | t({ p: oauthProvider.name }),
+                        id: 'enabled',
+                        name: 'enabled',
+                        on: (providerSettings.enabled and not previousPost and context.entry.enabled) | default(''),
+                    }) }}
+
+                    {{ forms.textareaField({
+                        label: 'Message' | t,
+                        instructions: 'Text for your post. May include any Twig variables for fields in this entry - eg {title}, {customField}, etc.' | t,
+                        placeholder: 'Enter text here to be displayed as your post to social media.' | t,
+                        id: 'message',
+                        name: 'message',
+                        rows: 4,
+                        value: providerSettings.message | default(''),
+                        showCharsLeft: (oauthProvider.handle == 'twitter'),
+                        maxlength: (oauthProvider.handle == 'twitter') ? '140' : '',
+                    }) }}
+
+                    {#{{ forms.field({
+                        label: 'Image for Post' | t,
+                        instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
+                    },
+
+                    forms.elementSelect({
+                        id: 'image',
+                        name: 'image',
+                        elementType: craft.elements.getElementType('Asset'),
+                        jsClass: 'Craft.AssetSelectInput',
+                        addButtonLabel: 'Select Image',
+                        limit: 1,
+                        criteria: { "localeEnabled" : null },
+                        value: providerSettings.image | default(''),
+                    })) }}#}
+
+                    {% if providerSettings.imageField is defined %}
+                        {% set imageField = providerSettings.imageField | replace({ '{': '' , '}': '' }) %}
+                    {% endif %}
+
+                    <div class="providerSettings-imageField">
+                        {{ forms.selectField({
+                            label: 'Image for Post' | t,
+                            instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
+                            id: 'imageField',
+                            name: 'imageField',
+                            options: craft.socialPoster.getAssetFieldOptions(context.entry),
+                            value: imageField | default(''),
+                        }) }}
+                    </div>
+
+                    <div class="field">
+                        <span class="info-item">
+                            {{ 'To publish this post to ' ~ oauthProvider.name ~ ', save this entry.' | t }}
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% endnamespace %}
+    {% endfor %}
+</div>
+
+{% set js %}
+
+$(function() {
+    $('.social-poster-pane .lightswitch').on('change', function() {
+        var provider = $(this).parents('.social-poster-tab').data('id');
+
+        if ($(this).hasClass('on')) {
+            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').addClass('on');
+        } else {
+            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('on');
+        }
+    });
+
+    {# Toggle switches when entry enabled toggle is #}
+    $('#enabled-field .lightswitch').on('change', function() {
+        var $lightswitch = $(this);
+
+        $('.social-poster-pane .social-poster-fields:not(.hidden) .lightswitch').each(function(index, element) {
+            var ls = $(element).data('lightswitch');
+
+            if ($lightswitch.hasClass('on')) {
+                ls.turnOn();
+            } else {
+                ls.turnOff();
+            }
+        });
+    });
+
+    $('.social-expand-pane').on('click', function(e) {
+        e.preventDefault();
+
+        var provider = $(this).data('id');
+
+        // Remove any errors
+        $(this).parents('.error').parent().remove();
+
+        // Remove any error on tab
+        $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('off');
+
+        // Remove post again anchor
+        $(this).remove();
+
+        $('.social-poster-tab[data-id="'+provider+'"] .social-poster-fields').removeClass('hidden');
+    });
+});
+    
+{% endset %}
+{% includeJs js %}
