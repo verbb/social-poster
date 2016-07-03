@@ -15,9 +15,15 @@
                     {% set previousPost = posts[oauthProvider.handle] %}
                 {% endif %}
 
+                {# Opt-out of auto-posting for safety #}
+                {% set autoPost = false %}
+                {% if providerSettings.autoPost is defined and providerSettings.autoPost and not previousPost %}
+                    {% set autoPost = true %}
+                {% endif %}
+
                 <li>
                     <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ oauthProvider.handle }}-fields" tabindex="{{ loop.index0 }}">
-                        {% if providerSettings.autoPost and not previousPost and account.token and context.entry.enabled %}
+                        {% if autoPost and not previousPost and account.token and context.entry.enabled %}
                             <span class="status on"></span>
                         {% else %}
                             {% if previousPost and not previousPost.success %}
@@ -46,7 +52,7 @@
 
         {# Opt-out of auto-posting for safety #}
         {% set autoPost = false %}
-        {% if providerSettings.autoPost and not previousPost %}
+        {% if providerSettings.autoPost is defined and providerSettings.autoPost and not previousPost %}
             {% set autoPost = true %}
         {% endif %}
 
