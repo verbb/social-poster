@@ -9,5 +9,9 @@ return array(
         'user_posts',
         'user_photos',
     ),
+    'linkedinScope' => array(
+        'r_basicprofile',
+        'w_share',
+    ),
 );
 

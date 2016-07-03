@@ -14,7 +14,7 @@ class SocialPosterPlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.0.0';
+        return '1.1.0';
     }
 
     public function getSchemaVersion()
@@ -82,7 +82,6 @@ class SocialPosterPlugin extends BasePlugin
     protected function defineSettings()
     {
         return array(
-            'enabledSaveEvent' => array(AttributeType::Bool, 'default' => true),
             'enabledSections' => array(AttributeType::Mixed, 'default' => '*'),
         );
     }

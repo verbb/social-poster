@@ -1,6 +1,27 @@
 
 
 /* ==========================================================================
+// Settings checkbox-in-field-heading
+// ========================================================================== */
+
+.sp-field-heading-checkbox .checkboxfield {
+    display: inline;
+    margin-left: 10px;
+}
+
+.sp-field-heading-checkbox .checkboxfield label {
+    font-size: 11px;
+    font-weight: normal;
+    color: #8f98a3;
+}
+
+.sp-field-heading-checkbox .checkboxfield label:before {
+    color: #29323d;
+    top: 0px;
+}
+
+
+/* ==========================================================================
 // Entry Sidebar
 // ========================================================================== */
 

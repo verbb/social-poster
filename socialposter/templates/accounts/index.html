@@ -14,7 +14,8 @@
         <tr>
             <th scope="col"></th>
             <th scope="col">{{ "Name" | t }}</th>
-            <th scope="col">{{ "Enabled by Default" | t }}</th>
+            <th scope="col">{{ "Enabled" | t }}</th>
+            <th scope="col">{{ "Auto-Post" | t }}</th>
             <th scope="col">{{ "OAuth Status" | t }}</th>
             <th scope="col">{{ "OAuth Settings" | t }}</th>
         </tr>
@@ -28,7 +29,10 @@
             {% for item in accounts %}
                 {% if provider.handle == item.handle %}
                     {% set account = item %}
-                    {% set providerSettings = item.providerSettings[provider.handle] %}
+
+                    {% if item.providerSettings %}
+                        {% set providerSettings = item.providerSettings[provider.handle] %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
 
@@ -48,7 +52,15 @@
                 </th>
 
                 <td class="light">
-                    {% if account and providerSettings.enabled %}
+                    {% if account and providerSettings and providerSettings.enabled %}
+                        <span class="status on"></span> {{ "Enabled" | t }}
+                    {% else %}
+                        <span class="status"></span> {{ "Disabled" | t }}
+                    {% endif %}
+                </td>
+
+                <td class="light">
+                    {% if account and providerSettings and providerSettings.autoPost %}
                         <span class="status on"></span> {{ "Enabled" | t }}
                     {% else %}
                         <span class="status"></span> {{ "Disabled" | t }}

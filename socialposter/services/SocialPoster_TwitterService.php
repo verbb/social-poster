@@ -3,13 +3,16 @@ namespace Craft;
 
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Exception\ServerErrorResponseException;
+use Guzzle\Http\Exception\RequestErrorResponseException;
+use Guzzle\Http\Exception\CurlException;
 
 class SocialPoster_TwitterService extends BaseApplicationComponent
 {
     // Public Methods
     // =========================================================================
 
-    public function getPayload($entry, $accessToken, $message, $picture)
+    public function getPayload($entry, $accessToken, $message, $picture, &$chosenProvider)
     {
         try {
             $provider = craft()->oauth->getProvider('twitter');
@@ -21,7 +24,7 @@ class SocialPoster_TwitterService extends BaseApplicationComponent
             $client->addSubscriber($subscriber);
 
             $request = $client->post('statuses/update.json', null, array(
-                'status' => $message . rand(),
+                'status' => $message,
             ));
 
             $response = $request->send();
@@ -37,9 +40,13 @@ class SocialPoster_TwitterService extends BaseApplicationComponent
                 return array('success' => false, 'response' => $responseReturn);
             }
         } catch (ClientErrorResponseException $e) {
-            SocialPosterPlugin::log('Twitter post error: ' . print_r($e->getResponse(), true), LogLevel::Info);
-
-            return array('success' => false, 'response' => $this->_returnResponse($e->getResponse()));
+            return array('success' => false, 'response' => $this->_returnResponse($e->getResponse(), $e));
+        } catch (ServerErrorResponseException $e) {
+            return array('success' => false, 'response' => $this->_returnResponse($e->getResponse(), $e));
+        } catch (RequestErrorResponseException $e) {
+            return array('success' => false, 'response' => $this->_returnResponse($e->getResponse(), $e));
+        } catch (CurlException $e) {
+            return array('success' => false, 'response' => $this->_returnResponse($e->getMessage(), $e));
         }
     }
 
@@ -48,11 +55,22 @@ class SocialPoster_TwitterService extends BaseApplicationComponent
     // Private Methods
     // =========================================================================
 
-    private function _returnResponse($response)
+    private function _returnResponse($response, $e = null)
     {
-        return array(
-            'statusCode' => $response->getStatusCode(),
-            'reasonPhrase' => $response->getReasonPhrase(),
-        );
+        if ($e) {
+            SocialPosterPlugin::log('Twitter post error: ' . print_r($response, true), LogLevel::Error);
+        }
+
+        if ($e instanceof CurlException) {
+            return array(
+                'statusCode' => '[curl]',
+                'reasonPhrase' => $response,
+            );
+        } else {
+            return array(
+                'statusCode' => $response->getStatusCode(),
+                'reasonPhrase' => $response->getReasonPhrase(),
+            );
+        }
     }
 }

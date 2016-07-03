@@ -7,7 +7,7 @@ use Guzzle\Http\Exception\ServerErrorResponseException;
 use Guzzle\Http\Exception\RequestErrorResponseException;
 use Guzzle\Http\Exception\CurlException;
 
-class SocialPoster_FacebookService extends BaseApplicationComponent
+class SocialPoster_LinkedInService extends BaseApplicationComponent
 {
     // Public Methods
     // =========================================================================
@@ -26,31 +26,44 @@ class SocialPoster_FacebookService extends BaseApplicationComponent
         $title = craft()->config->parseEnvironmentString($title);
         $chosenProvider['title'] = $title; // update 'model'
 
-        // Get the endpoint to post to (page or timeline)
-        $endpoint = (isset($chosenProvider['endpoint']) && $chosenProvider['endpoint']) ? $chosenProvider['endpoint'] : 'me';
-        $chosenProvider['endpoint'] = $endpoint; // update 'model'
+        $visibility = (isset($chosenProvider['visibility']) && $chosenProvider['visibility']) ? $chosenProvider['visibility'] : 'anyone';
+        $chosenProvider['visibility'] = $visibility; // update 'model'
 
         try {
-            $provider = craft()->oauth->getProvider('facebook');
-            $token = craft()->socialPoster_accounts->getToken('facebook');
+            $provider = craft()->oauth->getProvider('linkedin');
+            $token = craft()->socialPoster_accounts->getToken('linkedin');
 
-            $client = new Client('https://graph.facebook.com');
-            
-            $request = $client->post($endpoint . '/feed', null, array(
-                'access_token' => $accessToken,
-                'message' => $message,
-                'link' => $url,
-                'name' => $title,
-            ));
+            $client = new Client('https://api.linkedin.com/v1');
+
+            $headers = array(
+                'Authorization' => 'Bearer ' . $token->accessToken,
+                'Content-Type' => 'application/json',
+                'x-li-format' => 'json',
+            );
+
+            $body = array(
+                'comment' => $message,
+                'content' => array(
+                    'title' => $title,
+                    'description' => $message,
+                    'submitted-url' => $url,
+                    'submitted-image-url' => $picture,
+                ),
+                'visibility' => array(
+                    'code' => $visibility,
+                ),
+            );
+
+            $request = $client->post('people/~/shares?format=json', $headers, json_encode($body));
 
             $response = $request->send();
             $data = $response->json();
 
-            SocialPosterPlugin::log('Facebook post: ' . print_r($data, true), LogLevel::Info);
+            SocialPosterPlugin::log('LinkedIn post: ' . print_r($data, true), LogLevel::Info);
 
             $responseReturn = $this->_returnResponse($response);
 
-            if (isset($data['id'])) {
+            if (isset($data['updateKey'])) {
                 return array('success' => true, 'response' => $responseReturn);
             } else {
                 return array('success' => false, 'response' => $responseReturn);
@@ -74,7 +87,7 @@ class SocialPoster_FacebookService extends BaseApplicationComponent
     private function _returnResponse($response, $e = null)
     {
         if ($e) {
-            SocialPosterPlugin::log('Facebook post error: ' . print_r($response, true), LogLevel::Error);
+            SocialPosterPlugin::log('LinkedIn post error: ' . print_r($response, true), LogLevel::Error);
         }
 
         if ($e instanceof CurlException) {
@@ -89,5 +102,4 @@ class SocialPoster_FacebookService extends BaseApplicationComponent
             );
         }
     }
-
 }

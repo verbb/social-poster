@@ -17,7 +17,7 @@
 
                 <li>
                     <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ oauthProvider.handle }}-fields" tabindex="{{ loop.index0 }}">
-                        {% if providerSettings.enabled and not previousPost and account.token and context.entry.enabled %}
+                        {% if providerSettings.autoPost and not previousPost and account.token and context.entry.enabled %}
                             <span class="status on"></span>
                         {% else %}
                             {% if previousPost and not previousPost.success %}
@@ -42,6 +42,12 @@
         {# Check for previous post #}
         {% if posts and posts[oauthProvider.handle] is defined %}
             {% set previousPost = posts[oauthProvider.handle] %}
+        {% endif %}
+
+        {# Opt-out of auto-posting for safety #}
+        {% set autoPost = false %}
+        {% if providerSettings.autoPost and not previousPost %}
+            {% set autoPost = true %}
         {% endif %}
 
         {% namespace 'socialPoster[' ~ oauthProvider.handle ~ ']' %}
@@ -72,56 +78,7 @@
             {% else %}
 
                 <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
-                    {{ forms.lightswitchField({
-                        label: 'Post to {p}' | t({ p: oauthProvider.name }),
-                        instructions: 'Should entries be set to post to {p} by default?' | t({ p: oauthProvider.name }),
-                        id: 'enabled',
-                        name: 'enabled',
-                        on: (providerSettings.enabled and not previousPost and context.entry.enabled) | default(''),
-                    }) }}
-
-                    {{ forms.textareaField({
-                        label: 'Message' | t,
-                        instructions: 'Text for your post. May include any Twig variables for fields in this entry - eg {title}, {customField}, etc.' | t,
-                        placeholder: 'Enter text here to be displayed as your post to social media.' | t,
-                        id: 'message',
-                        name: 'message',
-                        rows: 4,
-                        value: providerSettings.message | default(''),
-                        showCharsLeft: (oauthProvider.handle == 'twitter'),
-                        maxlength: (oauthProvider.handle == 'twitter') ? '140' : '',
-                    }) }}
-
-                    {#{{ forms.field({
-                        label: 'Image for Post' | t,
-                        instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
-                    },
-
-                    forms.elementSelect({
-                        id: 'image',
-                        name: 'image',
-                        elementType: craft.elements.getElementType('Asset'),
-                        jsClass: 'Craft.AssetSelectInput',
-                        addButtonLabel: 'Select Image',
-                        limit: 1,
-                        criteria: { "localeEnabled" : null },
-                        value: providerSettings.image | default(''),
-                    })) }}#}
-
-                    {% if providerSettings.imageField is defined %}
-                        {% set imageField = providerSettings.imageField | replace({ '{': '' , '}': '' }) %}
-                    {% endif %}
-
-                    <div class="providerSettings-imageField">
-                        {{ forms.selectField({
-                            label: 'Image for Post' | t,
-                            instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
-                            id: 'imageField',
-                            name: 'imageField',
-                            options: craft.socialPoster.getAssetFieldOptions(context.entry),
-                            value: imageField | default(''),
-                        }) }}
-                    </div>
+                    {% include 'socialposter/_providers/' ~ oauthProvider.handle ~ '/input' %}
 
                     <div class="field">
                         <span class="info-item">

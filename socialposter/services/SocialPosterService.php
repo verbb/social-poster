@@ -47,7 +47,7 @@ class SocialPosterService extends BaseApplicationComponent
 
         foreach ($chosenProviders as $providerHandle => $chosenProvider) {
             // Only post to the enabled ones
-            if (!$chosenProvider['enabled']) {
+            if (!$chosenProvider['autoPost']) {
                 continue;
             }
 
@@ -63,7 +63,7 @@ class SocialPosterService extends BaseApplicationComponent
 
             // Get the image (if one)
             $picture = null;
-            if ($chosenProvider['imageField']) {
+            if (isset($chosenProvider['imageField']) && $chosenProvider['imageField']) {
                 $assetIds = $entry->content[$chosenProvider['imageField']];
 
                 if (is_array($assetIds)) {
@@ -86,9 +86,11 @@ class SocialPosterService extends BaseApplicationComponent
 
             // Get the payload to post this to social media
             if ($providerHandle == 'facebook') {
-                $postResult = craft()->socialPoster_facebook->getPayload($entry, $accessToken, $message, $picture);
+                $postResult = craft()->socialPoster_facebook->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
             } else if ($providerHandle == 'twitter') {
-                $postResult = craft()->socialPoster_twitter->getPayload($entry, $accessToken, $message, $picture);
+                $postResult = craft()->socialPoster_twitter->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
+            } else if ($providerHandle == 'linkedin') {
+                $postResult = craft()->socialPoster_linkedIn->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
             } else {
                 continue;
             }
@@ -124,7 +126,16 @@ class SocialPosterService extends BaseApplicationComponent
                 }
             }
 
-            if (!$accounts = craft()->socialPoster_accounts->getAll()) {
+            $accounts = craft()->socialPoster_accounts->getAll();
+
+            // Remove any accounts that don't have settings - they haven't been configured!
+            foreach ($accounts as $key => $account) {
+                if (!$account->providerSettings) {
+                    unset($accounts[$key]);
+                }
+            }
+
+            if (!$accounts) {
                 return;
             }
 
