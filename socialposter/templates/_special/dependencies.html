@@ -37,14 +37,14 @@
                 <li>{{ "Required: {name} {version} or above required" | t({ name: dependency.name, version: dependency.version  }) }}</li>
             </ul>
 
-            <p><a class="btn" href="{{ dependency.pluginLink }}">{{ "Download Latest {name} plugin" | t({ name: dependency.name }) }}</a></p>
+            <p><a class="btn" href="{{ dependency.url }}" target="_blank">{{ "Download Latest {name} plugin" | t({ name: dependency.name }) }}</a></p>
 
         {% endif %}
     {% else %}
 
         <p>{{ "{name} plugin is required to continue." | t({ name: dependency.name }) }}</p>
 
-        <p><a class="btn" href="{{ dependency.pluginLink }}">{{ "Download Latest {name} plugin" | t({ name: dependency.name }) }}</a></p>
+        <p><a class="btn" href="{{ dependency.url }}" target="_blank">{{ "Download Latest {name} plugin" | t({ name: dependency.name }) }}</a></p>
 
     {% endif %}
 
