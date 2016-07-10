@@ -46,6 +46,21 @@ class SocialPosterService extends BaseApplicationComponent
         }
 
         foreach ($chosenProviders as $providerHandle => $chosenProvider) {
+
+            // If this is a front-end request, we check to see if any options are specified in the form of:
+            // <input type="hidden" name="socialPoster[facebook][autoPost]" value="1">
+            // <input type="hidden" name="socialPoster[facebook][message]" value="Testing">
+            if (!craft()->request->isCpRequest()) {
+                $postChosenProvider = $chosenProvider;
+
+                // Load the defaults
+                $account = craft()->socialPoster_accounts->getByHandle($providerHandle);
+                $chosenProvider = $account->providerSettings[$providerHandle];
+
+                // Allow front-end forms to override anything
+                $chosenProvider = array_merge($chosenProvider, $postChosenProvider);
+            }
+
             // Only post to the enabled ones
             if (!$chosenProvider['autoPost']) {
                 continue;
