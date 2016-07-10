@@ -114,6 +114,7 @@ class SocialPosterPlugin extends BasePlugin
 
         if (craft()->request->isCpRequest()) {
             craft()->socialPoster->renderEntrySidebar();
+        }
     }
 
     
