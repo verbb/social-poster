@@ -1,4 +1,14 @@
-[
+[   
+    {
+        "version": "1.1.1",
+        "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.1.1.zip",
+        "date": "2016-07-10T15:00:00+10:00",
+        "notes": [
+            "[Added] Added support for front-end submissions and overrides.",
+            "[Fixed] Fixed some issues with checking for account options not yet set.",
+            "[Fixed] Fixed issue with checking plugin dependancies."
+        ]
+    },
     {
         "version": "1.1.0",
         "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.1.0.zip",
