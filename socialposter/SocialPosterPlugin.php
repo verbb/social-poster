@@ -107,16 +107,13 @@ class SocialPosterPlugin extends BasePlugin
 
     public function init()
     {
+        // Hook to trigger sending on-save (but only for new entries)
+        craft()->on('entries.saveEntry', function(Event $event) {
+            craft()->socialPoster->onSaveEntry($event);
+        });
+
         if (craft()->request->isCpRequest()) {
-            require_once(CRAFT_PLUGINS_PATH . 'socialposter/vendor/autoload.php');
-
-            // Hook to trigger sending on-save (but only for new entries)
-            craft()->on('entries.saveEntry', function(Event $event) {
-                craft()->socialPoster->onSaveEntry($event);
-            });
-
             craft()->socialPoster->renderEntrySidebar();
-        }
     }
 
     
