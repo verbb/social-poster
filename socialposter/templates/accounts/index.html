@@ -52,16 +52,24 @@
                 </th>
 
                 <td class="light">
-                    {% if account and providerSettings and providerSettings.enabled %}
-                        <span class="status on"></span> {{ "Enabled" | t }}
+                    {% if account and providerSettings %}
+                        {% if providerSettings.enabled is defined and providerSettings.enabled %}
+                            <span class="status on"></span> {{ "Enabled" | t }}
+                        {% else %}
+                            <span class="status"></span> {{ "Disabled" | t }}
+                        {% endif %}
                     {% else %}
                         <span class="status"></span> {{ "Disabled" | t }}
                     {% endif %}
                 </td>
 
                 <td class="light">
-                    {% if account and providerSettings and providerSettings.autoPost %}
-                        <span class="status on"></span> {{ "Enabled" | t }}
+                    {% if account and providerSettings %}
+                        {% if providerSettings.autoPost is defined and providerSettings.autoPost %}
+                            <span class="status on"></span> {{ "Enabled" | t }}
+                        {% else %}
+                            <span class="status"></span> {{ "Disabled" | t }}
+                        {% endif %}
                     {% else %}
                         <span class="status"></span> {{ "Disabled" | t }}
                     {% endif %}
