@@ -1,5 +1,13 @@
 [   
     {
+        "version": "1.1.2",
+        "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.1.2.zip",
+        "date": "2016-07-11T09:00:00+10:00",
+        "notes": [
+            "[Fixed] Fixed version number (sorry!)."
+        ]
+    },
+    {
         "version": "1.1.1",
         "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.1.1.zip",
         "date": "2016-07-10T15:00:00+10:00",
