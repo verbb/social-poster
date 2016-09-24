@@ -19,8 +19,8 @@
 }) }}
 
 {{ settingsField.field({
-        label: 'Page or Timeline' | t,
-        instructions: 'Select where you\'d like this post to be posted to. Either a Page, or a Personal Timeline.' | t,
+        label: '{p} Post Type' | t({ p: oauthProvider.name }),
+        instructions: 'Select where you\'d like this post to be posted to. Can be a {p} Profile, {p} Page, {p} Group.' | t({ p: oauthProvider.name }),
         id: 'showEndpoint',
         name: 'showEndpoint',
         value: true,
@@ -30,12 +30,29 @@
         id: 'endpoint',
         name: 'endpoint',
         options: [
-            { label: 'Timeline', value: 'me' },
+            { label: 'Profile', value: 'me' },
+            { label: 'Group', value: 'group' },
             { label: 'Page', value: 'page' },
         ],
         value: providerSettings.endpoint | default(''),
     })
 ) }}
+
+{{ forms.textField({
+    label: '{p} Group ID' | t({ p: oauthProvider.name }),
+    instructions: 'Your {p} Group ID (the part after `https://www.facebook.com/groups/`).' | t({ p: oauthProvider.name }),
+    id: 'groupId',
+    name: 'groupId',
+    value: providerSettings.groupId | default(''),
+}) }}
+
+{{ forms.textField({
+    label: '{p} Page ID' | t({ p: oauthProvider.name }),
+    instructions: "Click on the 'About' tab on your {p} page, then click on 'Page Info'. Near the bottom will show your '{p} Page ID'." | t({ p: oauthProvider.name }),
+    id: 'pageId',
+    name: 'pageId',
+    value: providerSettings.pageId | default(''),
+}) }}
 
 {{ settingsField.field({
         label: 'Title' | t,

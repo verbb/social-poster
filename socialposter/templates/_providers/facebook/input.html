@@ -1,22 +1,27 @@
-{{ forms.lightswitchField({
-    label: 'Post to {p}' | t({ p: oauthProvider.name }),
-    instructions: 'Do you wish to post this entry to {p}?' | t({ p: oauthProvider.name }),
-    id: 'autoPost',
-    name: 'autoPost',
-    on: autoPost,
-}) }}
+{% if not static is defined %}
+    {{ forms.lightswitchField({
+        label: 'Post to {p}' | t({ p: oauthProvider.name }),
+        instructions: 'Do you wish to post this entry to {p}?' | t({ p: oauthProvider.name }),
+        id: 'autoPost',
+        name: 'autoPost',
+        on: autoPost,
+    }) }}
+{% endif %}
 
 {% if providerSettings.showEndpoint is defined and providerSettings.showEndpoint %}
     {{ forms.selectField({
-        label: 'Page or Timeline' | t,
-        instructions: 'Select where you\'d like this post to be posted to. Either a Page, or a Personal Timeline.' | t,
+        label: '{p} Post Type' | t({ p: oauthProvider.name }),
+        instructions: 'Select where you\'d like this post to be posted to. Can be a {p} Profile, {p} Page, {p} Group.' | t({ p: oauthProvider.name }),
         id: 'endpoint',
         name: 'endpoint',
         options: [
-            { label: 'Timeline', value: 'me' },
+            { label: 'Profile', value: 'me' },
+            { label: 'Group', value: 'group' },
             { label: 'Page', value: 'page' },
         ],
-        value: providerSettings.endpoint
+        value: providerSettings.endpoint,
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
     }) }}
 {% endif %}
 
@@ -27,6 +32,8 @@
         id: 'title',
         name: 'title',
         value: providerSettings.title,
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
     }) }}
 {% endif %}
 
@@ -37,6 +44,8 @@
         id: 'url',
         name: 'url',
         value: providerSettings.url,
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
     }) }}
 {% endif %}
 
@@ -51,6 +60,8 @@
         value: providerSettings.message,
         showCharsLeft: (oauthProvider.handle == 'twitter'),
         maxlength: (oauthProvider.handle == 'twitter') ? '140' : '',
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
     }) }}
 {% endif %}
 
@@ -58,15 +69,19 @@
     {% set imageField = providerSettings.imageField | replace({ '{': '' , '}': '' }) %}
 {% endif %}
 
-{% if providerSettings.showImageField is defined and providerSettings.showImageField %}
-    <div class="providerSettings-imageField">
-        {{ forms.selectField({
-            label: 'Image for Post' | t,
-            instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
-            id: 'imageField',
-            name: 'imageField',
-            options: craft.socialPoster.getAssetFieldOptions(context.entry),
-            value: imageField,
-        }) }}
-    </div>
+{% if not static is defined %}
+    {% if providerSettings.showImageField is defined and providerSettings.showImageField %}
+        <div class="providerSettings-imageField">
+            {{ forms.selectField({
+                label: 'Image for Post' | t,
+                instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t({ p: oauthProvider.name }),
+                id: 'imageField',
+                name: 'imageField',
+                options: craft.socialPoster.getAssetFieldOptions(context.entry),
+                value: imageField,
+                disabled: static is defined,
+                class: static is defined ? 'disabled',
+            }) }}
+        </div>
+    {% endif %}
 {% endif %}

@@ -51,4 +51,9 @@ class SocialPosterVariable
         return $imageOptions;
     }
 
+    public function posts($criteria)
+    {
+        return craft()->socialPoster_posts->getAllByElementId($criteria['element']->id);
+    }
+
 }

@@ -1,5 +1,18 @@
 [   
     {
+        "version": "1.2.0",
+        "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.2.0.zip",
+        "date": "2016-09-25T00:00:00+10:00",
+        "notes": [
+            "[Added] Added Posts management sections in CP.",
+            "[Added] Added ability to easily re-post past social media posts.",
+            "[Added] Added `craft.socialPoster.posts()` template function to fetch successful posts on an entry.",
+            "[Added] Added `url` attribute on posts - this returns the external URL to the corresponding post on the social media provider you've posted to - ie https://facebook.com/mypost.",
+            "[Improved] Full JSON responses from providers are now saved for posterity, debugging, and future use.",
+            "[Improved] Improved Facebook posting, allowing you to properly post to either Profile, Page or Group."
+        ]
+    },
+    {
         "version": "1.1.2",
         "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.1.2.zip",
         "date": "2016-07-11T09:00:00+10:00",

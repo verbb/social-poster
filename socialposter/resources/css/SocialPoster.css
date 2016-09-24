@@ -1,4 +1,36 @@
 
+/* ==========================================================================
+// Posts Index
+// ========================================================================== */
+
+.provider-infos .icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 7px;
+    float: left;
+}
+
+.provider-infos .name {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+
+/* ==========================================================================
+// Posts Edit
+// ========================================================================== */
+
+.pane.codeblock {
+    padding: 15px;
+    font-size: 12px;
+}
+
+.provider-block {
+    margin-top: 10px;
+}
+
+
 
 /* ==========================================================================
 // Settings checkbox-in-field-heading
@@ -19,6 +51,16 @@
     color: #29323d;
     top: 0px;
 }
+
+/* ==========================================================================
+// Settings Additions (for Facebook)
+// ========================================================================== */
+
+#providerSettings-facebook-pageId-field,
+#providerSettings-facebook-groupId-field {
+    display: none;
+}
+
 
 
 /* ==========================================================================

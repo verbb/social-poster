@@ -35,9 +35,9 @@ class SocialPoster_TwitterService extends BaseApplicationComponent
             $responseReturn = $this->_returnResponse($response);
 
             if (isset($data['id'])) {
-                return array('success' => true, 'response' => $responseReturn);
+                return array('success' => true, 'response' => $responseReturn, 'data' => $data);
             } else {
-                return array('success' => false, 'response' => $responseReturn);
+                return array('success' => false, 'response' => $responseReturn, 'data' => $data);
             }
         } catch (ClientErrorResponseException $e) {
             return array('success' => false, 'response' => $this->_returnResponse($e->getResponse(), $e));

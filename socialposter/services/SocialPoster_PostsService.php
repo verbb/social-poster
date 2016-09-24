@@ -9,15 +9,18 @@ class SocialPoster_PostsService extends BaseApplicationComponent
     public function getAll($indexBy = null)
     {
         $records = SocialPoster_PostRecord::model()->ordered()->findAll();
-        return SocialPoster_PostModel::populateModels($records, $indexBy);
+
+        if ($records) {
+            return SocialPoster_PostModel::populateModels($records, $indexBy);
+        }
     }
 
     public function getAllByElementId($elementId)
     {
-        $record = SocialPoster_PostRecord::model()->ordered()->findAllByAttributes(array('elementId' => $elementId));
+        $records = SocialPoster_PostRecord::model()->ordered()->findAllByAttributes(array('elementId' => $elementId));
 
-        if ($record) {
-            return SocialPoster_PostModel::populateModels($record, 'handle');
+        if ($records) {
+            return SocialPoster_PostModel::populateModels($records, 'handle');
         }
     }
 

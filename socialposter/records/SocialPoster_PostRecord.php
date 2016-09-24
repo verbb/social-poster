@@ -21,7 +21,7 @@ class SocialPoster_PostRecord extends BaseRecord
     public function scopes()
     {
         return array(
-            'ordered' => array('order' => 'dateCreated'),
+            'ordered' => array('order' => 'dateCreated asc'),
         );
     }
 
@@ -36,6 +36,7 @@ class SocialPoster_PostRecord extends BaseRecord
             'providerSettings'  => array(AttributeType::Mixed),
             'success'           => array(AttributeType::Bool),
             'response'          => array(AttributeType::Mixed),
+            'data'              => array(AttributeType::Mixed),
         );
     }
 }

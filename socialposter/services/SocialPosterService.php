@@ -45,30 +45,19 @@ class SocialPosterService extends BaseApplicationComponent
             return false;
         }
 
-        foreach ($chosenProviders as $providerHandle => $chosenProvider) {
+        foreach ($chosenProviders as $providerHandle => $postChosenProvider) {
 
-            // If this is a front-end request, we check to see if any options are specified in the form of:
-            // <input type="hidden" name="socialPoster[facebook][autoPost]" value="1">
-            // <input type="hidden" name="socialPoster[facebook][message]" value="Testing">
-            if (!craft()->request->isCpRequest()) {
-                $postChosenProvider = $chosenProvider;
+            // Load in the defaults for this provider, as defined in Social Poster settings
+            $account = craft()->socialPoster_accounts->getByHandle($providerHandle);
+            $chosenProvider = $account->providerSettings[$providerHandle];
 
-                // Load the defaults
-                $account = craft()->socialPoster_accounts->getByHandle($providerHandle);
-                $chosenProvider = $account->providerSettings[$providerHandle];
-
-                // Allow front-end forms to override anything
-                $chosenProvider = array_merge($chosenProvider, $postChosenProvider);
-            }
+            // Allow posted data to override anything in our defaults
+            $chosenProvider = array_merge($chosenProvider, $postChosenProvider);
 
             // Only post to the enabled ones
             if (!$chosenProvider['autoPost']) {
                 continue;
             }
-
-            // Now, grab our field containing the info we need, like which accounts to post, description, etc
-            $token = craft()->socialPoster_accounts->getToken($providerHandle);
-            $accessToken = $token->accessToken;
                 
             // Get the actual text for the post
             $message = $chosenProvider['message'];
@@ -99,28 +88,47 @@ class SocialPosterService extends BaseApplicationComponent
                 }
             }
 
-            // Get the payload to post this to social media
-            if ($providerHandle == 'facebook') {
-                $postResult = craft()->socialPoster_facebook->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
-            } else if ($providerHandle == 'twitter') {
-                $postResult = craft()->socialPoster_twitter->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
-            } else if ($providerHandle == 'linkedin') {
-                $postResult = craft()->socialPoster_linkedIn->getPayload($entry, $accessToken, $message, $picture, $chosenProvider);
-            } else {
-                continue;
-            }
+            // Make the actual social post
+            $this->sendSocialPost($entry, $chosenProvider, $providerHandle, $picture);
+        }
+    }
 
-            // Ssave it to out Posts table - no matter the result
-            if (isset($postResult)) {
-                $model = new SocialPoster_PostModel();
-                $model->elementId = $entry->id;
-                $model->handle = $providerHandle;
-                $model->providerSettings = $chosenProvider;
+    public function sendSocialPost($entry, $provider, $providerHandle, $picture)
+    {
+        $message = $provider['message'];
+
+        $token = craft()->socialPoster_accounts->getToken($providerHandle);
+        $accessToken = $token->accessToken;
+
+        // Get the payload to post this to social media
+        if ($providerHandle == 'facebook') {
+            $postResult = craft()->socialPoster_facebook->getPayload($entry, $accessToken, $message, $picture, $provider);
+        } else if ($providerHandle == 'twitter') {
+            $postResult = craft()->socialPoster_twitter->getPayload($entry, $accessToken, $message, $picture, $provider);
+        } else if ($providerHandle == 'linkedin') {
+            $postResult = craft()->socialPoster_linkedIn->getPayload($entry, $accessToken, $message, $picture, $provider);
+        }
+
+        // Ssave it to out Posts table - no matter the result
+        if (isset($postResult)) {
+            $model = new SocialPoster_PostModel();
+            $model->elementId = $entry->id;
+            $model->handle = $providerHandle;
+            $model->providerSettings = $provider;
+
+            if (isset($postResult['response'])) {
                 $model->response = $postResult['response'];
-                $model->success = $postResult['success'];
-
-                craft()->socialPoster_posts->save($model);
             }
+
+            if (isset($postResult['success'])) {
+                $model->success = $postResult['success'];
+            }
+
+            if (isset($postResult['data'])) {
+                $model->data = $postResult['data'];
+            }
+
+            craft()->socialPoster_posts->save($model);
         }
     }
 

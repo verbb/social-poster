@@ -14,12 +14,12 @@ class SocialPosterPlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.1.2';
+        return '1.2.0';
     }
 
     public function getSchemaVersion()
     {
-        return '1.0.0';
+        return '1.2.0';
     }
 
     public function getDeveloper()
@@ -72,10 +72,12 @@ class SocialPosterPlugin extends BasePlugin
     public function registerCpRoutes()
     {
         return array(
-            'socialposter' => array('action' => 'socialPoster/accounts/index'),
-            'socialposter/settings' => array('action' => 'socialPoster/settings'),
+            'socialposter' => array('action' => 'socialPoster/posts/index'),
+            'socialposter/posts' => array('action' => 'socialPoster/posts/index'),
+            'socialposter/posts/(?P<postId>\d+)' => array('action' => 'socialPoster/posts/edit'),
             'socialposter/accounts' => array('action' => 'socialPoster/accounts/index'),
             'socialposter/accounts/(?P<providerHandle>{handle})' => array('action' => 'socialPoster/accounts/edit'),
+            'socialposter/settings' => array('action' => 'socialPoster/settings'),
         );
     }
 

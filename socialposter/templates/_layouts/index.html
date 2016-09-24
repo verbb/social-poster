@@ -4,8 +4,10 @@
 {% import "socialposter/_includes/settings_field" as settingsField %}
 
 {% includeCssResource 'socialposter/css/SocialPoster.css' %}
+{% includeJsResource 'socialposter/js/SocialPoster.js' %}
 
 {% set tabs = (tabs is defined) ? tabs : {
+    posts: { label: "Posts" | t, url: url('socialposter/posts') },
     accounts: { label: "Accounts" | t, url: url('socialposter/accounts') },
     settings: { label: "Settings" | t, url: url('socialposter/settings') },
 } %}
