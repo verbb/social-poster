@@ -109,6 +109,30 @@ class SocialPosterPlugin extends BasePlugin
         }
     }
 
+    public function defineAdditionalEntryTableAttributes()
+    {
+        return array(
+            'dateTweeted' => "Date Tweeted",
+        );
+    }
+
+    public function getEntryTableAttributeHtml(EntryModel $entry, $attribute)
+    {
+        switch ($attribute) {
+            case 'dateTweeted':
+
+                $posts = craft()->socialPoster_posts->getAllByElementId($entry->id);
+
+                if ($posts && $posts['twitter']) {
+                    $dateTweeted = $posts['twitter']->dateCreated;
+                    return '<span title="'.$dateTweeted->localeDate().' '.$dateTweeted->localeTime().'">'.$dateTweeted->uiTimestamp().'</span>';
+                } else {
+                    return '--';
+                }
+
+                break;
+        }
+    }
 
     // =========================================================================
     // HOOKS
