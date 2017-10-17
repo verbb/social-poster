@@ -1,5 +1,13 @@
 [   
     {
+        "version": "1.2.1",
+        "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.2.1.zip",
+        "date": "2017-10-18T00:00:00+10:00",
+        "notes": [
+            "[Added] Verbb marketing (new plugin icon, readme, etc)."
+        ]
+    },
+    {
         "version": "1.2.0",
         "downloadUrl": "https://github.com/engram-design/SocialPoster/archive/1.2.0.zip",
         "date": "2016-09-25T00:00:00+10:00",

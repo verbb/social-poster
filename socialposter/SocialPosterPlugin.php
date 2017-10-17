@@ -14,7 +14,7 @@ class SocialPosterPlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.2.0';
+        return '1.2.1';
     }
 
     public function getSchemaVersion()
@@ -24,17 +24,17 @@ class SocialPosterPlugin extends BasePlugin
 
     public function getDeveloper()
     {
-        return 'S. Group';
+        return 'Verbb';
     }
 
     public function getDeveloperUrl()
     {
-        return 'http://sgroup.com.au';
+        return 'https://verbb.io';
     }
 
     public function getPluginUrl()
     {
-        return 'https://github.com/engram-design/SocialPoster';
+        return 'https://github.com/verbb/social-poster';
     }
 
     public function getDocumentationUrl()
@@ -44,7 +44,7 @@ class SocialPosterPlugin extends BasePlugin
 
     public function getReleaseFeedUrl()
     {
-        return 'https://raw.githubusercontent.com/engram-design/SocialPoster/master/changelog.json';
+        return 'https://raw.githubusercontent.com/verbb/social-poster/master/changelog.json';
     }
 
     public function getRequiredPlugins()

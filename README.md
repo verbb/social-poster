@@ -1,9 +1,12 @@
-# Social Poster
+> 
+> ### Social Poster has a new home with the fine folks at Verbb. Read about it in our [blog post](https://verbb.io/blog/welcome-to-verbb).
+>
+
+# Social Poster Plugin for Craft CMS
+
+<img width="500" src="https://verbb.io/uploads/plugins/social-poster/_800x455_crop_center-center/social-poster-social-card.png">
 
 Social Poster is a Craft CMS plugin for automatically posting entries to social media.
-
-<img src="https://raw.githubusercontent.com/engram-design/SocialPoster/master/screenshots/entry-edit.png" />
-
 
 ## Features
 
@@ -13,17 +16,20 @@ Social Poster is a Craft CMS plugin for automatically posting entries to social 
 - Selectively post to different networks, or re-post on-demand.
 - Integrates with the [Dukt OAuth plugin](https://dukt.net/craft/oauth/).
 
-
 ## Documentation
 
-Please visit the [Wiki](https://github.com/engram-design/SocialPoster/wiki) for all documentation, a getting started guide, template tags, and developer resources.
+Visit the [Social Poster Plugin page](https://verbb.io/craft-plugins/social-poster) for all documentation, guides, pricing and developer resources.
+
+## Support
+
+Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a Github issue](/verbb/social-poster/issues)
+
+<h2></h2>
+
+<a href="https://verbb.io" target="_blank">
+  <img width="100" src="https://verbb.io/assets/img/verbb-pill.svg">
+</a>
 
 
-## Thanks / Contributions
-
-Big thanks to the [Dukt team](https://github.com/dukt) and their work on the [OAuth plugin](https://dukt.net/craft/oauth/), along with [@benjamindavid](https://github.com/benjamindavid) specifically with feedback, suggestions and troubleshooting.
 
 
-### Changelog
-
-[View JSON Changelog](https://github.com/engram-design/SocialPoster/blob/master/changelog.json)
