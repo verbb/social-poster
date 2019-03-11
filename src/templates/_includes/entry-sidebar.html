@@ -1,0 +1,151 @@
+{% do view.registerAssetBundle('verbb\\socialposter\\assetbundles\\SocialPosterAsset') %}
+
+{% import '_includes/forms' as forms %}
+
+<div class="social-poster-sidebar">
+    <nav id="tabs" class="social-poster-tabs">
+        <ul>
+            {% for account in accounts %}
+                {% set previousPost = false %}
+                {% set provider = account.provider %}
+                {% set providerSettings = account.settings | default([]) %}
+
+                {# Check for previous post #}
+                {% if posts and posts[provider.handle] is defined %}
+                    {% set previousPost = posts[provider.handle] %}
+                {% endif %}
+
+                {# Opt-out of auto-posting for safety #}
+                {% set autoPost = false %}
+                {% if account.autoPost is defined and account.autoPost and not previousPost %}
+                    {% set autoPost = true %}
+                {% endif %}
+
+                <li>
+                    <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ provider.handle }}-fields" title="{{ provider.name }}">
+                        {% if account.canPost and not previousPost and context.entry.enabled %}
+                            <span class="status on"></span>
+                        {% else %}
+                            {% if previousPost and not previousPost.success %}
+                                <span class="status off"></span>
+                            {% else %}
+                                <span class="status"></span>
+                            {% endif %}
+                        {% endif %}
+
+                        {{ provider.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <div class="pane social-poster-pane">
+        {% for account in accounts %}
+            {% set previousPost = false %}
+            {% set provider = account.provider %}
+            {% set providerSettings = account.settings | default([]) %}
+
+            {# Check for previous post #}
+            {% if posts and posts[provider.handle] is defined %}
+                {% set previousPost = posts[provider.handle] %}
+            {% endif %}
+
+            {# Opt-out of auto-posting for safety #}
+            {% set autoPost = false %}
+            {% if settings.autoPost is defined and settings.autoPost and not previousPost %}
+                {% set autoPost = true %}
+            {% endif %}
+
+            {% namespace 'socialPoster[' ~ provider.handle ~ ']' %}
+
+            <div id="fields" data-id="{{ provider.handle }}" class="social-poster-tab {{ (loop.first) ? '' : 'hidden' }}">
+                {% if previousPost %}
+                    {% if previousPost.success %}
+                        <div class="field">
+                            <span class="warning">
+                                {{ 'This entry was posted to {p} on {date}' | t('social-poster', { p: provider.name, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="social-expand-pane" data-id="{{ provider.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a>
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="field">
+                            <span class="error">
+                                {{ 'Could not post to {p}. Error: {resp}' | t('social-poster', { p: provider.name, resp: previousPost.response | json_encode }) }}. <div><a class="social-expand-pane" data-id="{{ provider.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a></div>
+                            </span>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if not account.token %}
+                    <div class="field">
+                        <span class="error">
+                            {{ 'Connect OAuth provider first via' | t('social-poster') }} <a href="{{ url('social-poster/accounts/' ~ account.id) }}">{{ 'settings' | t('social-poster') }}</a>
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
+                        {% include 'social-poster/_providers/' ~ provider.handle ~ '/input' %}
+
+                        <div class="field">
+                            <span class="info-item">
+                                {{ 'To publish this post to ' ~ provider.name ~ ', save this entry.' | t('social-poster') }}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {{ provider.name }}
+            </div>
+
+            {% endnamespace %}
+        {% endfor %}
+    </div>
+</div>
+
+{% js %}
+
+$(function() {
+    $('.social-poster-pane .lightswitch').on('change', function() {
+        var provider = $(this).parents('.social-poster-tab').data('id');
+
+        if ($(this).hasClass('on')) {
+            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').addClass('on');
+        } else {
+            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('on');
+        }
+    });
+
+    {# Toggle switches when entry enabled toggle is #}
+    $('#enabled-field .lightswitch').on('change', function() {
+        var $lightswitch = $(this);
+
+        $('.social-poster-pane .social-poster-fields:not(.hidden) .lightswitch').each(function(index, element) {
+            var ls = $(element).data('lightswitch');
+
+            if ($lightswitch.hasClass('on')) {
+                ls.turnOn();
+            } else {
+                ls.turnOff();
+            }
+        });
+    });
+
+    $('.social-expand-pane').on('click', function(e) {
+        e.preventDefault();
+
+        var provider = $(this).data('id');
+
+        // Remove any errors
+        $(this).parents('.error').parent().remove();
+
+        // Remove any error on tab
+        $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('off');
+
+        // Remove post again anchor
+        $(this).remove();
+
+        $('.social-poster-tab[data-id="'+provider+'"] .social-poster-fields').removeClass('hidden');
+    });
+});
+
+{% endjs %}

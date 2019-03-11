@@ -1,0 +1,181 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Accounts' | t('social-poster'), url: url('social-poster/accounts') }
+] %}
+
+{% set fullPageForm = true %}
+{% set selectedTab = 'accounts' %}
+{% set selectedSubnavItem = 'accounts' %}
+
+{% set saveShortcutRedirect = continueEditingUrl %}
+
+{% block actionButton %}
+
+<div class="btngroup">
+    <input type="submit" class="btn submit" value="{{ 'Save' | t('app') }}">
+
+    <div class="btn submit menubtn"></div>
+    <div class="menu">
+        <ul>
+            <li>
+                <a class="formsubmit" data-redirect="{{ continueEditingUrl | hash }}">
+                    {{ forms.optionShortcutLabel('S') }}
+                    {{ 'Save and continue editing' | t('app') }}
+                </a>
+            </li>
+        </ul>
+
+        <hr>
+        <ul>
+            <li><a class="formsubmit error" data-action="social-poster/accounts/delete" data-confirm="{{ 'Are you sure you want to delete this account?' | t('social-poster') }}" data-redirect="{{ 'social-poster/accounts#' | hash }}">{{ 'Delete' | t('app') }}</a></li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<input type="hidden" name="action" value="social-poster/accounts/save">
+{% if account.id %}<input type="hidden" name="accountId" value="{{ account.id }}">{% endif %}
+{{ redirectInput('social-poster/accounts') }}
+
+<div id="account-settings">
+    {{ forms.textField({
+        first: true,
+        label: 'Name' | t('app'),
+        id: 'name',
+        name: 'name',
+        value: (account is defined ? account.name : null),
+        errors: (account is defined ? account.getErrors('name') : null),
+        autofocus: true,
+        required: true,
+    }) }}
+
+    {{ forms.textField({
+        first: true,
+        label: 'Handle' | t('app'),
+        id: 'handle',
+        name: 'handle',
+        class: 'code',
+        value: (account is defined ? account.handle : null),
+        errors: (account is defined ? account.getErrors('handle') : null),
+        required: true,
+    }) }}
+
+    <hr>
+
+    {{ forms.selectField({
+        label: 'Provider' | t('social-poster'),
+        instructions: 'What provider is this account for?' | t('social-poster'),
+        id: 'providerHandle',
+        name: 'providerHandle',
+        options: providerTypeOptions,
+        value: account.providerHandle,
+        toggle: true,
+        required: true,
+    }) }}
+
+    {% for provider in providers %}
+        {% set isCurrent = (account.providerHandle == provider.handle) %}
+
+        <div id="{{ provider.handle | id }}"{% if not isCurrent %} class="hidden"{% endif %}>
+            {% namespace 'providerSettings[' ~ provider.handle ~ ']' %}
+                {{ provider.getSettingsHtml() | raw }}
+            {% endnamespace %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block details %}
+
+<div class="meta">
+    {{ forms.lightswitchField({
+        label: 'Enabled' | t('social-poster'),
+        id: 'enabled',
+        name: 'enabled',
+        on: account.enabled,
+        first: true,
+    }) }}
+
+    {{ forms.lightswitchField({
+        label: 'Auto-Post' | t('social-poster'),
+        id: 'autoPost',
+        name: 'autoPost',
+        on: account.autoPost,
+    }) }}
+
+    {% if account.provider %}
+        <div class="field lightswitch-field" id="">
+            {% if account.providerIsConfigured %}
+                <div class="heading">
+                    <span class="status on"></span>{{ 'Provider Configured' | t('social-poster') }}
+                </div>
+            {% else %}
+                <div class="heading">
+                    <span class="status"></span><span class="light">{{ 'Provider not configured' | t('social-poster') }}</span>
+                </div>
+            {% endif %}
+
+            {% if account.providerHandle %}
+                <div class="input ltr">
+                    <a class="btn small" href="{{ url('social-poster/providers/' ~ account.providerHandle) }}">Settings</a>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if account.connected %}
+            <div class="field lightswitch-field" id="">
+                <div class="heading">
+                    <span class="status on"></span>{{ 'Connected' | t('social-poster') }}
+                </div>
+
+                <div class="input ltr">
+                    <a class="btn small" href="{{ actionUrl('social-poster/accounts/disconnect', { accountId: account.id }) }}">Disconnect</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="field lightswitch-field" id="">
+                <div class="heading">
+                    <span class="status"></span><span class="light">{{ 'Not Connected' | t('social-poster') }}</span>
+                </div>
+
+                <div class="input ltr">
+                    <a class="btn small" href="{{ actionUrl('social-poster/accounts/connect', { accountId: account.id }) }}">Connect</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<hr>
+
+{% if account.id %}
+    <hr>
+
+    <div class="meta read-only">
+        <div class="data">
+            <h5 class="heading">{{ 'Date Created' | t('wishlist') }}</h5>
+            <div class="value">{{ account.dateCreated | date('short') }} {{ account.dateCreated | time('short') }}</div>
+        </div>
+
+        <div class="data">
+            <h5 class="heading">{{ 'Date Updated' | t('wishlist') }}</h5>
+            <div class="value">{{ account.dateUpdated | date('short') }} {{ account.dateUpdated | time('short') }}</div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% if account is not defined or not account.handle %}
+    {% js %}
+        new Craft.HandleGenerator('#name', '#handle');
+    {% endjs %}
+{% endif %}
+

@@ -1,0 +1,57 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Settings' | t('app'), url: url('social-poster/settings') }
+] %}
+
+{% set fullPageForm = true %}
+{% set selectedTab = 'settings' %}
+{% set selectedSubnavItem = 'settings' %}
+
+{% block blockContent %}
+
+<input type="hidden" name="action" value="plugins/save-plugin-settings">
+<input type="hidden" name="pluginHandle" value="social-poster">
+
+{% namespace 'settings' %}
+
+{% set sections = [] %}
+{% for section in craft.sections.getAllSections() %}
+    {% set sections = [{ value: section.id, label: section.name }] | merge(sections) %}
+{% endfor %}
+
+{{ forms.textField({
+    label: 'Plugin Name' | t('app'),
+    instructions: 'Plugin name for the end user.' | t('social-poster'),
+    id: 'pluginName',
+    name: 'pluginName',
+    value: settings.pluginName,
+    first: true,
+    autofocus: true,
+}) }}
+
+{{ forms.lightswitchField({
+    label: 'Enable CP Section' | t('social-poster'),
+    instructions: 'Whether to enable Social Poster in the main sidebar navigation.' | t('social-poster'),
+    id: 'hasCpSection',
+    name: 'hasCpSection',
+    on: settings.hasCpSection,
+    errors: settings.getErrors('hasCpSection'),
+}) }}
+
+{{ forms.checkboxSelectField({
+    label: 'Enabled Sections' | t('social-poster'),
+    instructions: 'Select which sections you would like Social Poster to be enabled for.' | t('social-poster'),
+    id: 'enabledSections',
+    name: 'enabledSections',
+    values: settings.enabledSections,
+    errors: settings.getErrors('enabledSections'),
+    options: sections,
+    showAllOption: true,
+}) }}
+
+{% endnamespace %}
+
+{% endblock %}

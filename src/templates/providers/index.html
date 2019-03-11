@@ -1,0 +1,59 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Providers' | t('social-poster'), url: url('social-poster/providers') }
+] %}
+
+{% set selectedTab = 'providers' %}
+{% set selectedSubnavItem = 'providers' %}
+
+{% block blockContent %}
+    
+<table id="providers" class="data fullwidth collapsible">
+    <thead>
+        <tr>
+            <th scope="col">{{ 'Name' | t('social-poster') }}</th>
+            <th scope="col">{{ 'Handle' | t('social-poster') }}</th>
+            <th scope="col">{{ 'Status' | t('social-poster') }}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for provider in providers %}
+            <tr>
+                <th>
+                    <div class="provider">
+                        <div class="thumb">
+                            <img src="{{ provider.getIconUrl() }}" width="32" height="32" />
+                        </div>
+
+                        <div class="label">
+                            <a href="{{ url('social-poster/providers/' ~ provider.handle) }}">
+                                {{ provider.name }}
+                            </a>
+                        </div>
+                    </div>
+                </th>
+
+                <td class="light"><code>{{ provider.handle }}</code></td>
+
+                <td>
+                    <form method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="provider" value="{{ provider.handle }}">
+                        {{ csrfInput() }}
+
+                        {% if provider.isConfigured %}
+                            <span class="status on"></span> {{ 'Configured' | t('social-poster') }} 
+                        {% else %}
+                            <span class="status"></span> {{ 'Not configured' | t('social-poster') }} 
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

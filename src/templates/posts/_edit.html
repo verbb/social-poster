@@ -1,0 +1,103 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Posts' | t('social-poster'), url: url('social-poster/posts') }
+] %}
+
+{% set account = post.account %}
+{% set provider = post.provider %}
+
+{% set title = account.name ~ ' post on ' ~ post.dateCreated | date('short') ~ ' ' ~ post.dateCreated | time('short') %}
+{% set selectedTab = 'posts' %}
+{% set selectedSubnavItem = 'posts' %}
+
+{% block content %}
+
+<div id="account-settings">
+    <h5>{{ 'Payload Sent' | t('social-poster') }}</h5>
+    <pre class="codeblock">{{ post.settings | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+
+    <hr>
+
+    {% set responseUrl = provider.responseUrl(post.data) %}
+
+    {% if responseUrl %}
+        <h5>{{ 'Provider Post URL' | t('social-poster') }}</h5>
+        <a class="go" href="{{ responseUrl }}" target="_blank">{{ responseUrl }}</a>
+        <hr>
+    {% endif %}
+
+    <h5>{{ 'Provider API Response' | t('social-poster') }}</h5>
+    <pre class="codeblock">{{ post.response | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+
+    <h5>{{ 'Provider Post Response' | t('social-poster') }}</h5>
+    <pre class="codeblock">{{ post.data | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+</div>
+
+{% endblock %}
+
+{% block details %}
+
+<div class="meta">
+    <div class="field">
+        <div class="heading">
+            <label>{{ 'Element' | t('social-poster') }}</label>
+        </div>
+
+        <div class="input ltr">
+            <a href="{{ post.owner.cpEditUrl }}">{{ post.owner }}</a>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="heading">
+            <label>{{ 'Account' | t('social-poster') }}</label>
+        </div>
+
+        <div class="input ltr">
+            {% if provider %}
+                <span class="provider">
+                    <div class="thumb">
+                        <img width="20" src="{{ provider.getIconUrl() }}" class="social-icon social-{{ provider.handle }}" />
+                    </div>
+
+                    {{ account.name }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="field" id="">
+        <div class="heading">
+            <label>{{ 'Status' | t('social-poster') }}</label>
+        </div>
+
+        <div class="input ltr">
+            {% if post.success %}
+                <span class="status on"></span> {{ post.response.reasonPhrase | default('Success') }}
+            {% else %}
+                <span class="status off"></span> {{ post.response.reasonPhrase | default('Error') }}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<hr>
+
+<div class="meta read-only">
+    <div class="data">
+        <h5 class="heading">{{ 'Date Created' | t('wishlist') }}</h5>
+        <div class="value">{{ post.dateCreated | date('short') }} {{ post.dateCreated | time('short') }}</div>
+    </div>
+
+    <div class="data">
+        <h5 class="heading">{{ 'Date Updated' | t('wishlist') }}</h5>
+        <div class="value">{{ post.dateUpdated | date('short') }} {{ post.dateUpdated | time('short') }}</div>
+    </div>
+</div>
+
+{% endblock %}

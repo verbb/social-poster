@@ -1,7 +1,3 @@
-> 
-> ### Social Poster has a new home with the fine folks at Verbb. Read about it in our [blog post](https://verbb.io/blog/welcome-to-verbb).
->
-
 # Social Poster Plugin for Craft CMS
 
 <img width="500" src="https://verbb.io/uploads/plugins/social-poster/_800x455_crop_center-center/social-poster-social-card.png">
@@ -22,7 +18,7 @@ Visit the [Social Poster Plugin page](https://verbb.io/craft-plugins/social-post
 
 ## Support
 
-Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a Github issue](/verbb/social-poster/issues)
+Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a Github issue](https://github.com/verbb/social-poster/issues)
 
 <h2></h2>
 

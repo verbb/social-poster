@@ -1,0 +1,57 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Providers' | t('social-poster'), url: url('social-poster/providers') }
+] %}
+
+{% set selectedTab = 'providers' %}
+{% set selectedSubnavItem = 'providers' %}
+
+{% block blockContent %}
+
+<form method="post" accept-charset="UTF-8" data-saveshortcut data-confirm-unload novalidate>
+    <input type="hidden" name="action" value="social-poster/providers/save-oauth-provider">
+    <input type="hidden" name="handle" value="{{ provider.handle }}">
+    {{ redirectInput('social-poster/providers') }}
+    {{ csrfInput() }}
+
+    <h2>{{ 'Step 1: Create the OAuth application' | t('social-poster') }}</h2>
+
+    <p>{{ 'Go to the {link}, create a new application or configure an existing one using the following settings:' | t('social-poster', { link: '<a href="' ~ provider.managerUrl ~ '">' ~ '{provider} API Console' | t('social-poster', { provider: provider.name }) ~ '</a>'}) | raw }}</p>
+
+    {{ forms.textField({
+        readonly: true,
+        label: 'Redirect URI' | t('social-poster'),
+        value: provider.getRedirectUri(),
+    }) }}
+
+    <h2>{{ 'Step 2: Configure the OAuth client' | t('social-poster') }}</h2>
+
+    <p>{{ '{provider} will provide you with a client ID and secret for your application.' | t('social-poster', { provider: provider.name }) }}</p>
+
+    <p>{{ 'Copy the client ID & client secret from the {link}, paste them below, and save.' | t('social-poster', { link: '<a href="' ~ provider.managerUrl ~ '">' ~ '{provider} API Console' | t('social-poster', { provider: provider.name }) ~ '</a>'}) | raw }}</p>
+
+    {{ forms.textField({
+        instructions: 'Set the `providers.{providerHandle}.clientId` config in your `config/social-poster.php` file.' | t('social-poster', { providerHandle: provider.handle }),
+        placeholder: '{provider} Client ID' | t('social-poster', { provider: provider.name }),
+        label: 'Client ID' | t('social-poster'),
+        name: 'clientId',
+        value: oauthProviderConfig.options.clientId ?? '',
+    }) }}
+
+    {{ forms.textField({
+        instructions: 'Set the `providers.{providerHandle}.clientSecret` config in your `config/social-poster.php` file.' | t('social-poster', { providerHandle: provider.handle }),
+        placeholder: '{provider} Client Secret' | t('social-poster', { provider: provider.name }),
+        label: 'Client Secret' | t('social-poster'),
+        name: 'clientSecret',
+        value: oauthProviderConfig.options.clientSecret ?? '',
+    }) }}
+
+    <div class="buttons">
+        <input type="submit" class="btn submit" value="{{ 'Save' | t('social-poster') }}" />
+    </div>
+</form>
+
+{% endblock %}

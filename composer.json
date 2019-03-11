@@ -1,0 +1,45 @@
+{
+    "name": "verbb/social-poster",
+    "description": "A Craft CMS plugin for automatically posting entries to social media.",
+    "type": "craft-plugin",
+    "version": "2.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "social"
+    ],
+    "support": {
+        "email": "support@verbb.io",
+        "issues": "https://github.com/verbb/social-poster/issues?state=open",
+        "source": "https://github.com/verbb/social-poster",
+        "docs": "https://github.com/verbb/social-poster",
+        "rss": "https://github.com/verbb/social-poster/commits/v2.atom"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Verbb",
+            "homepage": "https://verbb.io"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0",
+        "league/oauth1-client": "1.7.0@dev",
+        "league/oauth2-client": "^2.2",
+        "league/oauth2-facebook": "^2.0",
+        "league/oauth2-linkedin": "2.1.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+          "verbb\\socialposter\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Social Poster",
+        "handle": "social-poster",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/social-poster/craft-3/CHANGELOG.md",
+        "class": "verbb\\socialposter\\SocialPoster"
+    }
+}

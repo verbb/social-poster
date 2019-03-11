@@ -1,0 +1,15 @@
+{% extends 'social-poster/_layouts' %}
+{% import '_includes/forms' as forms %}
+
+{% set parentLayout = '_layouts/elementindex' %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Posts' | t('social-poster'), url: url('social-poster/posts') }
+] %}
+
+{% set title = 'Posts' | t('social-poster') %}
+{% set selectedTab = 'posts' %}
+{% set selectedSubnavItem = 'posts' %}
+
+{% set elementType = 'verbb\\socialposter\\elements\\Post' %}
