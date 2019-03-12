@@ -2,6 +2,7 @@
 namespace verbb\socialposter\services;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\elements\Post;
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\models\Account;
 use verbb\socialposter\records\Account as AccountRecord;
@@ -162,7 +163,7 @@ class Accounts extends Component
         return $this->deleteAccount($account);
     }
 
-    public function deleteAccount(AccountInterface $account): bool
+    public function deleteAccount(Account $account): bool
     {
         // Fire a 'beforeDeleteAccount' event
         if ($this->hasEventHandlers(self::EVENT_BEFORE_DELETE_ACCOUNT)) {
