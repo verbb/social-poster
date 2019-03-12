@@ -13,11 +13,10 @@
 {% if providerSettings.showEndpoint is defined and providerSettings.showEndpoint %}
     {{ forms.selectField({
         label: '{p} Post Type' | t('social-poster', { p: provider.name }),
-        instructions: 'Select where you\'d like this post to be posted to. Can be a {p} Profile, {p} Page, {p} Group.' | t('social-poster', { p: provider.name }),
+        instructions: 'Select where you\'d like this post to be posted to. Can be a {p} Page or {p} Group.' | t('social-poster', { p: provider.name }),
         id: 'endpoint',
         name: 'endpoint',
         options: [
-            { label: 'Profile' | t('social-poster'), value: 'me' },
             { label: 'Group' | t('social-poster'), value: 'group' },
             { label: 'Page' | t('social-poster'), value: 'page' },
         ],

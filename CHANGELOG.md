@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0 - 2018-03-13
+
+### Added
+- Craft 3.1+ release.
+- Added Accounts.
+
 ## 1.2.2 - 2017-11-04
 
 ### Fixed

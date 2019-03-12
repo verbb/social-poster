@@ -82,7 +82,11 @@
     {% for provider in providers %}
         {% set isCurrent = (account.providerHandle == provider.handle) %}
 
-        <div id="{{ provider.handle | id }}"{% if not isCurrent %} class="hidden"{% endif %}>
+        {% if not account.id and loop.first %}
+            {% set isCurrent = true %}
+        {% endif %}
+
+        <div id="{{ provider.handle | id }}" {% if not isCurrent %}class="hidden"{% endif %}>
             {% namespace 'providerSettings[' ~ provider.handle ~ ']' %}
                 {{ provider.getSettingsHtml() | raw }}
             {% endnamespace %}
@@ -178,4 +182,3 @@
         new Craft.HandleGenerator('#name', '#handle');
     {% endjs %}
 {% endif %}
-

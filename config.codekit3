@@ -50,14 +50,6 @@
 		"oO": 0,
 		"oS": 1
 		},
-	"/composer.lock": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 2,
-		"oAP": "/composer.lock",
-		"oF": 0
-		},
 	"/docs": {
 		"ft": 65536,
 		"oA": 1,

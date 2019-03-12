@@ -52,7 +52,7 @@ class Accounts extends Component
         return array_values($this->_accountsById);
     }
 
-    public function getAccountById(int $id)
+    public function getAccountById($id)
     {
         $result = $this->_createAccountQuery()
             ->where(['id' => $id])
