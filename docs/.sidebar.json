@@ -17,10 +17,36 @@
         ]
     },
     {
+        "title": "Providers",
+        "collapsable": false,
+        "children": [
+            "feature-tour/facebook",
+            "feature-tour/twitter",
+            "feature-tour/linkedin"
+        ]
+    },
+    {
+        "title": "Template Guides",
+        "collapsable": false,
+        "children": [
+            "template-guides/available-variables",
+            "template-guides/front-end-submission"
+        ]
+    },
+    {
+        "title": "Getting Elements",
+        "collapsable": false,
+        "children": [
+            "getting-elements/post-queries"
+        ]
+    },
+    {
         "title": "Developers",
         "collapsable": false,
         "children": [
-            "developers/front-end-submissions"
+            "developers/provider",
+            "developers/post",
+            "developers/events"
         ]
     },
     {
