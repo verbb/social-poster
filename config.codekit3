@@ -50,6 +50,14 @@
 		"oO": 0,
 		"oS": 1
 		},
+	"/composer.lock": {
+		"cB": 0,
+		"ft": 8192,
+		"hM": 0,
+		"oA": 2,
+		"oAP": "/composer.lock",
+		"oF": 0
+		},
 	"/docs": {
 		"ft": 65536,
 		"oA": 1,
@@ -104,14 +112,6 @@
 		"ft": 65536,
 		"oA": 1,
 		"oAP": "/build/src/base",
-		"oF": 0
-		},
-	"/src/config.php": {
-		"cB": 0,
-		"ft": 8192,
-		"hM": 0,
-		"oA": 2,
-		"oAP": "/src/config.php",
 		"oF": 0
 		},
 	"/src/controllers": {

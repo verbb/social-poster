@@ -11,8 +11,8 @@
                 {% set providerSettings = account.settings | default([]) %}
 
                 {# Check for previous post #}
-                {% if posts and posts[provider.handle] is defined %}
-                    {% set previousPost = posts[provider.handle] %}
+                {% if posts and posts[account.id] is defined %}
+                    {% set previousPost = posts[account.id] %}
                 {% endif %}
 
                 {# Opt-out of auto-posting for safety #}
@@ -22,7 +22,7 @@
                 {% endif %}
 
                 <li>
-                    <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ provider.handle }}-fields" title="{{ provider.name }}">
+                    <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ account.handle }}-fields" title="{{ account.name }}">
                         {% if account.canPost and not previousPost and context.entry.enabled %}
                             <span class="status on"></span>
                         {% else %}
@@ -33,7 +33,7 @@
                             {% endif %}
                         {% endif %}
 
-                        {{ provider.name }}
+                        {{ account.name }}
                     </a>
                 </li>
             {% endfor %}
@@ -47,30 +47,30 @@
             {% set providerSettings = account.settings | default([]) %}
 
             {# Check for previous post #}
-            {% if posts and posts[provider.handle] is defined %}
-                {% set previousPost = posts[provider.handle] %}
+            {% if posts and posts[account.id] is defined %}
+                {% set previousPost = posts[account.id] %}
             {% endif %}
 
             {# Opt-out of auto-posting for safety #}
             {% set autoPost = false %}
-            {% if settings.autoPost is defined and settings.autoPost and not previousPost %}
+            {% if account.autoPost is defined and account.autoPost and not previousPost %}
                 {% set autoPost = true %}
             {% endif %}
 
-            {% namespace 'socialPoster[' ~ provider.handle ~ ']' %}
+            {% namespace 'socialPoster[' ~ account.handle ~ ']' %}
 
-            <div id="fields" data-id="{{ provider.handle }}" class="social-poster-tab {{ (loop.first) ? '' : 'hidden' }}">
+            <div id="fields" data-id="{{ account.handle }}" class="social-poster-tab {{ (loop.first) ? '' : 'hidden' }}">
                 {% if previousPost %}
                     {% if previousPost.success %}
                         <div class="field">
                             <span class="warning">
-                                {{ 'This entry was posted to {p} on {date}' | t('social-poster', { p: provider.name, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="social-expand-pane" data-id="{{ provider.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a>
+                                {{ 'This entry was posted to {p} on {date}' | t('social-poster', { p: provider.name, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="social-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a>
                             </span>
                         </div>
                     {% else %}
                         <div class="field">
                             <span class="error">
-                                {{ 'Could not post to {p}. Error: {resp}' | t('social-poster', { p: provider.name, resp: previousPost.response | json_encode }) }}. <div><a class="social-expand-pane" data-id="{{ provider.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a></div>
+                                {{ 'Could not post to {p}. Error: {resp}' | t('social-poster', { p: provider.name, resp: previousPost.response | json_encode }) }}. <div><a class="social-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a></div>
                             </span>
                         </div>
                     {% endif %}
@@ -79,12 +79,12 @@
                 {% if not account.token %}
                     <div class="field">
                         <span class="error">
-                            {{ 'Connect OAuth provider first via' | t('social-poster') }} <a href="{{ url('social-poster/accounts/' ~ account.id) }}">{{ 'settings' | t('social-poster') }}</a>
+                            {{ 'Connect provider first via' | t('social-poster') }} <a href="{{ url('social-poster/accounts/' ~ account.id) }}">{{ 'settings' | t('social-poster') }}</a>
                         </span>
                     </div>
                 {% else %}
                     <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
-                        {% include 'social-poster/_providers/' ~ provider.handle ~ '/input' %}
+                        {% include 'social-poster/_providers/' ~ provider.handle ~ '/input' ignore missing %}
 
                         <div class="field">
                             <span class="info-item">
@@ -93,8 +93,6 @@
                         </div>
                     </div>
                 {% endif %}
-
-                {{ provider.name }}
             </div>
 
             {% endnamespace %}
@@ -106,12 +104,12 @@
 
 $(function() {
     $('.social-poster-pane .lightswitch').on('change', function() {
-        var provider = $(this).parents('.social-poster-tab').data('id');
+        var account = $(this).parents('.social-poster-tab').data('id');
 
         if ($(this).hasClass('on')) {
-            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').addClass('on');
+            $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').addClass('on');
         } else {
-            $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('on');
+            $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').removeClass('on');
         }
     });
 
@@ -133,18 +131,18 @@ $(function() {
     $('.social-expand-pane').on('click', function(e) {
         e.preventDefault();
 
-        var provider = $(this).data('id');
+        var account = $(this).data('id');
 
         // Remove any errors
         $(this).parents('.error').parent().remove();
 
         // Remove any error on tab
-        $('.social-poster-pane a[href="#socialPoster-'+provider+'-fields"] .status').removeClass('off');
+        $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').removeClass('off');
 
         // Remove post again anchor
         $(this).remove();
 
-        $('.social-poster-tab[data-id="'+provider+'"] .social-poster-fields').removeClass('hidden');
+        $('.social-poster-tab[data-id="' + account + '"] .social-poster-fields').removeClass('hidden');
     });
 });
 

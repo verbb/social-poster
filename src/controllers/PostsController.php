@@ -13,31 +13,7 @@ class PostsController extends Controller
 
     public function actionIndex()
     {
-        // $request = Craft::$app->getRequest();
-
-        // $posts = craft()->socialPoster_posts->getAll();
-        // $providers = craft()->socialPoster_accounts->getAccountProviders(false);
-
-        // if ($posts) {
-        //     $posts = array_reverse($posts);
-        // }
-
-        // $element = new \verbb\socialposter\elements\Post();
-        // $element->ownerId = 3402;
-        // $element->ownerSiteId = 1;
-        // $element->ownerType = 'craft\elements\Entry';
-        // $element->accountId = 2;
-        // $element->settings = [];
-        // $element->success = [];
-        // $element->response = [];
-        // $element->data = [];
-
-        // Craft::$app->getElements()->saveElement($element);
-
-        return $this->renderTemplate('social-poster/posts', [
-        //     'providers' => $providers,
-        //     'posts' => $posts,
-        ]);
+        return $this->renderTemplate('social-poster/posts');
     }
 
     public function actionEdit(int $postId = null)
@@ -57,22 +33,17 @@ class PostsController extends Controller
 
         $request = Craft::$app->getRequest();
 
-        $postId = craft()->request->getPost('id');
-        $post = craft()->socialPoster_posts->getById($postId);
+        $postId = $request->getParam('id');
+        $post = SocialPoster::$plugin->getPosts()->getPostById($postId);
+        $account = $post->getAccount();
+        $payload = $post->settings;
 
-        $entry = craft()->entries->getEntryById($post->elementId);
-        $provider = $post->providerSettings;
-        $providerHandle = $post->handle;
-        $picture = null;
-
-        if ($result = craft()->socialPoster->sendSocialPost($entry, $provider, $providerHandle, $picture)) {
-            craft()->userSession->setNotice(Craft::t('Re-posted successfully.'));
+        if ($postResult = $account->provider->sendPost($account, $payload)) {
+            Craft::$app->getSession()->setNotice(Craft::t('social-poster', 'Re-posted successfully.'));
         } else {
-            craft()->userSession->setError($result);
+            Craft::$app->getSession()->setError(Craft::t('social-poster', 'Couldn’t re-post.'));
         }
 
         return $this->redirectToPostedUrl();
     }
-
 }
-

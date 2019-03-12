@@ -191,26 +191,28 @@ class Tokens extends Component
 
         // Refreshing the token only applies to OAuth 2.0 providers
         if ($provider && $provider->oauthVersion() == 2) {
-            // Has token expired ?
-            if ($time > $token->endOfLife) {
-                $realToken = $token->getToken();
+            if ($token->endOfLife && $token->refreshToken) {
+                // Has token expired ?
+                if ($time > $token->endOfLife) {
+                    $realToken = $token->getToken();
 
-                $refreshToken = $token->refreshToken;
+                    $refreshToken = $token->refreshToken;
 
-                $grant = new RefreshToken();
-                $newToken = $provider->getProvider()->getAccessToken($grant, ['refresh_token' => $refreshToken]);
+                    $grant = new RefreshToken();
+                    $newToken = $provider->getOauthProvider()->getAccessToken($grant, ['refresh_token' => $refreshToken]);
 
-                if ($newToken) {
-                    $token->accessToken = $newToken->getToken();
-                    $token->endOfLife = $newToken->getExpires();
+                    if ($newToken) {
+                        $token->accessToken = $newToken->getToken();
+                        $token->endOfLife = $newToken->getExpires();
 
-                    $newRefreshToken = $newToken->getRefreshToken();
+                        $newRefreshToken = $newToken->getRefreshToken();
 
-                    if (!empty($newRefreshToken)) {
-                        $token->refreshToken = $newToken->getRefreshToken();
+                        if (!empty($newRefreshToken)) {
+                            $token->refreshToken = $newToken->getRefreshToken();
+                        }
+
+                        return true;
                     }
-
-                    return true;
                 }
             }
         }

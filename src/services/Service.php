@@ -2,201 +2,165 @@
 namespace verbb\socialposter\services;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\elements\Post;
 
 use Craft;
 use craft\base\Component;
+use craft\db\Table;
+use craft\elements\Entry;
+use craft\events\ModelEvent;
+use craft\helpers\Db;
+use craft\helpers\UrlHelper;
 
 class Service extends Component
 {
     // Public Methods
     // =========================================================================
 
-    public function savePluginSettings(array $settings, Plugin $plugin = null)
+    public function renderEntrySidebar(&$context)
     {
-        if (!$plugin) {
-            $plugin = Craft::$app->getPlugins()->getPlugin('social-poster');
+        $settings = SocialPoster::$plugin->getSettings();
 
-            if ($plugin === null) {
-                throw new NotFoundHttpException('Plugin not found');
+        SocialPoster::log('Try to render sidebar');
+
+        // Make sure social poster is enabled for this section - or all section
+        if (!$settings->enabledSections) {
+            SocialPoster::log('New enabled sections.');
+
+            return;
+        }
+        
+        if ($settings->enabledSections != '*') {
+            $enabledSectionIds = Db::idsByUids(Table::SECTIONS, $settings->enabledSections);
+
+            if (!in_array($context['entry']->sectionId, $enabledSectionIds)) {
+                SocialPoster::log('Entry not in allowed section.');
+
+                return;
             }
         }
 
-        $storedSettings = Craft::$app->plugins->getStoredPluginInfo('social-poster')['settings'];
+        $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
-        $settings['providers'] = [];
+        // Remove any accounts that don't have settings - they haven't been configured!
+        foreach ($accounts as $key => $account) {
+            if (!$account->settings) {
+                SocialPoster::log('Account ' . $key . ' not configured.');
 
-        if (isset($storedSettings['providers'])) {
-            $settings['providers'] = $storedSettings['providers'];
+                unset($accounts[$key]);
+            }
         }
 
-        return Craft::$app->getPlugins()->savePluginSettings($plugin, $settings);
+        if (!$accounts) {
+            SocialPoster::log('No accounts configured.');
+
+            return;
+        }
+
+        $posts = Post::find()
+            ->ownerId($context['entry']->id)
+            ->ownerSiteId($context['entry']->siteId)
+            ->indexBy('accountId')
+            ->orderBy('dateCreated asc')
+            ->all();
+
+        SocialPoster::log('Rendering #' . $context['entry']->id);
+
+        return Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
+            'context' => $context,
+            'accounts' => $accounts,
+            'posts' => $posts,
+        ]);
     }
 
-    // public function getPlugin()
-    // {
-    //     return craft()->plugins->getPlugin('socialPoster');
-    // }
+    public function onAfterSaveEntry(ModelEvent $event)
+    {
+        $request = Craft::$app->getRequest();
 
-    // public function getSettings()
-    // {
-    //     return $this->getPlugin()->getSettings();
-    // }
+        $entry = $event->sender;
 
-    // public function renderEntrySidebar()
-    // {
-    //     $settings = $this->getSettings();
-    //     $user = craft()->userSession->getUser();
+        // Check to make sure the entry is live
+        if ($entry->status != Entry::STATUS_LIVE) {
+            SocialPoster::log('Entry not set to live, skipping.');
 
-    //     // Catch some cases where there isn't a user. This can happen when sessions time out
-    //     if (!$user) {
-    //         return false;
-    //     }
+            return;
+        }
 
-    //     $this->_renderEntrySidebarPanel();
-    // }
+        $chosenAccounts = $request->getParam('socialPoster');
 
-    // public function onSaveEntry($event)
-    // {
-    //     $entry = $event->params['entry'];
+        // Firstly, has the user selected any social media to post to?
+        if (!$chosenAccounts) {
+            SocialPoster::log('No accounts set to post to, skipping.');
 
-    //     // Check to make sure the entry is live
-    //     if ($entry->status != 'live') {
-    //         return false;
-    //     }
+            return;
+        }
 
-    //     $chosenProviders = craft()->request->getPost('socialPoster');
+        foreach ($chosenAccounts as $accountHandle => $postChosenAccount) {
+            // Load in the defaults for this provider, as defined in Social Poster settings
+            $account = SocialPoster::$plugin->getAccounts()->getAccountByHandle($accountHandle);
+            $settings = $account->settings;
 
-    //     // Firstly, has the user selected any social media to post to?
-    //     if (!$chosenProviders) {
-    //         return false;
-    //     }
+            // Allow posted data to override anything in our defaults
+            $payload = array_merge($settings, $postChosenAccount);
 
-    //     foreach ($chosenProviders as $providerHandle => $postChosenProvider) {
+            // Only post to the enabled ones
+            if (!$payload['autoPost']) {
+                SocialPoster::log('Account ' . $accountHandle . ' not set to autopost.');
 
-    //         // Load in the defaults for this provider, as defined in Social Poster settings
-    //         $account = craft()->socialPoster_accounts->getByHandle($providerHandle);
-    //         $chosenProvider = $account->providerSettings[$providerHandle];
-
-    //         // Allow posted data to override anything in our defaults
-    //         $chosenProvider = array_merge($chosenProvider, $postChosenProvider);
-
-    //         // Only post to the enabled ones
-    //         if (!$chosenProvider['autoPost']) {
-    //             continue;
-    //         }
+                continue;
+            }
                 
-    //         // Get the actual text for the post
-    //         $message = $chosenProvider['message'];
-    //         $message = craft()->templates->renderObjectTemplate($message, $entry);
-    //         $message = craft()->config->parseEnvironmentString($message);
-    //         $chosenProvider['message'] = $message; // update 'model'
+            // Get the actual text for the post
+            $message = $payload['message'];
+            $message = Craft::$app->getView()->renderObjectTemplate($message, $entry);
+            $payload['message'] = $message; // update 'model'
 
-    //         // Get the image (if one)
-    //         $picture = null;
-    //         if (isset($chosenProvider['imageField']) && $chosenProvider['imageField']) {
-    //             $assetIds = $entry->content[$chosenProvider['imageField']];
+            // TODO - testing
+            // $payload['message'] .= rand();
 
-    //             if (is_array($assetIds)) {
-    //                 if (isset($assetIds[0])) {
-    //                     $assetId = $assetIds[0];
+            // Get the image (if one)
+            $payload['picture'] = '';
+            
+            if (isset($payload['imageField']) && $payload['imageField']) {
+                $assetIds = $entry->content[$payload['imageField']];
 
-    //                     $asset = craft()->assets->getFileById($assetId);
-                        
-    //                     // Handle absolute URL
-    //                     $siteUrl = craft()->getSiteUrl();
-                        
-    //                     if (($siteUrl[strlen($siteUrl) -1] == '/') && ($asset->url[0] == '/')) {
-    //                         $siteUrl = rtrim($siteUrl, '/');
-    //                     }
-                        
-    //                     $picture = $siteUrl . $asset->url;
-    //                 }
-    //             }
-    //         }
+                if (is_array($assetIds) && isset($assetIds[0])) {
+                    $assetId = $assetIds[0];
 
-    //         // Make the actual social post
-    //         $this->sendSocialPost($entry, $chosenProvider, $providerHandle, $picture);
-    //     }
-    // }
+                    $asset = Craft::$app->getAssets()->getAssetById($assetId);
+                    
+                    // Handle absolute URL
+                    $siteUrl = UrlHelper::siteUrl();
+                    
+                    if (($siteUrl[strlen($siteUrl) -1] == '/') && ($asset->url[0] == '/')) {
+                        $siteUrl = rtrim($siteUrl, '/');
+                    }
+                    
+                    $payload['picture'] = $siteUrl . $asset->url;
+                }
+            }
 
-    // public function sendSocialPost($entry, $provider, $providerHandle, $picture)
-    // {
-    //     $message = $provider['message'];
+            // Make the actual social post
+            $postResult = $account->provider->sendPost($account, $payload);
 
-    //     $token = craft()->socialPoster_accounts->getToken($providerHandle);
-    //     $accessToken = $token->accessToken;
+            // Save it to out Posts table - no matter the result
+            if ($postResult) {
+                $post = new Post();
+                $post->ownerId = $entry->id;
+                $post->ownerSiteId = $entry->siteId;
+                $post->ownerType = get_class($entry);
+                $post->accountId = $account->id;
+                $post->settings = $payload;
+                $post->response = $postResult['response'] ?? [];
+                $post->success = $postResult['success'] ?? [];
+                $post->data = $postResult['data'] ?? [];
 
-    //     // Get the payload to post this to social media
-    //     if ($providerHandle == 'facebook') {
-    //         $postResult = craft()->socialPoster_facebook->getPayload($entry, $accessToken, $message, $picture, $provider);
-    //     } else if ($providerHandle == 'twitter') {
-    //         $postResult = craft()->socialPoster_twitter->getPayload($entry, $accessToken, $message, $picture, $provider);
-    //     } else if ($providerHandle == 'linkedin') {
-    //         $postResult = craft()->socialPoster_linkedIn->getPayload($entry, $accessToken, $message, $picture, $provider);
-    //     }
-
-    //     // Ssave it to out Posts table - no matter the result
-    //     if (isset($postResult)) {
-    //         $model = new SocialPoster_PostModel();
-    //         $model->elementId = $entry->id;
-    //         $model->handle = $providerHandle;
-    //         $model->providerSettings = $provider;
-
-    //         if (isset($postResult['response'])) {
-    //             $model->response = $postResult['response'];
-    //         }
-
-    //         if (isset($postResult['success'])) {
-    //             $model->success = $postResult['success'];
-    //         }
-
-    //         if (isset($postResult['data'])) {
-    //             $model->data = $postResult['data'];
-    //         }
-
-    //         craft()->socialPoster_posts->save($model);
-    //     }
-    // }
-
-
-
-    // // Private Methods
-    // // =========================================================================
-
-    // private function _renderEntrySidebarPanel()
-    // {
-    //     $settings = $this->getSettings();
-
-    //     craft()->templates->hook('cp.entries.edit.right-pane', function(&$context) use ($settings) {
-    //         // Make sure social poster is enabled for this section - or all section
-    //         if ($settings->enabledSections != '*') {
-    //             if (!in_array($context['entry']->sectionId, $settings->enabledSections)) {
-    //                 return;
-    //             }
-    //         }
-
-    //         $accounts = craft()->socialPoster_accounts->getAll();
-
-    //         // Remove any accounts that don't have settings - they haven't been configured!
-    //         foreach ($accounts as $key => $account) {
-    //             if (!$account->providerSettings) {
-    //                 unset($accounts[$key]);
-    //             }
-    //         }
-
-    //         if (!$accounts) {
-    //             return;
-    //         }
-
-    //         $posts = craft()->socialPoster_posts->getAllByElementId($context['entry']->id);
-
-    //         return craft()->templates->render('socialPoster/_includes/entry-right', array(
-    //             'context' => $context,
-    //             'accounts' => $accounts,
-    //             'posts' => $posts,
-    //         ));
-    //     });
-    // }
-
-
+                if (!Craft::$app->getElements()->saveElement($post)) {
+                    SocialPoster::error('Unable to save post: ' . json_encode($post->getErrors()));
+                }
+            } else {
+                SocialPoster::error('Unknown result for post: ' . json_encode($postResult));
+            }
+        }
+    }
 }

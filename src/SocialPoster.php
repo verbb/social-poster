@@ -8,10 +8,13 @@ use verbb\socialposter\variables\SocialPosterVariable;
 
 use Craft;
 use craft\base\Plugin;
+use craft\elements\Entry;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterUserPermissionsEvent;
 use craft\helpers\UrlHelper;
 use craft\services\Elements;
+use craft\services\UserPermissions;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 
@@ -48,9 +51,12 @@ class SocialPoster extends Plugin
         $this->_registerVariables();
         $this->_registerCraftEventListeners();
         $this->_registerElementTypes();
+        $this->_registerPermissions();
 
-        Craft::$app->view->hook('cp.entries.edit.details', [$this->getPosts(), 'renderEntrySidebar']);
-
+        if (Craft::$app->getRequest()->getIsCpRequest()) {
+            Craft::$app->view->hook('cp.entries.edit.details', [$this->getService(), 'renderEntrySidebar']);
+        }
+        
         $this->hasCpSection = $this->getSettings()->hasCpSection;
     }
 
@@ -66,31 +72,44 @@ class SocialPoster extends Plugin
 
     public function getCpNavItem(): array
     {
-        $navItems = parent::getCpNavItem();
+        $subNavs = [];
+        $navItem = parent::getCpNavItem();
+        $currentUser = Craft::$app->getUser()->getIdentity();
+        
+        // Only show sub-navs the user has permission to view
+        if ($currentUser->can('social-poster:posts')) {
+            $subNavs['posts'] = [
+                'label' => Craft::t('social-poster', 'Posts'),
+                'url' => 'social-poster/posts',
+            ];
+        }
 
-        $navItem['label'] = $this->getPluginName();
+        if ($currentUser->can('social-poster:accounts')) {
+            $subNavs['accounts'] = [
+                'label' => Craft::t('social-poster', 'Accounts'),
+                'url' => 'social-poster/accounts',
+            ];
+        }
 
-        $navItems['subnav']['posts'] = [
-            'label' => Craft::t('social-poster', 'Posts'),
-            'url' => 'social-poster/posts',
-        ];
+        if ($currentUser->can('social-poster:providers')) {
+            $subNavs['providers'] = [
+                'label' => Craft::t('social-poster', 'Providers'),
+                'url' => 'social-poster/providers',
+            ];
+        }
 
-        $navItems['subnav']['accounts'] = [
-            'label' => Craft::t('social-poster', 'Accounts'),
-            'url' => 'social-poster/accounts',
-        ];
+        if ($currentUser->can('social-poster:settings')) {
+            $subNavs['settings'] = [
+                'label' => Craft::t('social-poster', 'Settings'),
+                'url' => 'social-poster/settings',
+            ];
+        }
 
-        $navItems['subnav']['providers'] = [
-            'label' => Craft::t('social-poster', 'Providers'),
-            'url' => 'social-poster/providers',
-        ];
+        $navItem = array_merge($navItem, [
+            'subnav' => $subNavs,
+        ]);
 
-        $navItems['subnav']['settings'] = [
-            'label' => Craft::t('social-poster', 'Settings'),
-            'url' => 'social-poster/settings',
-        ];
-
-        return $navItems;
+        return $navItem;
     }
 
 
@@ -132,7 +151,9 @@ class SocialPoster extends Plugin
 
     private function _registerCraftEventListeners()
     {
-        // Event::on(Elements::class, Elements::EVENT_BEFORE_SAVE_ELEMENT, [$this->getPosts(), 'onSaveElement']);
+        if (Craft::$app->getRequest()->getIsCpRequest()) {
+            Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, [$this->getService(), 'onAfterSaveEntry']);
+        }
     }
 
     private function _registerElementTypes()
@@ -140,24 +161,17 @@ class SocialPoster extends Plugin
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = Account::class;
         });
+    }    
+
+    private function _registerPermissions()
+    {
+        Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
+            $event->permissions[Craft::t('social-poster', 'Social Poster')] = [
+                'social-poster:posts' => ['label' => Craft::t('social-poster', 'Posts')],
+                'social-poster:accounts' => ['label' => Craft::t('social-poster', 'Accounts')],
+                'social-poster:providers' => ['label' => Craft::t('social-poster', 'Providers')],
+                'social-poster:settings' => ['label' => Craft::t('social-poster', 'Settings')],
+            ];
+        });
     }
-
-
-    // =========================================================================
-    // HOOKS
-    // =========================================================================
-
-    // public function init()
-    // {
-    //     // Hook to trigger sending on-save (but only for new entries)
-    //     craft()->on('entries.saveEntry', function(Event $event) {
-    //         craft()->socialPoster->onSaveEntry($event);
-    //     });
-
-    //     if (craft()->request->isCpRequest()) {
-    //         craft()->socialPoster->renderEntrySidebar();
-    //     }
-    // }
-
-    
 }

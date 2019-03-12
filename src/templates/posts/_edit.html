@@ -82,6 +82,18 @@
             {% endif %}
         </div>
     </div>
+
+    <div class="field" id="">
+        <div class="heading">
+            <label>{{ 'Re-post' | t('social-poster') }}</label>
+        </div>
+
+        <div class="input ltr">
+            <a class="btn small formsubmit submit" data-action="social-poster/posts/repost" data-param="id" data-value="{{ post.id }}" data-confirm="{{ 'Are you sure you want to re-post this post to {p}?' | t('social-poster', { p: provider.name }) }}" data-redirect="{{ (post.getCpEditUrl()) | hash }}">{{ 'Re-post' | t('social-poster') }}</a>
+        </div>
+    </div>
+
+    
 </div>
 
 <hr>

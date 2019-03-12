@@ -43,13 +43,18 @@ class Token extends Model
                     $realToken->setSecret($response['secret']);
 
                     return $realToken;
+
+                    // return $provider->createAccessToken([
+                    //     'identifier' => $this->accessToken,
+                    //     'secret' => $this->secret,
+                    // ]);
                 }
                 case 2: {
                     $realToken = new AccessToken([
-                        'access_token' => $token->accessToken,
-                        'refresh_token' => $token->refreshToken,
-                        'secret' => $token->secret,
-                        'expires' => $token->endOfLife,
+                        'access_token' => $this->accessToken,
+                        'refresh_token' => $this->refreshToken,
+                        'secret' => $this->secret,
+                        'expires' => $this->endOfLife,
                     ]);
 
                     return $realToken;

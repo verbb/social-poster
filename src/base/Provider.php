@@ -8,6 +8,7 @@ use verbb\socialposter\models\Token;
 
 use Craft;
 use craft\base\SavableComponent;
+use craft\helpers\Json;
 use craft\web\Response;
 
 abstract class Provider extends SavableComponent implements ProviderInterface
@@ -140,11 +141,6 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return [];
     }
 
-    protected function getDefaultProfileFields(): array
-    {
-        return [];
-    }
-
     protected function getOauthProviderConfig(): array
     {
         return SocialPoster::$plugin->getProviders()->getOauthProviderConfig($this->getHandle());
@@ -153,6 +149,52 @@ abstract class Provider extends SavableComponent implements ProviderInterface
     protected function getProviderConfig(): array
     {
         return SocialPoster::$plugin->getProviders()->getProviderConfig($this->getHandle());
+    }
+
+    protected function getPostExceptionResponse($exception)
+    {
+        $statusCode = '[error]';
+        $data = [];
+        $reasonPhrase = $exception->getMessage();
+
+        // Some more error handling - just in case!
+        try {
+            if ($exception->hasResponse()) {
+                $response = $exception->getResponse();
+                $statusCode = $response->getStatusCode();
+                $reasonPhrase = $response->getReasonPhrase();
+
+                // Try and get even more info
+                $data = Json::decode((string)$response->getBody());
+            }
+        } catch (\Throwable $e) {}
+
+        return [
+            'success' => false,
+            'data' => $data,
+            'response' => [
+                'statusCode' => $statusCode,
+                'reasonPhrase' => $reasonPhrase,
+            ]
+        ];
+    }
+
+    protected function getPostResponse($response)
+    {
+        $data = Json::decode((string)$response->getBody());
+
+        $responseReturn = [
+            'statusCode' => $response->getStatusCode(),
+            'reasonPhrase' => $response->getReasonPhrase(),
+        ];
+
+        $success = isset($data['id']) ? true : false;
+
+        return [
+            'success' => $success,
+            'data' => $data,
+            'response' => $responseReturn,
+        ];
     }
 
 

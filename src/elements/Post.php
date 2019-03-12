@@ -7,22 +7,11 @@ use verbb\socialposter\records\Post as PostRecord;
 
 use Craft;
 use craft\base\Element;
-// use craft\controllers\ElementIndexesController;
-// use craft\db\Query;
-// use craft\elements\actions\Delete;
-// use craft\elements\actions\Edit;
-// use craft\elements\actions\NewChild;
-// use craft\elements\actions\SetStatus;
-// use craft\elements\actions\View;
 use craft\elements\db\ElementQueryInterface;
-// use Craft\helpers\ArrayHelper;
-// use craft\helpers\Html;
-// use craft\helpers\Template;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
-// use yii\base\InvalidConfigException;
 
 class Post extends Element
 {
@@ -51,22 +40,23 @@ class Post extends Element
             'label' => Craft::t('social-poster', 'All accounts'),
             'criteria' => [],
             'hasThumbs' => false,
+            'defaultSort' => ['elements.dateCreated', 'desc']
         ]];
 
-        $providers = SocialPoster::$plugin->getProviders()->getAllProviders();
+        $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
-        if ($providers) {
-            $sources[] = ['heading' => Craft::t('social-poster', 'Providers')];
+        if ($accounts) {
+            $sources[] = ['heading' => Craft::t('social-poster', 'Accounts')];
 
-            foreach ($providers as $provider) {
-                $providerHandle = $provider->getHandle();
-                $key = 'group:' . $providerHandle;
+            foreach ($accounts as $account) {
+                $key = 'group:' . $account->handle;
 
                 $sources[] = [
                     'key' => $key,
-                    'label' => Craft::t('social-poster', $provider->getName()),
-                    'criteria' => ['providerHandle' => $providerHandle],
+                    'label' => Craft::t('social-poster', $account->name),
+                    'criteria' => ['accountId' => $account->id],
                     'hasThumbs' => false,
+                    'defaultSort' => ['elements.dateCreated', 'desc']
                 ];
             }
         }
@@ -74,20 +64,12 @@ class Post extends Element
         return $sources;
     }
 
-    // protected static function defineSearchableAttributes(): array
-    // {
-    //     return ['socialUid', 'username', 'firstName', 'lastName', 'fullName', 'email', 'loginProvider'];
-    // }
-
     protected static function defineSortOptions(): array
     {
-        // $attributes['title'] = Craft::t('social-poster', 'Title');
-        // $attributes['username'] = Craft::t('social-poster', 'Username');
         $attributes['success'] = Craft::t('social-poster', 'Response');
         $attributes['provider'] = Craft::t('social-poster', 'Provider');
         $attributes['elements.dateCreated'] = Craft::t('social-poster', 'Date Posted');
         $attributes['elements.dateUpdated'] = Craft::t('social-poster', 'Date Updated');
-        // $attributes['lastLoginDate'] = Craft::t('social-poster', 'Last Login');
 
         return $attributes;
     }
@@ -95,13 +77,10 @@ class Post extends Element
     protected static function defineTableAttributes(): array
     {
         $attributes['title'] = ['label' => Craft::t('social-poster', 'Title')];
-        // $attributes['username'] = ['label' => Craft::t('social-poster', 'Username')];
-        // $attributes['fullName'] = ['label' => Craft::t('social-poster', 'Full Name')];
         $attributes['success'] = ['label' => Craft::t('social-poster', 'Response')];
         $attributes['provider'] = ['label' => Craft::t('social-poster', 'Provider')];
         $attributes['dateCreated'] = ['label' => Craft::t('social-poster', 'Date Posted')];
         $attributes['dateUpdated'] = ['label' => Craft::t('social-poster', 'Date Updated')];
-        // $attributes['lastLoginDate'] = ['label' => Craft::t('social-poster', 'Last Login')];
 
         return $attributes;
     }
@@ -135,9 +114,7 @@ class Post extends Element
     {
         parent::init();
 
-        $owner = $this->getOwner();
-
-        if ($owner) {
+        if ($owner = $this->getOwner()) {
             $this->title = $owner->title;
         }
 
@@ -184,9 +161,7 @@ class Post extends Element
 
     public function getProvider()
     {
-        $account = $this->getAccount();
-
-        if ($account) {
+        if ($account = $this->getAccount()) {
             return $account->getProvider();
         }
 

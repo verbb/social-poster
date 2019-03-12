@@ -61,6 +61,15 @@ class Accounts extends Component
         return $result ? new Account($result) : null;
     }
 
+    public function getAccountByHandle($handle)
+    {
+        $result = $this->_createAccountQuery()
+            ->where(['handle' => $handle])
+            ->one();
+
+        return $result ? new Account($result) : null;
+    }
+
     public function saveAccount(Account $account, bool $runValidation = true): bool
     {
         $isNewAccount = !$account->id;
@@ -164,16 +173,17 @@ class Accounts extends Component
 
         $db = Craft::$app->getDb();
         $transaction = $db->beginTransaction();
+        $elementsService = Craft::$app->getElements();
 
         try {
-            // $posts = Post::find()
-            //     ->anyStatus()
-            //     ->accountId($account->id)
-            //     ->all();
+            $posts = Post::find()
+                ->anyStatus()
+                ->accountId($account->id)
+                ->all();
 
-            // foreach ($posts as $post) {
-            //     Craft::$app->getElements()->deleteElement($post);
-            // }
+            foreach ($posts as $post) {
+                $elementsService->deleteElement($post);
+            }
 
             $db->createCommand()
                 ->delete('{{%socialposter_accounts}}', ['id' => $account->id])

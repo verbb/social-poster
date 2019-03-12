@@ -15,7 +15,7 @@ class PluginController extends Controller
     {
         $settings = SocialPoster::$plugin->getSettings();
 
-        $this->renderTemplate('social-poster/settings', array(
+        return $this->renderTemplate('social-poster/settings', array(
             'settings' => $settings,
         ));
     }

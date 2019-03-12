@@ -97,4 +97,5 @@ class Account extends Model
     {
         return $this->getToken();
     }
+
 }

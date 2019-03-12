@@ -2,15 +2,13 @@
 namespace verbb\socialposter\controllers;
 
 use verbb\socialposter\SocialPoster;
-// use verbb\socialposter\base\Account;
-// use verbb\socialposter\base\AccountInterface;
+use verbb\socialposter\events\OauthTokenEvent;
 use verbb\socialposter\models\Account;
 use verbb\socialposter\models\Token;
 
 use Craft;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
-// use craft\helpers\UrlHelper;
 use craft\web\Controller;
 
 use yii\web\ForbiddenHttpException;
@@ -19,6 +17,12 @@ use yii\web\Response;
 
 class AccountsController extends Controller
 {
+    // Constants
+    // =========================================================================
+
+    const EVENT_AFTER_OAUTH_CALLBACK = 'afterOauthCallback';
+
+
     // Properties
     // =========================================================================
 
@@ -98,8 +102,14 @@ class AccountsController extends Controller
         $request = Craft::$app->getRequest();
         $session = Craft::$app->getSession();
 
-        $account = new Account();
-        $account->id = $request->getBodyParam('accountId');
+        $accountId = $request->getBodyParam('accountId');
+        $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
+
+        if (!$account) {
+            $account = new Account();
+        }
+
+        $account->id = $accountId;
         $account->name = $request->getBodyParam('name');
         $account->handle = $request->getBodyParam('handle');
         $account->enabled = $request->getBodyParam('enabled');
@@ -264,6 +274,13 @@ class AccountsController extends Controller
 
                 break;
             }
+        }
+
+        // Fire a 'afterOauthCallback' event
+        if ($this->hasEventHandlers(self::EVENT_AFTER_OAUTH_CALLBACK)) {
+            $this->trigger(self::EVENT_AFTER_OAUTH_CALLBACK, new OauthTokenEvent([
+                'token' => $token,
+            ]));
         }
 
         if (!SocialPoster::$plugin->getTokens()->saveToken($token)) {

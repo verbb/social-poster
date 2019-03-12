@@ -28,37 +28,9 @@
 }
 
 
-
-// ==========================================================================
-// Posts Index
-// ==========================================================================
-
-// .provider-infos .icon {
-//     display: inline-block;
-//     vertical-align: middle;
-//     margin-right: 7px;
-//     float: left;
-// }
-
-// .provider-infos .name {
-//     display: inline-block;
-//     vertical-align: middle;
-// }
-
-
-
 // ==========================================================================
 // Posts Edit
 // ==========================================================================
-
-// .pane.codeblock {
-//     padding: 15px;
-//     font-size: 12px;
-// }
-
-// .provider-block {
-//     margin-top: 10px;
-// }
 
 .codeblock {
     padding: 0.75rem 1rem;
@@ -215,54 +187,47 @@ body.ltr .social-poster-tabs .status {
     margin-right: 5px;
 }
 
-// .social-poster-pane .tab .status {
-//     margin-right: 3px;
-//     width: 7px;
-//     height: 7px;
-// }
+.social-poster-tab {
+    font-size: 13px;
+}
 
-// .social-poster-pane .tabs .tab {
-//     padding: 10px 20px;
-// }
+.social-poster-pane .field > .info-item {
+    line-height: 1.4;
+    color: #8f98a3;
+}
 
-// .field > .info-item {
-//     line-height: 1.4;
-//     color: #8f98a3;
-// }
+.social-poster-pane .field > .info-item,
+.social-poster-pane .field > .error {
+    margin: 4px 0 0;
+}
 
-// .field > .info-item,
-// .field > .error {
-//     margin: 4px 0 0;
-//     font-size: 11px;
-// }
+body.ltr .social-poster-pane .field > .info-item:before,
+body.ltr .social-poster-pane .field > .error:before {
+    margin: -2px 2px 0 0;
+}
 
-// body.ltr .field > .info-item:before,
-// body.ltr .field > .error:before {
-//     margin: -2px 2px 0 0;
-// }
+.social-poster-pane .field > .info-item:before,
+.social-poster-pane .field > .error:before {
+    font-family: 'Craft';
+    speak: none;
+    font-feature-settings: "liga", "dlig";
+    text-rendering: optimizeLegibility;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    direction: ltr;
+    display: inline-block;
+    text-align: center;
+    font-style: normal;
+    vertical-align: middle;
+    word-wrap: normal !important;
+}
 
-// .field > .info-item:before,
-// .field > .error:before {
-//     font-family: 'Craft';
-//     speak: none;
-//     font-feature-settings: "liga", "dlig";
-//     text-rendering: optimizeLegibility;
-//     font-weight: normal;
-//     font-variant: normal;
-//     text-transform: none;
-//     line-height: 1;
-//     direction: ltr;
-//     display: inline-block;
-//     text-align: center;
-//     font-style: normal;
-//     vertical-align: middle;
-//     word-wrap: normal !important;
-// }
+.social-poster-pane .field > .error:before {
+    content: 'alert';
+}
 
-// .field > .error:before {
-//     content: 'error';
-// }
-
-// .field > .info-item:before {
-//     content: 'info';
-// }
+.social-poster-pane .field > .info-item:before {
+    content: 'info';
+}

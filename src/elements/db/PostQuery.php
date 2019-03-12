@@ -3,11 +3,8 @@ namespace verbb\socialposter\elements\db;
 
 use Craft;
 use craft\db\Query;
-// use craft\db\QueryAbortedException;
 use craft\elements\db\ElementQuery;
-// use craft\helpers\ArrayHelper;
 use craft\helpers\Db;
-// use craft\helpers\StringHelper;
 
 use yii\db\Connection;
 
@@ -18,32 +15,25 @@ class PostQuery extends ElementQuery
 
     public $id;
     public $ownerId;
+    public $ownerSiteId;
     public $accountId;
     public $response;
-    // public $provider;
-    // public $enabled = true;
 
 
     // Public Methods
     // =========================================================================
 
-    // public function elementId($value)
-    // {
-    //     $this->elementId = $value;
-    //     return $this;
-    // }
+    public function ownerId($value)
+    {
+        $this->ownerId = $value;
+        return $this;
+    }
 
-    // public function elementSiteId($value)
-    // {
-    //     $this->elementSiteId = $value;
-    //     return $this;
-    // }
-
-    // public function elementClass($value)
-    // {
-    //     $this->elementClass = $value;
-    //     return $this;
-    // }
+    public function ownerSiteId($value)
+    {
+        $this->ownerSiteId = $value;
+        return $this;
+    }
 
     public function accountId($value)
     {
@@ -79,6 +69,7 @@ class PostQuery extends ElementQuery
 
         $this->addWhere('id', 'socialposter_posts.id');
         $this->addWhere('ownerId', 'socialposter_posts.ownerId');
+        $this->addWhere('ownerSiteId', 'socialposter_posts.ownerSiteId');
         $this->addWhere('accountId', 'socialposter_posts.accountId');
         $this->addWhere('response', 'socialposter_posts.response');
 
