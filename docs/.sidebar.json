@@ -20,9 +20,9 @@
         "title": "Providers",
         "collapsable": false,
         "children": [
-            "feature-tour/facebook",
-            "feature-tour/twitter",
-            "feature-tour/linkedin"
+            "providers/facebook",
+            "providers/twitter",
+            "providers/linkedin"
         ]
     },
     {
