@@ -2,6 +2,8 @@
 namespace verbb\socialposter\variables;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\elements\db\PostQuery;
+use verbb\socialposter\elements\Post;
 use verbb\socialposter\helpers\SocialPosterHelper;
 
 use Craft;
@@ -20,6 +22,17 @@ class SocialPosterVariable
     public function getAssetFieldOptions()
     {
         return SocialPosterHelper::getAssetFieldOptions();
+    }
+
+    public function posts($criteria = null): PostQuery
+    {
+        $query = Post::find();
+
+        if ($criteria) {
+            Craft::configure($query, $criteria);
+        }
+
+        return $query;
     }
 
 }
