@@ -8,9 +8,9 @@ Take the below example (cut down) code for updating an existing entry.
 
 ```twig
 <form method="post" accept-charset="UTF-8">
-    <input type="hidden" name="action" value="entries/saveEntry">
+    <input type="hidden" name="action" value="entries/save-entry">
     <input type="hidden" name="entryId" value="{{ entry.id }}">
-    {{ getCsrfInput() }}
+    {{ csrfInput() }}
 
     <label for="autoPost">Post to Facebook?</label>
     <input id="autoPost" type="checkbox" name="socialPoster[facebook][autoPost]" value="1" checked>
