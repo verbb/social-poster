@@ -46,8 +46,12 @@ class ProvidersController extends Controller
         $handle = $request->getBodyParam('handle');
 
         $settings = [
-            'clientId' => $request->getBodyParam('clientId'),
-            'clientSecret' => $request->getBodyParam('clientSecret'),
+            'oauth' => [
+                'options' => [
+                    'clientId' => $request->getBodyParam('clientId'),
+                    'clientSecret' => $request->getBodyParam('clientSecret'),
+                ]
+            ]
         ];
 
         if (SocialPoster::$plugin->getProviders()->saveProviderSettings($handle, $settings)) {

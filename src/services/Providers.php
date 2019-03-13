@@ -82,7 +82,7 @@ class Providers extends Component
 
     public function saveProviderSettings($handle, $providerSettings)
     {
-        $settings = (array)SocialPoster::$plugin->getSettings();
+        $settings = SocialPoster::$plugin->getSettings()->toArray();
         $storedSettings = Craft::$app->plugins->getStoredPluginInfo('social-poster')['settings'];
 
         $settings['providers'] = [];
