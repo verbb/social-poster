@@ -15,4 +15,5 @@ interface ProviderInterface extends SavableComponentInterface
     public function getOauthProvider();
     public function oauthConnect();
     public function oauthCallback();
+    public function sendPost($account, $content);
 }
