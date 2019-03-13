@@ -199,7 +199,7 @@ class AccountsController extends Controller
         } catch (\Throwable $e) {
             $errorMsg = $e->getMessage();
 
-            SocialPoster::error('Couldn’t connect `{e} - {f}: {l}`.', ['e' => $e->getMessage(), 'f' => basename($e->getFile()), 'l' => $e->getLine()]);
+            SocialPoster::error('Couldn’t connect ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
             $session->setFlash('error', $errorMsg);
             
             $this->_cleanSession();
@@ -284,7 +284,7 @@ class AccountsController extends Controller
         }
 
         if (!SocialPoster::$plugin->getTokens()->saveToken($token)) {
-            SocialPoster::error('Unable to save token - {e}.', ['e' => json_encode($token->getErrors())]);
+            SocialPoster::error('Unable to save token - ' . json_encode($token->getErrors()) . '.');
         
             return null;
         }
@@ -292,7 +292,7 @@ class AccountsController extends Controller
         $account->tokenId = $token->id;
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
-            SocialPoster::error('Unable to save account - {e}.', ['e' => json_encode($account->getErrors())]);
+            SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
         
             return null;
         }
@@ -311,7 +311,7 @@ class AccountsController extends Controller
     private function _deleteToken($account)
     {
         if (!SocialPoster::$plugin->getTokens()->deleteTokenById($account->tokenId)) {
-            SocialPoster::error('Unable to delete token - {e}.', ['e' => json_encode($token->getErrors())]);
+            SocialPoster::error('Unable to delete token - ' . json_encode($token->getErrors()) . '.');
         
             return null;
         }
@@ -319,7 +319,7 @@ class AccountsController extends Controller
         $account->tokenId = null;
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
-            SocialPoster::error('Unable to save account - {e}.', ['e' => json_encode($account->getErrors())]);
+            SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
         
             return null;
         }
