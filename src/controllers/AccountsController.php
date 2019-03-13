@@ -199,7 +199,7 @@ class AccountsController extends Controller
         } catch (\Throwable $e) {
             $errorMsg = $e->getMessage();
 
-            SocialPoster::error('Couldn’t connect ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
+            SocialPoster::error('Couldn’t connect to ' . $account->provider . ' ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
             $session->setFlash('error', $errorMsg);
             
             $this->_cleanSession();
