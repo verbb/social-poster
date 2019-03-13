@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.1 - 2018-03-14
+
+### Added
+- Add `craft.socialPoster.posts`.
+
+### Fixed
+- Fix logging not working correctly in some areas.
+- Fix provider settings not saving.
+- Fix error when deleting account.
+
 ## 2.0.0 - 2018-03-13
 
 ### Added
