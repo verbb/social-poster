@@ -41,7 +41,7 @@ Due to the deprecation of the publish_actions permission, you can no longer use 
 You may receive the following error when trying to connect to Facebook:
 
 ```
-Invalid Scopes: publish_pages, user_posts, manage_pages, user_photos. This message is only shown to developers. Users of your app will ignore these permissions if present. Please read the documentation for valid permissions at: https://developers.facebook.com/docs/facebook-login/permissions
+Invalid Scopes: publish_pages, publish_to_groups, manage_pages, user_posts, user_photos. This message is only shown to developers. Users of your app will ignore these permissions if present. Please read the documentation for valid permissions at: https://developers.facebook.com/docs/facebook-login/permissions
 ```
 
 As per new Facebook platform product changes and policy updates:
