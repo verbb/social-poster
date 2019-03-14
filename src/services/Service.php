@@ -122,21 +122,25 @@ class Service extends Component
             $payload['picture'] = '';
             
             if (isset($payload['imageField']) && $payload['imageField']) {
-                $assetIds = $entry->content[$payload['imageField']];
+                try {
+                    $assetIds = $entry->{$payload['imageField']}->ids();
 
-                if (is_array($assetIds) && isset($assetIds[0])) {
-                    $assetId = $assetIds[0];
+                    if (is_array($assetIds) && isset($assetIds[0])) {
+                        $assetId = $assetIds[0];
 
-                    $asset = Craft::$app->getAssets()->getAssetById($assetId);
-                    
-                    // Handle absolute URL
-                    $siteUrl = UrlHelper::siteUrl();
-                    
-                    if (($siteUrl[strlen($siteUrl) -1] == '/') && ($asset->url[0] == '/')) {
-                        $siteUrl = rtrim($siteUrl, '/');
+                        $asset = Craft::$app->getAssets()->getAssetById($assetId);
+                        
+                        // Handle absolute URL
+                        $siteUrl = UrlHelper::siteUrl();
+                        
+                        if (($siteUrl[strlen($siteUrl) -1] == '/') && ($asset->url[0] == '/')) {
+                            $siteUrl = rtrim($siteUrl, '/');
+                        }
+                        
+                        $payload['picture'] = $siteUrl . $asset->url;
                     }
-                    
-                    $payload['picture'] = $siteUrl . $asset->url;
+                } catch (\Thowable $e) {
+                    SocialPoster::error('Unable to process asset: ' . $e->getMessage());
                 }
             }
 
