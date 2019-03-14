@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.2 - 2018-03-14
+
+### Added
+- Add override notice for settings fields.
+
+### Fixed
+- Fix deprecation error.
+- Fix tabs not working in sidebar widget.
+- Fix Facebook not sending the supplied image.
+- Fix error when trying to use an image from an asset field.
+
 ## 2.0.1 - 2018-03-14
 
 ### Added
