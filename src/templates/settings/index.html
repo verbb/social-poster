@@ -1,5 +1,6 @@
 {% extends 'social-poster/_layouts' %}
 {% import '_includes/forms' as forms %}
+{% import 'social-poster/_macros' as macros %}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
@@ -30,6 +31,7 @@
     value: settings.pluginName,
     first: true,
     autofocus: true,
+    warning: macros.configWarning('pluginName', 'social-poster'),
 }) }}
 
 {{ forms.lightswitchField({
@@ -39,6 +41,7 @@
     name: 'hasCpSection',
     on: settings.hasCpSection,
     errors: settings.getErrors('hasCpSection'),
+    warning: macros.configWarning('hasCpSection', 'social-poster'),
 }) }}
 
 {{ forms.checkboxSelectField({
@@ -50,6 +53,7 @@
     errors: settings.getErrors('enabledSections'),
     options: sections,
     showAllOption: true,
+    warning: macros.configWarning('enabledSections', 'social-poster'),
 }) }}
 
 {% endnamespace %}

@@ -1,5 +1,6 @@
 {% extends 'social-poster/_layouts' %}
 {% import '_includes/forms' as forms %}
+{% import 'social-poster/_macros' as macros %}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
@@ -39,6 +40,7 @@
         label: 'Client ID' | t('social-poster'),
         name: 'clientId',
         value: oauthProviderConfig.options.clientId ?? '',
+        warning: macros.providerConfigWarning(provider.handle, 'clientId', 'social-poster'),
     }) }}
 
     {{ forms.textField({
@@ -47,6 +49,7 @@
         label: 'Client Secret' | t('social-poster'),
         name: 'clientSecret',
         value: oauthProviderConfig.options.clientSecret ?? '',
+        warning: macros.providerConfigWarning(provider.handle, 'clientSecret', 'social-poster'),
     }) }}
 
     <div class="buttons">
