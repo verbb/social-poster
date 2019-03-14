@@ -3,7 +3,7 @@
 {% import '_includes/forms' as forms %}
 
 <div class="social-poster-sidebar">
-    <nav id="tabs" class="social-poster-tabs">
+    <nav id="sp-tabs" class="social-poster-tabs">
         <ul>
             {% for account in accounts %}
                 {% set previousPost = false %}
@@ -23,7 +23,7 @@
 
                 <li>
                     <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ account.handle }}-fields" title="{{ account.name }}">
-                        {% if account.canPost and not previousPost and context.entry.enabled %}
+                        {% if autoPost %}
                             <span class="status on"></span>
                         {% else %}
                             {% if previousPost and not previousPost.success %}
@@ -101,6 +101,8 @@
 </div>
 
 {% js %}
+
+new Craft.SocialPoster();
 
 $(function() {
     $('.social-poster-pane .lightswitch').on('change', function() {
