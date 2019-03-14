@@ -122,6 +122,7 @@ class Facebook extends Provider
                     'access_token' => $accessToken,
                     'message' => $content['message'],
                     'link' => $content['url'],
+                    'picture' => $content['picture'],
                     // 'name' => $content['title'],
                 ]
             ]);
