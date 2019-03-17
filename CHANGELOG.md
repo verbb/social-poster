@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.3 - 2018-03-07
+
+### Fixed
+- Fix `title` and `url` content not parsing twig.
+
 ## 2.0.2 - 2018-03-14
 
 ### Added
