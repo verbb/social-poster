@@ -172,6 +172,10 @@ class AccountsController extends Controller
 
         $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
 
+        if (!$account) {
+            throw new \Exception('Account #' . $accountId . ' does not exist.');
+        }
+
         try {
             $provider = $account->provider;
 
