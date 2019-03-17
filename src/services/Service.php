@@ -110,13 +110,10 @@ class Service extends Component
                 continue;
             }
                 
-            // Get the actual text for the post
-            $message = $payload['message'];
-            $message = Craft::$app->getView()->renderObjectTemplate($message, $entry);
-            $payload['message'] = $message; // update 'model'
-
-            // TODO - testing
-            // $payload['message'] .= rand();
+            // Parse content with the entry's content
+            $payload['title'] = Craft::$app->getView()->renderObjectTemplate($payload['title'], $entry);
+            $payload['url'] = Craft::$app->getView()->renderObjectTemplate($payload['url'], $entry);
+            $payload['message'] = Craft::$app->getView()->renderObjectTemplate($payload['message'], $entry);
 
             // Get the image (if one)
             $payload['picture'] = '';
