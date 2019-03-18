@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.5 - 2018-03-19
+
+### Fixed
+- Fix error when trying to post to Facebook.
+
 ## 2.0.4 - 2018-03-18
 
 ### Fixed
