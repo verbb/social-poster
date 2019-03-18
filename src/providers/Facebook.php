@@ -133,14 +133,19 @@ class Facebook extends Provider
                 $fb->setDefaultAccessToken($accessToken);
             }
 
+            $params = [
+                'access_token' => $accessToken,
+                'message' => $content['message'],
+                'link' => $content['url'],
+            ];
+
+            // Only send the picture if there's content - otherwise will often fail due to API restrictions
+            if (isset($content['picture']) && $content['picture']) {
+                $params['picture'] = $content['picture'];
+            }
+
             $response = $client->post($endpoint . '/feed', [
-                'form_params' => [
-                    'access_token' => $accessToken,
-                    'message' => $content['message'],
-                    'link' => $content['url'],
-                    'picture' => $content['picture'],
-                    // 'name' => $content['title'],
-                ]
+                'form_params' => $params,
             ]);
 
             return $this->getPostResponse($response);
