@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.4 - 2018-03-18
+
+### Fixed
+- Fix Facebook authentication issues when `usePathInfo = false`, on some environments.
+
 ## 2.0.3 - 2018-03-07
 
 ### Fixed
