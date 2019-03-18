@@ -9,6 +9,7 @@ use verbb\socialposter\models\Token;
 use Craft;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
+use craft\helpers\UrlHelper;
 use craft\web\Controller;
 
 use yii\web\ForbiddenHttpException;
@@ -153,12 +154,15 @@ class AccountsController extends Controller
     // OAuth Methods
     // =========================================================================
 
-    public function actionConnect($accountId = null): Response
+    public function actionConnect(): Response
     {
         $request = Craft::$app->getRequest();
         $session = Craft::$app->getSession();
 
-        $session->set('socialposter.controllerUrl', $request->getAbsoluteUrl());
+        $accountId = $request->getParam('accountId');
+        $controllerUrl = UrlHelper::actionUrl('social-poster/accounts/connect', ['accountId' => $accountId]);
+
+        $session->set('socialposter.controllerUrl', $controllerUrl);
 
         $this->originUrl = $session->get('socialposter.originUrl');
 
@@ -167,8 +171,7 @@ class AccountsController extends Controller
             $session->set('socialposter.originUrl', $this->originUrl);
         }
 
-        $this->redirect = $request->getParam('redirect');
-        $accountId = $accountId ?? $request->getParam('accountId');
+        $this->redirect = (string)$request->getParam('redirect');
 
         if (!$accountId) {
             throw new \Exception('Account ID `' . $accountId . '` missing.');
