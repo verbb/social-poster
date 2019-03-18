@@ -153,7 +153,7 @@ class AccountsController extends Controller
     // OAuth Methods
     // =========================================================================
 
-    public function actionConnect(): Response
+    public function actionConnect($accountId = null): Response
     {
         $request = Craft::$app->getRequest();
         $session = Craft::$app->getSession();
@@ -168,7 +168,11 @@ class AccountsController extends Controller
         }
 
         $this->redirect = $request->getParam('redirect');
-        $accountId = $request->getParam('accountId');
+        $accountId = $accountId ?? $request->getParam('accountId');
+
+        if (!$accountId) {
+            throw new \Exception('Account #' . $accountId . ' does not exist.');
+        }
 
         $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
 
