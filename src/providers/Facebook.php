@@ -55,6 +55,22 @@ class Facebook extends Provider
         return 'https://developers.facebook.com/docs/facebook-login/permissions';
     }
 
+    public function getRedirectUri(): string
+    {
+        $url = SocialPosterHelper::siteActionUrl('social-poster/accounts/callback');
+        $parsedUrl = parse_url($url);
+
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $query);
+
+            $query = http_build_query($query);
+
+            return $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $parsedUrl['path'] . '?' . $query;
+        }
+
+        return $url;
+    }
+
     public function getOauthProviderConfig(): array
     {
         $config = parent::getOauthProviderConfig();
