@@ -171,7 +171,7 @@ class AccountsController extends Controller
         $accountId = $accountId ?? $request->getParam('accountId');
 
         if (!$accountId) {
-            throw new \Exception('Account #' . $accountId . ' does not exist.');
+            throw new \Exception('Account ID `' . $accountId . '` missing.');
         }
 
         $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);

@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="input ltr">
-                    <a class="btn small" href="{{ actionUrl('social-poster/accounts/connect', { accountId: account.id }) }}">Connect</a>
+                    <a class="btn small formsubmit" data-action="social-poster/accounts/connect" data-param="accountId" data-value="{{ account.id }}">{{ 'Connect' | t('social-poster') }}</a>
                 </div>
             </div>
         {% endif %}
