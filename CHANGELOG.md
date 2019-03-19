@@ -7,6 +7,7 @@
 
 ### Fixed
 - Fix incorrectly registering the wrong element.
+- Fix past posts showing on new entries.
 
 ## 2.0.5 - 2018-03-19
 
