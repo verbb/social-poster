@@ -115,21 +115,6 @@ $(function() {
         }
     });
 
-    {# Toggle switches when entry enabled toggle is #}
-    $('#enabled-field .lightswitch').on('change', function() {
-        var $lightswitch = $(this);
-
-        $('.social-poster-pane .social-poster-fields:not(.hidden) .lightswitch').each(function(index, element) {
-            var ls = $(element).data('lightswitch');
-
-            if ($lightswitch.hasClass('on')) {
-                ls.turnOn();
-            } else {
-                ls.turnOff();
-            }
-        });
-    });
-
     $('.social-expand-pane').on('click', function(e) {
         e.preventDefault();
 
