@@ -2,6 +2,9 @@
 
 ## 2.0.6 - 2018-03-19
 
+### Changed
+- Remove toggle for posting when toggling enabled entry state.
+
 ### Fixed
 - Fix incorrectly registering the wrong element.
 
