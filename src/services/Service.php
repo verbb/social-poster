@@ -57,12 +57,16 @@ class Service extends Component
             return;
         }
 
-        $posts = Post::find()
-            ->ownerId($context['entry']->id)
-            ->ownerSiteId($context['entry']->siteId)
-            ->indexBy('accountId')
-            ->orderBy('dateCreated asc')
-            ->all();
+        $posts = [];
+
+        if ($context['entry']->id) {
+            $posts = Post::find()
+                ->ownerId($context['entry']->id)
+                ->ownerSiteId($context['entry']->siteId)
+                ->indexBy('accountId')
+                ->orderBy('dateCreated asc')
+                ->all();
+        }
 
         SocialPoster::log('Rendering #' . $context['entry']->id);
 
