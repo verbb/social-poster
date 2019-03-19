@@ -2,7 +2,7 @@
 namespace verbb\socialposter;
 
 use verbb\socialposter\base\PluginTrait;
-use verbb\socialposter\elements\Account;
+use verbb\socialposter\elements\Post;
 use verbb\socialposter\models\Settings;
 use verbb\socialposter\variables\SocialPosterVariable;
 
@@ -159,7 +159,7 @@ class SocialPoster extends Plugin
     private function _registerElementTypes()
     {
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function(RegisterComponentTypesEvent $event) {
-            $event->types[] = Account::class;
+            $event->types[] = Post::class;
         });
     }    
 
