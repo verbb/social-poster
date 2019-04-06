@@ -109,6 +109,8 @@ class SocialPoster extends Plugin
             'subnav' => $subNavs,
         ]);
 
+        $navItem['label'] = $this->getPluginName();
+
         return $navItem;
     }
 
