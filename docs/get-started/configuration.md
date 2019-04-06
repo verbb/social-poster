@@ -26,36 +26,32 @@ return [
 Supply your client configurations as per the below.
 
 ```php
-<?php
-
-return [
-    'providers' => [
-        'facebook' => [
-            'oauth' => [
-                'options' => [
-                    'clientId' => 'xxxxxxxxxxxx',
-                    'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                ]
+'providers' => [
+    'facebook' => [
+        'oauth' => [
+            'options' => [
+                'clientId' => 'xxxxxxxxxxxx',
+                'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             ]
-        ],
-        'linkedin' => [
-            'oauth' => [
-                'options' => [
-                    'clientId' => 'xxxxxxxxxxxx',
-                    'clientSecret' => 'xxxxxxxxxxxx',
-                ]
+        ]
+    ],
+    'linkedin' => [
+        'oauth' => [
+            'options' => [
+                'clientId' => 'xxxxxxxxxxxx',
+                'clientSecret' => 'xxxxxxxxxxxx',
             ]
-        ],
-        'twitter' => [
-            'oauth' => [
-                'options' => [
-                    'clientId' => 'xxxxxxxxxxxx',
-                    'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                ]
+        ]
+    ],
+    'twitter' => [
+        'oauth' => [
+            'options' => [
+                'clientId' => 'xxxxxxxxxxxx',
+                'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             ]
-        ],
-    ]
-];
+        ]
+    ],
+]
 ```
 
 ## Control Panel
