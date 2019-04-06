@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.7 - 2018-04-06
+
+### Fixed
+- Fix plugin name override not updating sidebar menu.
+- Fix asset URL resolution for pictures.
+
 ## 2.0.6 - 2018-03-19
 
 ### Changed
