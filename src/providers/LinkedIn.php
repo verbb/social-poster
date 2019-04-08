@@ -36,7 +36,7 @@ class LinkedIn extends Provider
     {
         return [
             'r_basicprofile',
-            'r_liteprofile',
+            // 'r_liteprofile',
             'r_emailaddress',
             'w_share',
             'w_member_social',
