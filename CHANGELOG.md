@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.8 - 2018-04-24
+
+### Changed
+- Remove `r_liteprofile` for Linked.in.
+
+### Fixed
+- Fix error when trying to post to Twitter.
+
 ## 2.0.7 - 2018-04-06
 
 ### Fixed
