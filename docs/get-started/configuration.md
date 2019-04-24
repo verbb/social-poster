@@ -57,3 +57,17 @@ Supply your client configurations as per the below.
 ## Control Panel
 
 You can also manage configuration settings through the Control Panel by visiting Settings → Social Poster.
+
+## PATH_INFO
+
+It's also a good idea to enable `PATH_INFO` in your project. See [Craft Guide](https://craftcms.com/guides/enabling-path-info). This is particularly important for the redirect URLs, as they need to be valid and match with what you put in each provider's app.
+
+For example, with `PATH_INFO` off, you may get a redirect URL similar to:
+
+`http://mysite.local/index.php?p=actions/social-poster/accounts/callback`
+
+Which is completed valid, but Facebook and Twitter (and potentially others) have issues with the query string in the path. Turning on `PATH_INFO` would produce the same URL as:
+
+`http://mysite.local/actions/social-poster/accounts/callback`
+
+See the [Craft Guide](https://craftcms.com/guides/enabling-path-info) on how to enable this for your system setup.
