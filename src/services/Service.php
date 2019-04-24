@@ -115,9 +115,17 @@ class Service extends Component
             }
                 
             // Parse content with the entry's content
-            $payload['title'] = Craft::$app->getView()->renderObjectTemplate($payload['title'], $entry);
-            $payload['url'] = Craft::$app->getView()->renderObjectTemplate($payload['url'], $entry);
-            $payload['message'] = Craft::$app->getView()->renderObjectTemplate($payload['message'], $entry);
+            if (isset($payload['title'])) {
+                $payload['title'] = Craft::$app->getView()->renderObjectTemplate($payload['title'], $entry);
+            }
+
+            if (isset($payload['url'])) {
+                $payload['url'] = Craft::$app->getView()->renderObjectTemplate($payload['url'], $entry);
+            }
+
+            if (isset($payload['message'])) {
+                $payload['message'] = Craft::$app->getView()->renderObjectTemplate($payload['message'], $entry);
+            }
 
             // Get the image (if one)
             $payload['picture'] = '';
