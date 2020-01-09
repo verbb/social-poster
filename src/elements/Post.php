@@ -14,6 +14,8 @@ use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
 
+use LitEmoji\LitEmoji;
+
 class Post extends Element
 {
     // Static
@@ -135,6 +137,13 @@ class Post extends Element
         $this->settings = Json::decode($this->settings, true);
         $this->response = Json::decode($this->response, true);
         $this->data = Json::decode($this->data, true);
+
+        // Add Emoji support
+        if (is_array($this->settings)) {
+            foreach ($this->settings as $key => $value) {
+                $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
+            }
+        }
     }
 
     public function getOwner()
@@ -234,6 +243,11 @@ class Post extends Element
         } else {
             $record = new PostRecord();
             $record->id = $this->id;
+        }
+
+        // Add Emoji support
+        foreach ($this->settings as $key => $value) {
+            $this->settings[$key] = LitEmoji::unicodeToShortcode($value);
         }
 
         $record->accountId = $this->accountId;
