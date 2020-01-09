@@ -1,6 +1,19 @@
 # Changelog
 
-## 2.0.8 - 2018-04-24
+## 2.0.9 - 2020-01-10
+
+### Added
+- Allow posts to be deleted.
+
+### Changed
+- Now required Craft 3.3+.
+
+### Fixed
+- Fix posts being sent on entry drafts and revisions.
+- Fix duplicate submissions sent out when propagating entries on a multi-site.
+- Add emoji support to posts.
+
+## 2.0.8 - 2019-04-24
 
 ### Changed
 - Remove `r_liteprofile` for Linked.in.
@@ -8,13 +21,13 @@
 ### Fixed
 - Fix error when trying to post to Twitter.
 
-## 2.0.7 - 2018-04-06
+## 2.0.7 - 2019-04-06
 
 ### Fixed
 - Fix plugin name override not updating sidebar menu.
 - Fix asset URL resolution for pictures.
 
-## 2.0.6 - 2018-03-19
+## 2.0.6 - 2019-03-19
 
 ### Changed
 - Remove toggle for posting when toggling enabled entry state.
@@ -23,22 +36,22 @@
 - Fix incorrectly registering the wrong element.
 - Fix past posts showing on new entries.
 
-## 2.0.5 - 2018-03-19
+## 2.0.5 - 2019-03-19
 
 ### Fixed
 - Fix error when trying to post to Facebook.
 
-## 2.0.4 - 2018-03-18
+## 2.0.4 - 2019-03-18
 
 ### Fixed
 - Fix Facebook authentication issues when `usePathInfo = false`, on some environments.
 
-## 2.0.3 - 2018-03-07
+## 2.0.3 - 2019-03-07
 
 ### Fixed
 - Fix `title` and `url` content not parsing twig.
 
-## 2.0.2 - 2018-03-14
+## 2.0.2 - 2019-03-14
 
 ### Added
 - Add override notice for settings fields.
@@ -49,7 +62,7 @@
 - Fix Facebook not sending the supplied image.
 - Fix error when trying to use an image from an asset field.
 
-## 2.0.1 - 2018-03-14
+## 2.0.1 - 2019-03-14
 
 ### Added
 - Add `craft.socialPoster.posts`.
@@ -59,13 +72,13 @@
 - Fix provider settings not saving.
 - Fix error when deleting account.
 
-## 2.0.0 - 2018-03-13
+## 2.0.0 - 2019-03-13
 
 ### Added
 - Craft 3.1+ release.
 - Added Accounts.
 
-## 1.2.2 - 2017-11-04
+## 1.2.2 - 2018-05-21
 
 ### Fixed
 - Minor fix for sidebar icon.
