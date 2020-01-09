@@ -10,6 +10,7 @@ use craft\db\Table;
 use craft\elements\Entry;
 use craft\events\ModelEvent;
 use craft\helpers\Db;
+use craft\helpers\ElementHelper;
 use craft\helpers\UrlHelper;
 
 class Service extends Component
@@ -82,6 +83,10 @@ class Service extends Component
         $request = Craft::$app->getRequest();
 
         $entry = $event->sender;
+
+        if (ElementHelper::isDraftOrRevision($entry)) {
+            return;
+        }
 
         // Check to make sure the entry is live
         if ($entry->status != Entry::STATUS_LIVE) {
