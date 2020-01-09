@@ -6,7 +6,7 @@
 - Allow posts to be deleted.
 
 ### Changed
-- Now required Craft 3.3+.
+- Now requires Craft 3.3+.
 
 ### Fixed
 - Fix posts being sent on entry drafts and revisions.
