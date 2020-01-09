@@ -7,6 +7,7 @@ use verbb\socialposter\records\Post as PostRecord;
 
 use Craft;
 use craft\base\Element;
+use craft\elements\actions\Delete;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
@@ -88,6 +89,19 @@ class Post extends Element
     protected static function defineDefaultTableAttributes(string $source): array
     {
         return ['title', 'dateCreated', 'success', 'provider', 'entry'];
+    }
+
+    protected static function defineActions(string $source = null): array
+    {
+        $actions = [];
+
+        $actions[] = Craft::$app->getElements()->createAction([
+            'type' => Delete::class,
+            'confirmationMessage' => Craft::t('social-poster', 'Are you sure you want to delete the selected post?'),
+            'successMessage' => Craft::t('social-poster', 'Posts deleted.'),
+        ]);
+
+        return $actions;
     }
 
 
