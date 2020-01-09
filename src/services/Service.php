@@ -84,7 +84,7 @@ class Service extends Component
 
         $entry = $event->sender;
 
-        if (ElementHelper::isDraftOrRevision($entry)) {
+        if ($entry->propagating || ElementHelper::isDraftOrRevision($entry)) {
             return;
         }
 
