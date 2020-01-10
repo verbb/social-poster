@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.10 - 2020-01-10
+
+### Fixed
+- Fix posting to Linked.in
+
 ## 2.0.9 - 2020-01-10
 
 ### Added
