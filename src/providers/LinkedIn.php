@@ -36,10 +36,11 @@ class LinkedIn extends Provider
     {
         return [
             'r_basicprofile',
-            // 'r_liteprofile',
+            'r_liteprofile',
             'r_emailaddress',
             'w_share',
             'w_member_social',
+            // 'w_organization_social',
         ];
     }
 
@@ -69,20 +70,29 @@ class LinkedIn extends Provider
 
             $personURN = $this->getProfile($client)['id'];
 
-            $response = $client->post('ugcPosts', [
+            $thumbnails = [];
+
+            if (isset($content['picture']) && $content['picture']) {
+                $thumbnails[] = [
+                    'resolvedUrl' => $content['picture'],
+                ];
+            }
+
+            $response = $client->post('shares', [
                 'json' => [
-                    'author' => 'urn:li:person:' . $personURN,
-                    'lifecycleState' => 'PUBLISHED',
-                    'specificContent' => [
-                        'com.linkedin.ugc.ShareContent' => [
-                            'shareCommentary' => [
-                                'text' =>  $content['message'],
-                            ],
-                            'shareMediaCategory' => 'NONE',
+                    'content' => [
+                        'contentEntities' => [
+                            [
+                                'entityLocation' => $content['url'],
+                                'thumbnails' => $thumbnails,
+                            ]
                         ],
+                        'title' => $content['title'],
                     ],
-                    'visibility' => [
-                        'com.linkedin.ugc.MemberNetworkVisibility' => 'PUBLIC',
+                    'owner' => 'urn:li:person:' . $personURN,
+                    'subject' => $content['title'],
+                    'text' => [
+                        'text' => $content['message'],
                     ],
                 ],
             ]);
