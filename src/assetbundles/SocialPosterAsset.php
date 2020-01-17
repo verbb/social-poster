@@ -5,6 +5,8 @@ use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
+use verbb\base\assetbundles\CpAsset as VerbbCpAsset;
+
 class SocialPosterAsset extends AssetBundle
 {
     // Public Methods
@@ -15,6 +17,7 @@ class SocialPosterAsset extends AssetBundle
         $this->sourcePath = "@verbb/socialposter/resources/dist";
 
         $this->depends = [
+            VerbbCpAsset::class,
             CpAsset::class,
         ];
 

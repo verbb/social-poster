@@ -5,8 +5,6 @@
 
 // ==========================================================================
 
-@import "base";
-
 
 // ==========================================================================
 // Providers
@@ -92,7 +90,7 @@
 
 .social-poster-pane {
     margin: 0;
-    border-radius: 0;
+    border-radius: 0 0 5px 5px;
 }
 
 .social-poster-tabs {
@@ -142,18 +140,6 @@
         text-decoration: none;
     }
 
-    &:after {
-        content: '.';
-        font-size: 0;
-        display: block;
-        position: absolute;
-        top: 0;
-        width: 10px;
-        height: calc(100% - 1px);
-        right: 0;
-        background: linear-gradient(to right, rgba(235, 237, 239, 0), #f1f5f8 17px);
-    }
-
     &.sel {
         color: #29323d;
         background: #fff;
@@ -163,9 +149,10 @@
         cursor: default;
         background-clip: padding-box;
         border-radius: 2px 2px 0 0;
-        border: solid rgba(0, 0, 20, 0.1);
+        border: solid rgba(215, 222, 231, 1);
         border-width: 1px 1px 0;
         z-index: 1;
+        border-radius: 5px 5px 0 0;
     }
 
     &:not(.sel) {
@@ -174,10 +161,6 @@
 
     &:not(.sel):hover {
         color: #0d78f2;
-    }
-
-    &.sel:after {
-        background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 17px);
     }
 }
 

@@ -13,6 +13,8 @@ use craft\log\FileTarget;
 
 use yii\log\Logger;
 
+use verbb\base\BaseHelper;
+
 trait PluginTrait
 {
     // Static Properties
@@ -49,6 +51,20 @@ trait PluginTrait
         return $this->get('tokens');
     }
 
+    public static function log($message)
+    {
+        Craft::getLogger()->log($message, Logger::LEVEL_INFO, 'social-poster');
+    }
+
+    public static function error($message)
+    {
+        Craft::getLogger()->log($message, Logger::LEVEL_ERROR, 'social-poster');
+    }
+
+
+    // Private Methods
+    // =========================================================================
+
     private function _setPluginComponents()
     {
         $this->setComponents([
@@ -58,6 +74,8 @@ trait PluginTrait
             'service' => Service::class,
             'tokens' => Tokens::class,
         ]);
+
+        BaseHelper::registerModule();
     }
 
     private function _setLogging()
@@ -66,16 +84,6 @@ trait PluginTrait
             'logFile' => Craft::getAlias('@storage/logs/social-poster.log'),
             'categories' => ['social-poster'],
         ]);
-    }
-
-    public static function log($message)
-    {
-        Craft::getLogger()->log($message, Logger::LEVEL_INFO, 'social-poster');
-    }
-
-    public static function error($message)
-    {
-        Craft::getLogger()->log($message, Logger::LEVEL_ERROR, 'social-poster');
     }
 
 }
