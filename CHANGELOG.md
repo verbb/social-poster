@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.0 - 2020-01-29
+
+### Added
+- Craft 3.4 compatibility.
+
 ## 2.0.10 - 2020-01-10
 
 ### Fixed
