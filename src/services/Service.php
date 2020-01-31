@@ -137,10 +137,14 @@ class Service extends Component
             
             if (isset($payload['imageField']) && $payload['imageField']) {
                 try {
-                    $assets = $entry->{$payload['imageField']}->all();
+                    $assetField = $entry->{$payload['imageField']};
 
-                    if (is_array($assets) && isset($assets[0])) {
-                        $payload['picture'] = $assets[0]->url;
+                    if ($assetField) {
+                        $asset = $assetField->one() ?? null;
+
+                        if ($asset) {
+                            $payload['picture'] = $asset->url;
+                        }
                     }
                 } catch (\Thowable $e) {
                     SocialPoster::error('Unable to process asset: ' . $e->getMessage());
