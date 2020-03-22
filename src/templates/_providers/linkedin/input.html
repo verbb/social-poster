@@ -10,22 +10,6 @@
     }) }}
 {% endif %}
 
-{% if providerSettings.showVisibility is defined and providerSettings.showVisibility %}
-    {{ forms.selectField({
-        label: 'Visibility' | t('social-poster'),
-        instructions: 'Select how this post is shared on {p}. Anyone will be visible to all members, and Connections Only will only be visible to your connections.' | t('social-poster', { p: provider.name }),
-        id: 'showVisibility',
-        name: 'showVisibility',
-        options: [
-            { label: 'Anyone' | t('social-poster'), value: 'anyone' },
-            { label: 'Connections Only' | t('social-poster'), value: 'connections-only' },
-        ],
-        value: providerSettings.visibility,
-        disabled: static is defined,
-        class: static is defined ? 'disabled',
-    }) }}
-{% endif %}
-
 {% if providerSettings.showTitle is defined and providerSettings.showTitle %}
     {{ forms.textField({
         label: 'Title' | t('social-poster'),

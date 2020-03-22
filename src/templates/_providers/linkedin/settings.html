@@ -6,25 +6,6 @@
 {% set defaultMessage = 'A new post "{title}" has been published on our website via {url}.' | t('social-poster') %}
 
 {{ settingsField.field({
-        label: 'Visibility' | t('social-poster'),
-        instructions: 'Select how this post is shared on {p}. Anyone will be visible to all members, and Connections Only will only be visible to your connections.' | t('social-poster', { p: provider.name }),
-        id: 'showVisibility',
-        name: 'showVisibility',
-        value: true,
-        checked: settings.showVisibility ?? false,
-    }, 
-    forms.selectField({
-        id: 'visibility',
-        name: 'visibility',
-        options: [
-            { label: 'Anyone', value: 'anyone' },
-            { label: 'Connections Only', value: 'connections-only' },
-        ],
-        value: settings.visibility | default(''),
-    })
-) }}
-
-{{ settingsField.field({
         label: 'Title' | t('social-poster'),
         instructions: 'Enter the Title to appear on this post. This is the bold text shown at the top of the post. May include any Twig variables for fields in this entry - eg {title}, {customField}, etc.' | t('social-poster'),
         id: 'showTitle',
