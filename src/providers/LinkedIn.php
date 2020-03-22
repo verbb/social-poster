@@ -35,12 +35,9 @@ class LinkedIn extends Provider
     public function getDefaultOauthScope(): array
     {
         return [
-            'r_basicprofile',
             'r_liteprofile',
             'r_emailaddress',
-            'w_share',
             'w_member_social',
-            // 'w_organization_social',
         ];
     }
 
