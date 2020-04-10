@@ -5,6 +5,27 @@
 
 {% set defaultMessage = 'A new post "{title}" has been published on our website via {url}.' | t('social-poster') %}
 
+{{ forms.selectField({
+    label: '{p} Post Type' | t('social-poster', { p: provider.name }),
+    instructions: 'Select where you\'d like this post to be posted to. This can be a {p} person or a {p} organization.' | t('social-poster', { p: provider.name }),
+    id: 'endpoint',
+    name: 'endpoint',
+    options: [
+        { label: 'Person' | t('social-poster'), value: 'person' },
+        { label: 'Organization' | t('social-poster'), value: 'organization' },
+    ],
+    value: settings.endpoint | default('person'),
+    required: true,
+}) }}
+
+{{ forms.textField({
+    label: '{p} Organization ID' | t('social-poster', { p: provider.name }),
+    instructions: 'Your {p} Organization ID (the part after `https://www.linkedin.com/company/`).' | t('social-poster', { p: provider.name }),
+    id: 'organizationId',
+    name: 'organizationId',
+    value: settings.organizationId | default(''),
+}) }}
+
 {{ settingsField.field({
         label: 'Title' | t('social-poster'),
         instructions: 'Enter the Title to appear on this post. This is the bold text shown at the top of the post. May include any Twig variables for fields in this entry - eg {title}, {customField}, etc.' | t('social-poster'),
@@ -66,3 +87,20 @@
         value: settings.imageField | default(''),
     })
 ) }}
+
+{% js %}
+
+// Helper for Facebook Post Type changed showing other fields
+$(document).on('change', '#providerSettings-linkedin-endpoint', function(e) {
+    var val = $(this).val();
+
+    $('#providerSettings-linkedin-organizationId-field').hide();
+
+    if (val == 'organization') {
+        $('#providerSettings-linkedin-organizationId-field').show();
+    }
+});
+
+$('#providerSettings-linkedin-endpoint').trigger('change');
+
+{% endjs %}

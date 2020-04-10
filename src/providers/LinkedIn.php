@@ -34,11 +34,20 @@ class LinkedIn extends Provider
 
     public function getDefaultOauthScope(): array
     {
-        return [
+        $scopes = [
             'r_liteprofile',
             'r_emailaddress',
             'w_member_social',
         ];
+
+        $endpoint = $this->account->settings['endpoint'] ?? '';
+
+        if ($endpoint == 'organization') {
+            $scopes[] = 'w_organization_social';
+            $scopes[] = 'r_organization_social';
+        }
+
+        return $scopes;
     }
 
     public function getManagerUrl()
@@ -65,7 +74,17 @@ class LinkedIn extends Provider
             $token = $account->getToken();
             $client = $this->getClient($token);
 
-            $personURN = $this->getProfile($client)['id'];
+            $endpoint = $content['endpoint'] ?? 'person';
+
+            if ($endpoint === 'person') {
+                $urn = $this->getProfile($client)['id'];
+
+                $ownerUrn = 'urn:li:person:' . $urn;
+            } else if ($endpoint === 'organization') {
+                $urn = $content['organizationId'] ?? '';
+
+                $ownerUrn = 'urn:li:organization:' . $urn;
+            }
 
             $thumbnails = [];
 
@@ -86,10 +105,15 @@ class LinkedIn extends Provider
                         ],
                         'title' => $content['title'],
                     ],
-                    'owner' => 'urn:li:person:' . $personURN,
+                    'owner' => $ownerUrn,
                     'subject' => $content['title'],
                     'text' => [
                         'text' => $content['message'],
+                    ],
+                    'distribution' => [
+                        'linkedInDistributionTarget' => [
+                            'visibleToGuest' => true,
+                        ],
                     ],
                 ],
             ]);

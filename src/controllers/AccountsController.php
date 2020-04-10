@@ -190,6 +190,9 @@ class AccountsController extends Controller
                 throw new \Exception('Provider is not configured');
             }
 
+            // Set the account on the provider so we can access stuff
+            $provider->account = $account;
+
             // Redirect to provider’s authorization page
             $session->set('socialposter.provider', $account->providerHandle);
 
