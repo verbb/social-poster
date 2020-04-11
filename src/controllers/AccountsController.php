@@ -213,9 +213,19 @@ class AccountsController extends Controller
         } catch (\Throwable $e) {
             $errorMsg = $e->getMessage();
 
+            // Try and get a more meaningful error message
+            $errorTitle = $request->getParam('error');
+            $errorDescription = $request->getParam('error_description');
+
             SocialPoster::error('Couldn’t connect to ' . $account->provider . ' ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
+
+            if ($errorTitle || $errorDescription) {
+                $errorMsg = $errorTitle . ' ' . $errorDescription;
+            }
+
+            SocialPoster::error($account->provider . ' Response: ' . $errorMsg);
             $session->setFlash('error', $errorMsg);
-            
+
             $this->_cleanSession();
 
             return $this->redirect($this->originUrl);
