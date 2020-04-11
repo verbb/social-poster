@@ -52,7 +52,7 @@ Facebook's API's have become much more restricted in recent years, and you'll al
 1. Click the "Continue the Request" button, and continue following the steps.
 1. Fill in the verification details, by providing login credentials to your site, and instructions on how the posting functionality should work. You will also need to provide a screencast. See examples below.
 
-#### Sample Detailed description
+### Sample description
 
 You're required to explain why you require these permissions to use Facebook's APIs. Be as descriptive as possible, and you can follow a similar structure as the below (but please change it to your scenario and client needs).
 
@@ -72,7 +72,7 @@ Password: *******
 Proceed to https://yourdomain.com/admin//entries/blog/5069-testing and on the right-hand side you'll see a widget to control these posts going to Facebook. Ensure that it is ticked as enabled, then hit the red "Save" button in the top-right of the page. The content of the entry you've edited should show on the Facebook Page successfully.
 ```
 
-#### Screencast
+### Screencast required steps
 
 It's a requirement to provide a screencast, with a step-by-step outline of how you want to use Facebook's APIs. Ensure your screencast outlines the following:
 
