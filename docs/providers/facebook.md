@@ -70,6 +70,7 @@ Username: *******
 Password: *******
 
 Proceed to https://yourdomain.com/admin//entries/blog/5069-testing and on the right-hand side you'll see a widget to control these posts going to Facebook. Ensure that it is ticked as enabled, then hit the red "Save" button in the top-right of the page. The content of the entry you've edited should show on the Facebook Page successfully.
+```
 
 #### Screencast
 
