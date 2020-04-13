@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.1.1 - 2020-04-13
+
+### Added
+- Add support Linked.in for company pages. See [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linked-in).
+- Updated Facebook and Linked.in provider docs with more detailed instructions.
+
+### Changed
+- Remove `r_basicprofile` and `w_share` permissions for Linked.in. These are no longer valid.
+- Remove `visibility` settings for Linked.in. No longer valid.
+
+### Fixed
+- Fix checking for valid asset field and asset.
+- Provide some better error responses when connecting to providers.
+- Fix front-end posting not working.
+
 ## 2.1.0 - 2020-01-29
 
 ### Added
