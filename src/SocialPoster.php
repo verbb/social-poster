@@ -153,7 +153,7 @@ class SocialPoster extends Plugin
 
     private function _registerCraftEventListeners()
     {
-        if (Craft::$app->getRequest()->getIsCpRequest()) {
+        if (Craft::$app->getRequest()->getIsCpRequest() || Craft::$app->getRequest()->getIsSiteRequest()) {
             Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, [$this->getService(), 'onAfterSaveEntry']);
         }
     }
