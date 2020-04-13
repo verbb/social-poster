@@ -23,7 +23,7 @@ Take the below example (cut down) code for updating an existing entry.
 
 Here, we've used a checkbox to allow the user to enable posting to social media. All other fields can be used, as you can see we've done with the message textarea.
 
-Options vary from provider-to-provider, but are as below:
+Options vary from provider-to-provider, but are as below. Please note to update the first parameter to the handle used for your account. For example, where we have `socialPoster[facebook][autoPost]`, ensure that the handle for your Facebook account is indeed `facebook`, otherwise, change this to match the account handle.
 
 ### Facebook
 

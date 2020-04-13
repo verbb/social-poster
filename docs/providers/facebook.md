@@ -46,11 +46,13 @@ Facebook's API's have become much more restricted in recent years, and you'll al
 
 1. First, create a user in Craft with permissions to access Social Poster, and to edit/publish entries in the desired section(s). Take note of the username/password of this account, as you'll be providing this to Facebook in your submission.
 1. Take note of the permissions required for the posting type you've selected (Page or Group).
-1. Turn your Facebook App to "Live" mode. There's a lightswitch control at the top of the page to toggle this.
+1. Turn your Facebook App to "Development" mode. There's a lightswitch control at the top of the page to toggle this.
 1. Go to "App Review" → "Permission and Features" menu.
 1. Find the permissions required as per the second step (`manage_pages`, `publish_pages`, etc). Click the "Request" button for each.
 1. Click the "Continue the Request" button, and continue following the steps.
 1. Fill in the verification details, by providing login credentials to your site, and instructions on how the posting functionality should work. You will also need to provide a screencast. See examples below.
+1. Once you have received approval for your app to use additional permissions, turn your Facebook App to "Live" mode.
+1. Connect Social Poster to Facebook.
 
 ### Sample description
 
