@@ -80,10 +80,7 @@ trait PluginTrait
 
     private function _setLogging()
     {
-        Craft::getLogger()->dispatcher->targets[] = new FileTarget([
-            'logFile' => Craft::getAlias('@storage/logs/social-poster.log'),
-            'categories' => ['social-poster'],
-        ]);
+        BaseHelper::setFileLogging('social-poster');
     }
 
 }
