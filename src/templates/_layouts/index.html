@@ -16,7 +16,7 @@
     {% set tabs = tabs | merge({ providers: { label: 'Providers' | t('social-poster'), url: url('social-poster/providers') } }) %}
 {% endif %}
 
-{% if currentUser.can('social-poster:settings') %}
+{% if currentUser.can('social-poster:settings') and craft.app.config.general.allowAdminChanges %}
     {% set tabs = tabs | merge({ settings: { label: 'Settings' | t('social-poster'), url: url('social-poster/settings') } }) %}
 {% endif %}
 
