@@ -9,6 +9,7 @@ Follow these steps to configure Linked.in for social poster:
 1. Click “Create App” to create a new Linked.in application.
 1. Fill all required fields and create the app.
 1. Once created, click on the "Auth" tab, and add the Redirect URI found in **Craft Control Panel → Settings → Social Poster → Providers → Linked.in**.
+1. Go to the "Products" tab, and ensure you have "Sign In with LinkedIn" and "Share on LinkedIn" enabled under the "Added Products" heading.
 
 ## Company Pages
 
