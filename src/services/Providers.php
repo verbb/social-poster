@@ -7,6 +7,7 @@ use verbb\socialposter\base\ProviderInterface;
 use verbb\socialposter\events\RegisterProviderTypesEvent;
 use verbb\socialposter\providers\Facebook;
 use verbb\socialposter\providers\LinkedIn;
+use verbb\socialposter\providers\LinkedInAlt;
 use verbb\socialposter\providers\Twitter;
 
 use Craft;
@@ -107,6 +108,7 @@ class Providers extends Component
         $providerTypes = [
             Facebook::class,
             LinkedIn::class,
+            LinkedInAlt::class,
             Twitter::class,
         ];
 
