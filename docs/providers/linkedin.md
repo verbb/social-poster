@@ -28,3 +28,28 @@ Go to the **Products** tab in your Linked.in app and click **Add more products**
 Once approved, verify you have the correct permissions via the **Auth** tab. Ensure you have `w_organization_social` and `r_organization_social` permissions. You should now be able to post to Linked.in company pages.
 
 If you try to post to a company page without these permissions, you'll likely receive a permission error.
+
+### Posting to both Company and Personal pages
+If you want to be able to post to **both** company and personal pages, you'll need to include the following scopes in your request to authenticate with the Linked.in app. Be sure to also follow the above steps to ensure your app has the correct permissions.
+
+If you haven't already done so, create a `social-poster.php` file in your `/config` directory. See the [config docs](docs:get-started/configuration) for more information.
+
+Use the following for Linked.in:
+
+```php
+'linkedin' => [
+    'oauth' => [
+        'options' => [
+            'clientId' => 'xxxxxxxxxxxx',
+            'clientSecret' => 'xxxxxxxxxxxx',
+        ],
+        'scope' => [
+            'w_organization_social',
+            'r_organization_social',
+        ],
+    ]
+],
+```
+
+Including these scopes tells Linked.in to authorise Social Poster to use these scopes. This is done automatically if you want to post to **just** the company page, but not if you want to use both. This should allow you to authorise against both possibilities.
+
