@@ -65,6 +65,14 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return null;
     }
 
+    public function getInputHtml($context)
+    {
+        $variables = $context;
+        $variables['provider'] = $this;
+
+        return Craft::$app->getView()->renderTemplate('social-poster/_providers/' . $this->getHandle() . '/input', $variables);
+    }
+
     public function oauthVersion(): int
     {
         return 2;
