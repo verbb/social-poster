@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 - 2021-03-12
+
+### Changed
+- Now requires Craft 3.6+.
+- Updated OAuth dependancies to be compatible with Guzzle 7.
+
 ## 2.1.4 - 2020-04-28
 
 ### Fixed
