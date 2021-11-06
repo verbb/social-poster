@@ -5,8 +5,11 @@ Follow these steps to configure Facebook for social poster:
 ## OAuth Configuration
 
 1. Go to the [Facebook API Manager](https://developers.facebook.com/apps).
-1. Click the “Add a New App” button to create a new Facebook application.
+1. Click the “Create App” button to create a new Facebook application.
+1. Select **None** as the App Type.
+1. Enter a suitable **Display Name** and create the app.
 1. Once created, go to your application and set up the “Facebook Login” product.
+1. Select **Web** as the type, and enter in the full URL to your site. All subsequent steps can be skipped.
 1. Go to **Facebook API Manager → Your App → Facebook Login → Settings**, fill the “Valid OAuth redirect URIs” field with the Redirect URI found in **Craft Control Panel → Settings → Social Poster → Providers → Facebook**, and save.
 1. Go to **Facebook API Manager → Your App → Settings → Basic** and copy the App ID and App Secret to **Craft Control Panel → Settings → Social Poster → Providers → Facebook**, and use them as client ID and client secret values.
 
@@ -16,7 +19,7 @@ Please note there are some limitations when it comes to posting to Facebook, due
 
 It is currently not possible to automatically post to your Facebook Wall/Timeline, due to Facebook removing the permission to do so. Even if you have a published app, you'll not be able to use this functionality any more.
 
-According to [Facebook API docs](https://developers.facebook.com/docs/graph-api/reference/v3.2/user/feed#publish):
+According to [Facebook API docs](https://developers.facebook.com/docs/graph-api/changelog/non-versioned-changes/apr-24-2018#login-4-24):
 
 ```
 As of April 24,2018, the `publish_actions` permission has been removed. Please see the [Breaking Changes Changelog](https://developers.facebook.com/docs/graph-api/changelog/breaking-changes#login-4-24) for more details. To provide a way for your app users to share content to Facebook, we encourage you to use our [Sharing products](https://developers.facebook.com/docs/sharing) instead.
@@ -36,7 +39,7 @@ Please refer to our [Submit Facebook App for Review](#submit-facebook-app-for-re
 
 ## Posting to Facebook Page
 
-In order to post to a Page, you'll be required to submit your Facebook App for review. You'll need the `manage_pages` and `publish_pages` permissions.
+In order to post to a Page, you'll be required to submit your Facebook App for review. You'll need the `pages_manage_posts` and `pages_read_user_content` permissions.
 
 Please refer to our [Submit Facebook App for Review](#submit-facebook-app-for-review) section.
 
@@ -48,7 +51,7 @@ Facebook's API's have become much more restricted in recent years, and you'll al
 1. Take note of the permissions required for the posting type you've selected (Page or Group).
 1. Turn your Facebook App to "Development" mode. There's a lightswitch control at the top of the page to toggle this.
 1. Go to "App Review" → "Permission and Features" menu.
-1. Find the permissions required as per the second step (`manage_pages`, `publish_pages`, etc). Click the "Request" button for each.
+1. Find the permissions required as per the second step (`pages_manage_posts`, `pages_read_user_content`, etc). Click the "Request" button for each.
 1. Click the "Continue the Request" button, and continue following the steps.
 1. Fill in the verification details, by providing login credentials to your site, and instructions on how the posting functionality should work. You will also need to provide a screencast. See examples below.
 1. Once you have received approval for your app to use additional permissions, turn your Facebook App to "Live" mode.
@@ -67,11 +70,11 @@ Please refer to the attached screencast outlining the steps to connect and setup
 
 Please login to our Craft CMS website, via:
 
-https://yourdomain.com/admin/
+https://craft-site.test/admin/
 Username: *******
 Password: *******
 
-Proceed to https://yourdomain.com/admin//entries/blog/5069-testing and on the right-hand side you'll see a widget to control these posts going to Facebook. Ensure that it is ticked as enabled, then hit the red "Save" button in the top-right of the page. The content of the entry you've edited should show on the Facebook Page successfully.
+Proceed to https://craft-site.test/admin/entries/an-example-entry and on the right-hand side you'll see a widget to control these posts going to Facebook. Ensure that it is ticked as enabled, then hit the red "Save" button in the top-right of the page. The content of the entry you've edited should show on the Facebook Page successfully.
 ```
 
 ### Screencast required steps
@@ -111,7 +114,7 @@ To fix, ensure your app is in development mode, not live mode.
 If your redirect URL in your Facebook app looks similar to the following:
 
 ```
-https://craftcms.com/index.php?p=actions%2Fsocial-poster%2Faccounts%2Fcallback
+https://craft-site.test/index.php?p=actions%2Fsocial-poster%2Faccounts%2Fcallback
 ```
 
 Facebook will raise an issue that this authorised redirect URI doesn't exactly match the one in Craft. This is due to the encoded characters by having the action path in a query string.
