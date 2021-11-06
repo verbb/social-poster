@@ -32,6 +32,10 @@ Supply your client configurations as per the below.
             'options' => [
                 'clientId' => 'xxxxxxxxxxxx',
                 'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                'scope' => [
+                    'some_scope',
+                    'another_scope',
+                ],
             ]
         ]
     ],
