@@ -112,7 +112,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         $oauthProviderConfig = $this->getOauthProviderConfig();
 
         if (isset($oauthProviderConfig['scope'])) {
-            $scope = $this->mergeArrayValues($scope, $oauthProviderConfig['scope']);
+            $scope = $oauthProviderConfig['scope'];
         }
 
         return $scope;
