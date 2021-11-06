@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.0 - 2021-11-06
+
+### Changed
+- Any `scope` options defined in your config files, will now overwrite default scopes, instead of merging. This is to better handle upcoming Facebook scope deprecations.
+
 ## 2.2.0 - 2021-03-12
 
 ### Changed
