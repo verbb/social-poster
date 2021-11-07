@@ -119,4 +119,4 @@ https://craft-site.test/index.php?p=actions%2Fsocial-poster%2Faccounts%2Fcallbac
 
 Facebook will raise an issue that this authorised redirect URI doesn't exactly match the one in Craft. This is due to the encoded characters by having the action path in a query string.
 
-To fix, set `usePathInfo` to `true` in your `general.php` file, which will change the redirect URL in your provider settings, and use this to update your Facebook app.
+To fix, set [usePathInfo](https://docs.craftcms.com/v3/config/config-settings.html#usepathinfo) to `true` in your `general.php` file, which will change the redirect URL in your provider settings, and use this to update your Facebook app.
