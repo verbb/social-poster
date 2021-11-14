@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.3.1 - 2021-11-14
+
+### Added
+- Add more logging for failed requests to APIs for all providers.
+
+### Changed
+- Update `guzzlehttp/oauth-subscriber:^0.6.0` dependancy to work with `guzzlehttp/psr7:^2.0`.
+
 ## 2.3.0 - 2021-11-06
 
 ### Changed
