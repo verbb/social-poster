@@ -11,6 +11,8 @@ use craft\base\SavableComponent;
 use craft\helpers\Json;
 use craft\web\Response;
 
+use GuzzleHttp\Exception\RequestException;
+
 abstract class Provider extends SavableComponent implements ProviderInterface
 {
     // Properties
@@ -165,17 +167,22 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         $data = [];
         $reasonPhrase = $exception->getMessage();
 
-        // Some more error handling - just in case!
-        try {
-            if ($exception->hasResponse()) {
-                $response = $exception->getResponse();
-                $statusCode = $response->getStatusCode();
-                $reasonPhrase = $response->getReasonPhrase();
+        // Check for Guzzle errors, which are truncated in the exception `getMessage()`.
+        if ($exception instanceof RequestException && $exception->getResponse()) {
+            $response = $exception->getResponse();
+            $statusCode = $response->getStatusCode();
+            $reasonPhrase = $response->getReasonPhrase();
 
-                // Try and get even more info
-                $data = Json::decode((string)$response->getBody());
-            }
-        } catch (\Throwable $e) {}
+            $data = Json::decode((string)$response->getBody()->getContents());
+        }
+
+        // Save more detail to the log file
+        SocialPoster::error(Craft::t('social-poster', 'Error posting to {provider}: “{message}” {file}:{line}', [
+            'provider' => $this->getName(),
+            'message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+        ]));
 
         return [
             'success' => false,
