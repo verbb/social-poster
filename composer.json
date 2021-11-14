@@ -27,7 +27,7 @@
     "require": {
         "craftcms/cms": "^3.6.0",
         "verbb/base": "^1.0.2",
-        "guzzlehttp/oauth-subscriber": "^0.4.0",
+        "guzzlehttp/oauth-subscriber": "^0.6.0",
         "facebook/graph-sdk": "^5.7",
         "league/oauth1-client": "^1.8.0",
         "league/oauth2-client": "^2.5.0",
