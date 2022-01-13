@@ -58,6 +58,10 @@
     margin-bottom: 5px;
 }
 
+.sp-field-heading-checkbox {
+    margin-left: 10px;
+}
+
 .sp-field-heading-checkbox .lightswitch-field {
     display: flex;
     align-items: center;
@@ -71,6 +75,10 @@
     font-size: 11px;
     font-weight: normal;
     color: #8f98a3;
+}
+
+.sp-field-heading-checkbox .lightswitch-field .input {
+    display: flex;
 }
 
 // ==========================================================================
