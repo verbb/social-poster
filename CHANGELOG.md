@@ -6,7 +6,7 @@
 - Add support for saving Emoji's in default account message.
 
 ### Fixed
-- Fix minor aligment issue for "Show in widget" when editing an account.
+- Fix minor alignment issue for "Show in widget" when editing an account.
 
 ## 2.3.1 - 2021-11-14
 
