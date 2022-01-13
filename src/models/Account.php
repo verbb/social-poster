@@ -6,6 +6,8 @@ use verbb\socialposter\SocialPoster;
 use craft\base\Model;
 use craft\helpers\Json;
 
+use LitEmoji\LitEmoji;
+
 class Account extends Model
 {
     // Properties
@@ -33,6 +35,13 @@ class Account extends Model
 
         if (is_string($this->settings)) {
             $this->settings = Json::decode($this->settings);
+        }
+
+        // Add Emoji support
+        if (is_array($this->settings)) {
+            foreach ($this->settings as $key => $value) {
+                $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
+            }
         }
     }
 

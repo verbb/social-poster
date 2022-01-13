@@ -12,6 +12,8 @@ use craft\db\Query;
 
 use yii\base\Component;
 
+use LitEmoji\LitEmoji;
+
 class Accounts extends Component
 {
     // Constants
@@ -86,6 +88,11 @@ class Accounts extends Component
         if ($runValidation && !$account->validate()) {
             Craft::info('Account not saved due to validation error.', __METHOD__);
             return false;
+        }
+
+        // Ensure we support Emoji's properly
+        foreach ($account->settings as $key => $value) {
+            $account->settings[$key] = LitEmoji::unicodeToShortcode($value);
         }
 
         $accountRecord = $this->_getAccountRecordById($account->id);
