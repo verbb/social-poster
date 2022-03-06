@@ -137,7 +137,7 @@ class Facebook extends Provider
                 // Get long-lived access token from the user access token
                 $accessToken = $fb->getOAuth2Client()->getLongLivedAccessToken($accessToken);
                 $fb->setDefaultAccessToken($accessToken);
-            
+
                 // Use long-lived access token to get a page access token which will never expire
                 $response = $fb->sendRequest('GET', $pageOrGroupId, ['fields' => 'access_token'])->getDecodedBody();
                 $accessToken = $response['access_token'];

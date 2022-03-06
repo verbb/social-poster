@@ -26,8 +26,8 @@ class SocialPoster extends Plugin
     // Properties
     // =========================================================================
 
-    public string $schemaVersion = '2.0.0';
     public bool $hasCpSettings = true;
+    public string $schemaVersion = '2.0.0';
 
 
     // Traits
@@ -56,7 +56,7 @@ class SocialPoster extends Plugin
         if (Craft::$app->getRequest()->getIsCpRequest()) {
             Craft::$app->view->hook('cp.entries.edit.details', [$this->getService(), 'renderEntrySidebar']);
         }
-        
+
         $this->hasCpSection = $this->getSettings()->hasCpSection;
     }
 
@@ -75,7 +75,7 @@ class SocialPoster extends Plugin
         $subNavs = [];
         $navItem = parent::getCpNavItem();
         $currentUser = Craft::$app->getUser()->getIdentity();
-        
+
         // Only show sub-navs the user has permission to view
         if ($currentUser->can('social-poster:posts')) {
             $subNavs['posts'] = [
@@ -163,7 +163,7 @@ class SocialPoster extends Plugin
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = Post::class;
         });
-    }    
+    }
 
     private function _registerPermissions(): void
     {

@@ -108,7 +108,7 @@ class Providers extends Component
         ];
 
         $event = new RegisterProviderTypesEvent([
-            'providerTypes' => $providerTypes
+            'providerTypes' => $providerTypes,
         ]);
 
         $this->trigger(self::EVENT_REGISTER_PROVIDER_TYPES, $event);

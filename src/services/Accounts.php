@@ -81,7 +81,7 @@ class Accounts extends Component
         if ($this->hasEventHandlers(self::EVENT_BEFORE_SAVE_ACCOUNT)) {
             $this->trigger(self::EVENT_BEFORE_SAVE_ACCOUNT, new AccountEvent([
                 'account' => $account,
-                'isNew' => $isNewAccount
+                'isNew' => $isNewAccount,
             ]));
         }
 
@@ -122,7 +122,7 @@ class Accounts extends Component
         if ($this->hasEventHandlers(self::EVENT_AFTER_SAVE_ACCOUNT)) {
             $this->trigger(self::EVENT_AFTER_SAVE_ACCOUNT, new AccountEvent([
                 'account' => $account,
-                'isNew' => $isNewAccount
+                'isNew' => $isNewAccount,
             ]));
         }
 
@@ -175,7 +175,7 @@ class Accounts extends Component
         // Fire a 'beforeDeleteAccount' event
         if ($this->hasEventHandlers(self::EVENT_BEFORE_DELETE_ACCOUNT)) {
             $this->trigger(self::EVENT_BEFORE_DELETE_ACCOUNT, new AccountEvent([
-                'account' => $account
+                'account' => $account,
             ]));
         }
 
@@ -207,7 +207,7 @@ class Accounts extends Component
         // Fire an 'afterDeleteAccount' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_DELETE_ACCOUNT)) {
             $this->trigger(self::EVENT_AFTER_DELETE_ACCOUNT, new AccountEvent([
-                'account' => $account
+                'account' => $account,
             ]));
         }
 

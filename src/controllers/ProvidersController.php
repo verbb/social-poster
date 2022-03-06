@@ -15,7 +15,7 @@ class ProvidersController extends Controller
     // =========================================================================
 
     public function actionIndex(): Response
-    {   
+    {
         $providers = SocialPoster::$plugin->getProviders()->getAllProviders();
 
         return $this->renderTemplate('social-poster/providers', [
@@ -50,8 +50,8 @@ class ProvidersController extends Controller
                 'options' => [
                     'clientId' => $request->getBodyParam('clientId'),
                     'clientSecret' => $request->getBodyParam('clientSecret'),
-                ]
-            ]
+                ],
+            ],
         ];
 
         if (SocialPoster::$plugin->getProviders()->saveProviderSettings($handle, $settings)) {

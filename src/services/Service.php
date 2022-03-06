@@ -32,7 +32,7 @@ class Service extends Component
 
             return null;
         }
-        
+
         if ($settings->enabledSections != '*') {
             $enabledSectionIds = Db::idsByUids(Table::SECTIONS, $settings->enabledSections);
 
@@ -121,7 +121,7 @@ class Service extends Component
 
                 continue;
             }
-                
+
             // Parse content with the entry's content
             if (isset($payload['title'])) {
                 $payload['title'] = Craft::$app->getView()->renderObjectTemplate($payload['title'], $entry);
@@ -137,13 +137,13 @@ class Service extends Component
 
             // Get the image (if one)
             $payload['picture'] = '';
-            
+
             if (isset($payload['imageField']) && $payload['imageField']) {
                 try {
                     $assetField = $entry->{$payload['imageField']};
 
                     if ($assetField && $asset = $assetField->one()) {
-                            $payload['picture'] = $asset->url;
+                        $payload['picture'] = $asset->url;
                     }
                 } catch (Throwable $e) {
                     SocialPoster::error('Unable to process asset: ' . $e->getMessage());

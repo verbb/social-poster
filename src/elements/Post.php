@@ -39,13 +39,15 @@ class Post extends Element
 
     protected static function defineSources(string $context = null): array
     {
-        $sources = [[
-            'key' => '*',
-            'label' => Craft::t('social-poster', 'All accounts'),
-            'criteria' => [],
-            'hasThumbs' => false,
-            'defaultSort' => ['elements.dateCreated', 'desc']
-        ]];
+        $sources = [
+            [
+                'key' => '*',
+                'label' => Craft::t('social-poster', 'All accounts'),
+                'criteria' => [],
+                'hasThumbs' => false,
+                'defaultSort' => ['elements.dateCreated', 'desc'],
+            ],
+        ];
 
         $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
@@ -60,7 +62,7 @@ class Post extends Element
                     'label' => Craft::t('social-poster', $account->name),
                     'criteria' => ['accountId' => $account->id],
                     'hasThumbs' => false,
-                    'defaultSort' => ['elements.dateCreated', 'desc']
+                    'defaultSort' => ['elements.dateCreated', 'desc'],
                 ];
             }
         }
@@ -226,45 +228,6 @@ class Post extends Element
         return null;
     }
 
-
-    // Indexes, etc.
-    // -------------------------------------------------------------------------
-
-    protected function tableAttributeHtml(string $attribute): string
-    {
-        switch ($attribute) {
-            case 'provider': {
-                $provider = $this->getProvider();
-                $account = $this->getProvider();
-
-                if ($provider && $account) {
-                    return '<span class="provider">' .
-                        '<div class="thumb">'.
-                            '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle .'" />' .
-                        '</div>'. $account->name .
-                    '</span>';
-                }
-            }
-            case 'success': {
-                if ($this->success) {
-                    $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
-
-                    return '<span class="status on"></span> ' . $message;
-                }
-
-                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
-
-                return '<span class="status off"></span> ' . $message;
-            }
-        }
-
-        return parent::tableAttributeHtml($attribute);
-    }
-
-
-    // Events
-    // -------------------------------------------------------------------------
-
     public function afterSave(bool $isNew): void
     {
         if (!$isNew) {
@@ -297,5 +260,42 @@ class Post extends Element
         $this->id = $record->id;
 
         parent::afterSave($isNew);
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function tableAttributeHtml(string $attribute): string
+    {
+        switch ($attribute) {
+            case 'provider':
+            {
+                $provider = $this->getProvider();
+                $account = $this->getProvider();
+
+                if ($provider && $account) {
+                    return '<span class="provider">' .
+                        '<div class="thumb">' .
+                        '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle . '" />' .
+                        '</div>' . $account->name .
+                        '</span>';
+                }
+            }
+            case 'success':
+            {
+                if ($this->success) {
+                    $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
+
+                    return '<span class="status on"></span> ' . $message;
+                }
+
+                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
+
+                return '<span class="status off"></span> ' . $message;
+            }
+        }
+
+        return parent::tableAttributeHtml($attribute);
     }
 }

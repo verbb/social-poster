@@ -29,7 +29,7 @@ class SocialPosterHelper
     {
         $imageOptions = [];
         $imageOptions[] = ['label' => Craft::t('social-poster', 'Select field'), 'value' => ''];
-        
+
         foreach (Craft::$app->getFields()->getAllFields() as $field) {
             if ($field::class === Assets::class) {
                 $imageOptions[] = ['label' => $field->name, 'value' => $field->handle];

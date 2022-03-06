@@ -180,7 +180,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
             'response' => [
                 'statusCode' => $statusCode,
                 'reasonPhrase' => $reasonPhrase,
-            ]
+            ],
         ];
     }
 
@@ -252,7 +252,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
 
         return [
             'success' => true,
-            'token' => $token
+            'token' => $token,
         ];
     }
 
@@ -264,12 +264,12 @@ abstract class Provider extends SavableComponent implements ProviderInterface
 
         // Try to get an access token (using the authorization code grant)
         $token = $provider->getAccessToken('authorization_code', [
-            'code' => $code
+            'code' => $code,
         ]);
 
         return [
             'success' => true,
-            'token' => $token
+            'token' => $token,
         ];
     }
 

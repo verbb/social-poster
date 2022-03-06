@@ -247,7 +247,7 @@ class AccountsController extends Controller
 
         if ($request->getAcceptsJson()) {
             return $this->asJson([
-                'success' => true
+                'success' => true,
             ]);
         }
 
@@ -289,13 +289,15 @@ class AccountsController extends Controller
         $token->providerHandle = $account->provider->getHandle();
 
         switch ($account->provider->oauthVersion()) {
-            case 1: {
+            case 1:
+            {
                 $token->accessToken = $response['token']->getIdentifier();
                 $token->secret = $response['token']->getSecret();
 
                 break;
             }
-            case 2: {
+            case 2:
+            {
                 $token->accessToken = $response['token']->getToken();
                 $token->endOfLife = $response['token']->getExpires();
                 $token->refreshToken = $response['token']->getRefreshToken();
@@ -313,7 +315,7 @@ class AccountsController extends Controller
 
         if (!SocialPoster::$plugin->getTokens()->saveToken($token)) {
             SocialPoster::error('Unable to save token - ' . Json::encode($token->getErrors()) . '.');
-        
+
             return null;
         }
 
@@ -321,7 +323,7 @@ class AccountsController extends Controller
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
             SocialPoster::error('Unable to save account - ' . Json::encode($account->getErrors()) . '.');
-        
+
             return null;
         }
 

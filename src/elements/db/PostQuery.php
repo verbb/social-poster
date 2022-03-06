@@ -51,7 +51,7 @@ class PostQuery extends ElementQuery
     protected function beforePrepare(): bool
     {
         $this->joinElementTable('socialposter_posts');
-            
+
         $this->query->select([
             'socialposter_posts.id',
             'socialposter_posts.accountId',
