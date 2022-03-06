@@ -7,35 +7,48 @@ use craft\base\Model;
 use craft\helpers\Json;
 
 use LitEmoji\LitEmoji;
+use DateTime;
 
 class Account extends Model
 {
     // Properties
     // =========================================================================
 
-    public $id;
-    public $name;
-    public $handle;
-    public $enabled;
-    public $autoPost;
-    public $providerHandle;
-    public $settings;
-    public $sortOrder;
-    public $tokenId;
-    public $dateCreated;
-    public $dateUpdated;
+    public ?int $id = null;
+    public ?string $name = null;
+    public ?string $handle = null;
+    public ?bool $enabled = null;
+    public ?bool $autoPost = null;
+    public ?string $providerHandle = null;
+    public ?array $settings = null;
+    public ?int $sortOrder = null;
+    public ?int $tokenId = null;
+    public ?DateTime $dateCreated = null;
+    public ?DateTime $dateUpdated = null;
 
 
     // Public Methods
     // =========================================================================
 
-    public function init()
+    public function __construct($config = [])
+    {
+        // Config normalization
+        if (array_key_exists('settings', $config)) {
+            if (is_string($config['settings'])) {
+                $config['settings'] = Json::decodeIfJson($config['settings']);
+            }
+
+            if (!is_array($config['settings'])) {
+                unset($config['settings']);
+            }
+        }
+
+        parent::__construct($config);
+    }
+
+    public function init(): void
     {
         parent::init();
-
-        if (is_string($this->settings)) {
-            $this->settings = Json::decode($this->settings);
-        }
 
         // Add Emoji support
         if (is_array($this->settings)) {
@@ -45,7 +58,7 @@ class Account extends Model
         }
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'sortOrder'], 'number', 'integerOnly' => true],
@@ -59,7 +72,7 @@ class Account extends Model
 
     public function getIsNew(): bool
     {
-        return (!$this->id || strpos($this->id, 'new') === 0);
+        return (!$this->id || str_starts_with($this->id, 'new'));
     }
 
     public function getProviderIsConfigured(): bool
@@ -86,14 +99,10 @@ class Account extends Model
 
     public function getCanPost(): bool
     {
-        if ($this->enabled && $this->provider->isConfigured() && $this->getToken()) {
-            return true;
-        }
-
-        return false;
+        return $this->enabled && $this->getProvider()->isConfigured() && $this->getToken();
     }
 
-    public function getToken()
+    public function getToken(): ?Token
     {
         if ($this->tokenId) {
             return SocialPoster::$plugin->getTokens()->getTokenById($this->tokenId);
@@ -102,7 +111,7 @@ class Account extends Model
         return null;
     }
 
-    public function getConnected()
+    public function getConnected(): ?Token
     {
         return $this->getToken();
     }

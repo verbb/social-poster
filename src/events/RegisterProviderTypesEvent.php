@@ -8,5 +8,5 @@ class RegisterProviderTypesEvent extends Event
     // Properties
     // =========================================================================
 
-    public $providerTypes = [];
+    public array $providerTypes = [];
 }

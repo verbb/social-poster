@@ -12,24 +12,27 @@ use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
 
-use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+
+use Throwable;
+use Exception;
 
 class AccountsController extends Controller
 {
     // Constants
     // =========================================================================
 
-    const EVENT_AFTER_OAUTH_CALLBACK = 'afterOauthCallback';
+    public const EVENT_AFTER_OAUTH_CALLBACK = 'afterOauthCallback';
 
 
     // Properties
     // =========================================================================
 
-    protected $allowAnonymous = ['callback'];
-    private $redirect;
-    private $originUrl;
+    protected array|bool|int $allowAnonymous = ['callback'];
+    
+    private ?string $redirect = null;
+    private ?string $originUrl = null;
 
 
     // Public Methods
@@ -98,6 +101,7 @@ class AccountsController extends Controller
 
     public function actionSave(): Response
     {
+        $result = null;
         $this->requirePostRequest();
 
         $request = Craft::$app->getRequest();
@@ -113,7 +117,7 @@ class AccountsController extends Controller
         $account->id = $accountId;
         $account->name = $request->getBodyParam('name');
         $account->handle = $request->getBodyParam('handle');
-        $account->enabled = $request->getBodyParam('enabled');
+        $account->enabled = (bool)$request->getBodyParam('enabled');
         $account->autoPost = $request->getBodyParam('autoPost');
         $account->providerHandle = $request->getBodyParam('providerHandle');
         $account->settings = $request->getBodyParam('providerSettings.' . $account->providerHandle);
@@ -174,20 +178,20 @@ class AccountsController extends Controller
         $this->redirect = (string)$request->getParam('redirect');
 
         if (!$accountId) {
-            throw new \Exception('Account ID `' . $accountId . '` missing.');
+            throw new Exception('Account ID `' . $accountId . '` missing.');
         }
 
         $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
 
         if (!$account) {
-            throw new \Exception('Account #' . $accountId . ' does not exist.');
+            throw new Exception('Account #' . $accountId . ' does not exist.');
         }
 
         try {
-            $provider = $account->provider;
+            $provider = $account->getProvider();
 
             if (!$provider) {
-                throw new \Exception('Provider is not configured');
+                throw new Exception('Provider is not configured');
             }
 
             // Set the account on the provider so we can access stuff
@@ -209,21 +213,21 @@ class AccountsController extends Controller
                 return $this->_createToken($callbackResponse, $account);
             }
 
-            throw new \Exception($callbackResponse['errorMsg']);
-        } catch (\Throwable $e) {
+            throw new Exception($callbackResponse['errorMsg']);
+        } catch (Throwable $e) {
             $errorMsg = $e->getMessage();
 
             // Try and get a more meaningful error message
             $errorTitle = $request->getParam('error');
             $errorDescription = $request->getParam('error_description');
 
-            SocialPoster::error('Couldn’t connect to ' . $account->provider . ' ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
+            SocialPoster::error('Couldn’t connect to ' . $account->getProvider() . ' ' . $e->getMessage() . ' - ' . $e->getFile() . ': ' . $e->getLine() . '.');
 
             if ($errorTitle || $errorDescription) {
                 $errorMsg = $errorTitle . ' ' . $errorDescription;
             }
 
-            SocialPoster::error($account->provider . ' Response: ' . $errorMsg);
+            SocialPoster::error($account->getProvider() . ' Response: ' . $errorMsg);
             $session->setFlash('error', $errorMsg);
 
             $this->_cleanSession();
@@ -258,7 +262,7 @@ class AccountsController extends Controller
 
         $url = Craft::$app->getSession()->get('socialposter.controllerUrl');
 
-        if (strpos($url, '?') === false) {
+        if (!str_contains($url, '?')) {
             $url .= '?';
         } else {
             $url .= '&';
@@ -279,7 +283,7 @@ class AccountsController extends Controller
     // Private Methods
     // =========================================================================
 
-    private function _createToken($response, $account)
+    private function _createToken($response, $account): ?Response
     {
         $token = new Token();
         $token->providerHandle = $account->provider->getHandle();
@@ -308,7 +312,7 @@ class AccountsController extends Controller
         }
 
         if (!SocialPoster::$plugin->getTokens()->saveToken($token)) {
-            SocialPoster::error('Unable to save token - ' . json_encode($token->getErrors()) . '.');
+            SocialPoster::error('Unable to save token - ' . Json::encode($token->getErrors()) . '.');
         
             return null;
         }
@@ -316,7 +320,7 @@ class AccountsController extends Controller
         $account->tokenId = $token->id;
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
-            SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
+            SocialPoster::error('Unable to save account - ' . Json::encode($account->getErrors()) . '.');
         
             return null;
         }
@@ -332,24 +336,22 @@ class AccountsController extends Controller
         return $this->redirect($this->redirect);
     }
 
-    private function _deleteToken($account)
+    private function _deleteToken($account): void
     {
+        $token = null;
+
         if (!SocialPoster::$plugin->getTokens()->deleteTokenById($account->tokenId)) {
-            SocialPoster::error('Unable to delete token - ' . json_encode($token->getErrors()) . '.');
-        
-            return null;
+            SocialPoster::error('Unable to delete token - ' . Json::encode($token->getErrors()) . '.');
         }
 
         $account->tokenId = null;
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
-            SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
-        
-            return null;
+            SocialPoster::error('Unable to save account - ' . Json::encode($account->getErrors()) . '.');
         }
     }
 
-    private function _cleanSession()
+    private function _cleanSession(): void
     {
         Craft::$app->getSession()->remove('socialposter.originUrl');
     }

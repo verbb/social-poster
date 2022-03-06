@@ -2,29 +2,28 @@
 namespace verbb\socialposter\variables;
 
 use verbb\socialposter\SocialPoster;
-use verbb\socialposter\elements\db\PostQuery;
 use verbb\socialposter\elements\Post;
 use verbb\socialposter\helpers\SocialPosterHelper;
 
 use Craft;
-use craft\fields\Assets;
-use craft\web\View;
-
-use yii\base\Behavior;
+use craft\elements\db\ElementQueryInterface;
 
 class SocialPosterVariable
 {
-    public function getPluginName()
+    // Public Methods
+    // =========================================================================
+
+    public function getPluginName(): string
     {
         return SocialPoster::$plugin->getPluginName();
     }
 
-    public function getAssetFieldOptions()
+    public function getAssetFieldOptions(): array
     {
         return SocialPosterHelper::getAssetFieldOptions();
     }
 
-    public function posts($criteria = null): PostQuery
+    public function posts($criteria = null): ElementQueryInterface
     {
         $query = Post::find();
 

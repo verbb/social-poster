@@ -7,7 +7,7 @@ use craft\helpers\UrlHelper;
 
 class SocialPosterHelper
 {
-    // Public Methods
+    // Static Methods
     // =========================================================================
 
     public static function siteActionUrl(string $path = '', $params = null, string $protocol = null): string
@@ -22,17 +22,16 @@ class SocialPosterHelper
         Craft::$app->getConfig()->getGeneral()->addTrailingSlashesToUrls = $addTrailingSlashesToUrls;
 
         // We don't want the CP trigger showing in the action URL.
-        $redirectUri = str_replace(Craft::$app->getConfig()->getGeneral()->cpTrigger . '/', '', $redirectUri);
-
-        return $redirectUri;
+        return str_replace(Craft::$app->getConfig()->getGeneral()->cpTrigger . '/', '', $redirectUri);
     }
 
-    public static function getAssetFieldOptions()
+    public static function getAssetFieldOptions(): array
     {
+        $imageOptions = [];
         $imageOptions[] = ['label' => Craft::t('social-poster', 'Select field'), 'value' => ''];
         
         foreach (Craft::$app->getFields()->getAllFields() as $field) {
-            if (get_class($field) === Assets::class) {
+            if ($field::class === Assets::class) {
                 $imageOptions[] = ['label' => $field->name, 'value' => $field->handle];
             }
         }

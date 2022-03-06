@@ -5,12 +5,12 @@ use craft\base\Model;
 
 class Settings extends Model
 {
-    // Public Properties
+    // Properties
     // =========================================================================
 
-    public $pluginName = 'Social Poster';
-    public $hasCpSection = false;
-    public $enabledSections = '*';
-    public $providers = [];
+    public string $pluginName = 'Social Poster';
+    public bool $hasCpSection = false;
+    public mixed $enabledSections = '*';
+    public array $providers = [];
 
 }

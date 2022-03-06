@@ -1,10 +1,7 @@
 <?php
 namespace verbb\socialposter\base;
 
-use verbb\socialposter\models\Account;
-
 use craft\base\SavableComponentInterface;
-use craft\web\Response;
 
 interface ProviderInterface extends SavableComponentInterface
 {

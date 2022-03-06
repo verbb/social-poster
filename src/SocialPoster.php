@@ -7,6 +7,7 @@ use verbb\socialposter\models\Settings;
 use verbb\socialposter\variables\SocialPosterVariable;
 
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
 use craft\elements\Entry;
 use craft\events\RegisterComponentTypesEvent;
@@ -19,15 +20,14 @@ use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 
 use yii\base\Event;
-use yii\web\User;
 
 class SocialPoster extends Plugin
 {
-    // Public Properties
+    // Properties
     // =========================================================================
 
-    public $schemaVersion = '2.0.0';
-    public $hasCpSettings = true;
+    public string $schemaVersion = '2.0.0';
+    public bool $hasCpSettings = true;
 
 
     // Traits
@@ -39,7 +39,7 @@ class SocialPoster extends Plugin
     // Public Methods
     // =========================================================================
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -60,17 +60,17 @@ class SocialPoster extends Plugin
         $this->hasCpSection = $this->getSettings()->hasCpSection;
     }
 
-    public function getPluginName()
+    public function getPluginName(): string
     {
         return Craft::t('social-poster', $this->getSettings()->pluginName);
     }
 
-    public function getSettingsResponse()
+    public function getSettingsResponse(): mixed
     {
-        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('social-poster/settings'));
+        return Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('social-poster/settings'));
     }
 
-    public function getCpNavItem(): array
+    public function getCpNavItem(): ?array
     {
         $subNavs = [];
         $navItem = parent::getCpNavItem();
@@ -118,7 +118,7 @@ class SocialPoster extends Plugin
     // Protected Methods
     // =========================================================================
 
-    protected function createSettingsModel(): Settings
+    protected function createSettingsModel(): ?Model
     {
         return new Settings();
     }
@@ -127,7 +127,7 @@ class SocialPoster extends Plugin
     // Private Methods
     // =========================================================================
 
-    private function _registerCpRoutes()
+    private function _registerCpRoutes(): void
     {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
             $event->rules = array_merge($event->rules, [
@@ -144,28 +144,28 @@ class SocialPoster extends Plugin
         });
     }
 
-    private function _registerVariables()
+    private function _registerVariables(): void
     {
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
             $event->sender->set('socialPoster', SocialPosterVariable::class);
         });
     }
 
-    private function _registerCraftEventListeners()
+    private function _registerCraftEventListeners(): void
     {
         if (Craft::$app->getRequest()->getIsCpRequest() || Craft::$app->getRequest()->getIsSiteRequest()) {
             Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, [$this->getService(), 'onAfterSaveEntry']);
         }
     }
 
-    private function _registerElementTypes()
+    private function _registerElementTypes(): void
     {
         Event::on(Elements::class, Elements::EVENT_REGISTER_ELEMENT_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = Post::class;
         });
     }    
 
-    private function _registerPermissions()
+    private function _registerPermissions(): void
     {
         Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
             $event->permissions[Craft::t('social-poster', 'Social Poster')] = [

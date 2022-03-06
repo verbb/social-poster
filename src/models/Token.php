@@ -8,19 +8,21 @@ use craft\base\Model;
 use League\OAuth1\Client\Credentials\TokenCredentials;
 use League\OAuth2\Client\Token\AccessToken;
 
+use DateTime;
+
 class Token extends Model
 {
-    // Public Properties
+    // Properties
     // =========================================================================
 
-    public $id;
-    public $providerHandle;
-    public $accessToken;
-    public $secret;
-    public $endOfLife;
-    public $refreshToken;
-    public $dateCreated;
-    public $dateUpdated;
+    public ?int $id = null;
+    public ?string $providerHandle = null;
+    public ?string $accessToken = null;
+    public ?string $secret = null;
+    public ?string $endOfLife = null;
+    public ?string $refreshToken = null;
+    public ?DateTime $dateCreated = null;
+    public ?DateTime $dateUpdated = null;
 
 
     // Public Methods
@@ -31,8 +33,9 @@ class Token extends Model
         return SocialPoster::$plugin->getProviders()->getProvider($this->providerHandle);
     }
 
-    public function getToken()
+    public function getToken(): AccessToken|TokenCredentials|null
     {
+        $response = [];
         $provider = $this->getProvider();
 
         if ($provider) {
@@ -50,16 +53,16 @@ class Token extends Model
                     // ]);
                 }
                 case 2: {
-                    $realToken = new AccessToken([
+                    return new AccessToken([
                         'access_token' => $this->accessToken,
                         'refresh_token' => $this->refreshToken,
                         'secret' => $this->secret,
                         'expires' => $this->endOfLife,
                     ]);
-
-                    return $realToken;
                 }
             }
         }
+
+        return null;
     }
 }

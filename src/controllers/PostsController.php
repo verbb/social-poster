@@ -6,17 +6,19 @@ use verbb\socialposter\SocialPoster;
 use Craft;
 use craft\web\Controller;
 
+use yii\web\Response;
+
 class PostsController extends Controller
 {
     // Public Methods
     // =========================================================================
 
-    public function actionIndex()
+    public function actionIndex(): Response
     {
         return $this->renderTemplate('social-poster/posts');
     }
 
-    public function actionEdit(int $postId = null)
+    public function actionEdit(int $postId = null): Response
     {
         $request = Craft::$app->getRequest();
 
@@ -27,7 +29,7 @@ class PostsController extends Controller
         ]);
     }
 
-    public function actionRepost()
+    public function actionRepost(): Response
     {
         $this->requirePostRequest();
 

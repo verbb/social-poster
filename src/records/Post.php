@@ -1,10 +1,9 @@
 <?php
 namespace verbb\socialposter\records;
 
+use craft\db\ActiveQuery;
 use craft\db\ActiveRecord;
 use craft\records\Element;
-
-use yii\db\ActiveQueryInterface;
 
 class Post extends ActiveRecord
 {
@@ -16,12 +15,12 @@ class Post extends ActiveRecord
         return '{{%socialposter_posts}}';
     }
 
-    public function getElement(): ActiveQueryInterface
+    public function getElement(): ActiveQuery
     {
         return $this->hasOne(Element::class, ['id' => 'id']);
     }
 
-    public function getOwner(): ActiveQueryInterface
+    public function getOwner(): ActiveQuery
     {
         return $this->hasOne(Element::class, ['id' => 'ownerId']);
     }

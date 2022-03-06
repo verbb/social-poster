@@ -1,25 +1,22 @@
 <?php
 namespace verbb\socialposter\migrations;
 
-use verbb\socialposter\SocialPoster;
 use verbb\socialposter\elements\Post;
 
 use Craft;
 use craft\db\Migration;
 use craft\db\Query;
-use craft\db\Table;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
 use craft\helpers\MigrationHelper;
-use craft\services\Plugins;
 
 class m190312_000000_craft_3 extends Migration
 {
     // Public Methods
     // =========================================================================
 
-    public function safeUp()
+    public function safeUp(): bool
     {
         // Create the new tokens table
         if (!$this->db->tableExists('{{%socialposter_tokens}}')) {
@@ -163,15 +160,21 @@ class m190312_000000_craft_3 extends Migration
             // Re-enable FK checks
             $this->execute($queryBuilder->checkIntegrity(true));
         }
+
+        return true;
    }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         echo "m190312_000000_craft_3 cannot be reverted.\n";
         return false;
     }
 
-    private function convertPostsToElements()
+
+    // Private Methods
+    // =========================================================================
+
+    private function convertPostsToElements(): void
     {
         $db = Craft::$app->getDb();
 

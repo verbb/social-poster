@@ -1,7 +1,6 @@
 <?php
 namespace verbb\socialposter\services;
 
-use verbb\socialposter\SocialPoster;
 use verbb\socialposter\elements\Post;
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\models\Account;
@@ -13,25 +12,26 @@ use craft\db\Query;
 use yii\base\Component;
 
 use LitEmoji\LitEmoji;
+use Exception;
+use Throwable;
 
 class Accounts extends Component
 {
     // Constants
     // =========================================================================
 
-    const EVENT_BEFORE_SAVE_ACCOUNT = 'beforeSaveAccount';
-    const EVENT_AFTER_SAVE_ACCOUNT = 'afterSaveAccount';
-    const EVENT_BEFORE_DELETE_ACCOUNT = 'beforeDeleteAccount';
-    const EVENT_AFTER_DELETE_ACCOUNT = 'afterDeleteAccount';
+    public const EVENT_BEFORE_SAVE_ACCOUNT = 'beforeSaveAccount';
+    public const EVENT_AFTER_SAVE_ACCOUNT = 'afterSaveAccount';
+    public const EVENT_BEFORE_DELETE_ACCOUNT = 'beforeDeleteAccount';
+    public const EVENT_AFTER_DELETE_ACCOUNT = 'afterDeleteAccount';
 
 
     // Properties
     // =========================================================================
 
-    // private $_allAccountIds;
-    private $_accountsById;
-    private $_fetchedAllAccounts = false;
-    private $_overrides;
+    private ?array $_accountsById = null;
+    private bool $_fetchedAllAccounts = false;
+    private ?array $_overrides = null;
 
 
     // Public Methods
@@ -55,7 +55,7 @@ class Accounts extends Component
         return array_values($this->_accountsById);
     }
 
-    public function getAccountById($id)
+    public function getAccountById($id): ?Account
     {
         $result = $this->_createAccountQuery()
             ->where(['id' => $id])
@@ -64,7 +64,7 @@ class Accounts extends Component
         return $result ? new Account($result) : null;
     }
 
-    public function getAccountByHandle($handle)
+    public function getAccountByHandle($handle): ?Account
     {
         $result = $this->_createAccountQuery()
             ->where(['handle' => $handle])
@@ -141,7 +141,7 @@ class Accounts extends Component
             }
 
             $transaction->commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $transaction->rollBack();
 
             throw $e;
@@ -198,7 +198,7 @@ class Accounts extends Component
                 ->execute();
 
             $transaction->commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $transaction->rollBack();
 
             throw $e;

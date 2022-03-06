@@ -2,9 +2,6 @@
 namespace verbb\socialposter\records;
 
 use craft\db\ActiveRecord;
-use craft\records\Structure;
-
-use yii\db\ActiveQueryInterface;
 
 class Account extends ActiveRecord
 {

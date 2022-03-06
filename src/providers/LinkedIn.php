@@ -1,15 +1,17 @@
 <?php
 namespace verbb\socialposter\providers;
 
-use verbb\socialposter\SocialPoster;
 use verbb\socialposter\base\Provider;
 use verbb\socialposter\helpers\SocialPosterHelper;
-use verbb\socialposter\models\Account;
 
 use Craft;
 use craft\helpers\Json;
 
 use League\OAuth2\Client\Provider\LinkedIn as LinkedInProvider;
+
+use Throwable;
+
+use GuzzleHttp\Client;
 
 class LinkedIn extends Provider
 {
@@ -21,7 +23,7 @@ class LinkedIn extends Provider
         return 'LinkedIn';
     }
 
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         $assetFieldOptions = SocialPosterHelper::getAssetFieldOptions();
 
@@ -50,7 +52,7 @@ class LinkedIn extends Provider
         return $scopes;
     }
 
-    public function getManagerUrl()
+    public function getManagerUrl(): ?string
     {
         return 'https://www.linkedin.com/developer/apps';
     }
@@ -61,19 +63,18 @@ class LinkedIn extends Provider
         return new LinkedInProvider($config['options']);
     }
 
-    public function getResponseUrl($data)
+    public function getResponseUrl($data): ?string
     {
-        if (isset($data['updateUrl'])) {
-            return $data['updateUrl'];
-        }
+        return $data['updateUrl'] ?? null;
     }
 
-    public function sendPost($account, $content)
+    public function sendPost($account, $content): array
     {
         try {
             $token = $account->getToken();
             $client = $this->getClient($token);
 
+            $ownerUrn = '';
             $endpoint = $content['endpoint'] ?? 'person';
 
             if ($endpoint === 'person') {
@@ -119,7 +120,7 @@ class LinkedIn extends Provider
             ]);
 
             return $this->getPostResponse($response);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $this->getPostExceptionResponse($e);
         }
     }
@@ -128,7 +129,7 @@ class LinkedIn extends Provider
     // Private Methods
     // =========================================================================
 
-    private function getClient($token)
+    private function getClient($token): Client
     {
         return Craft::createGuzzleClient([
             'base_uri' => 'https://api.linkedin.com/v2/',

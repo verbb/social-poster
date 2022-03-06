@@ -4,7 +4,6 @@ namespace verbb\socialposter\base;
 use verbb\socialposter\SocialPoster;
 use verbb\socialposter\helpers\SocialPosterHelper;
 use verbb\socialposter\models\Account;
-use verbb\socialposter\models\Token;
 
 use Craft;
 use craft\base\SavableComponent;
@@ -13,30 +12,32 @@ use craft\web\Response;
 
 use GuzzleHttp\Exception\RequestException;
 
+use Exception;
+
 abstract class Provider extends SavableComponent implements ProviderInterface
 {
     // Properties
     // =========================================================================
 
-    public $account;
+    public ?Account $account = null;
 
 
     // Public Methods
     // =========================================================================
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
 
     public function getHandle(): string
     {
-        $class = $this->displayName();
+        $class = static::displayName();
 
         return strtolower($class);
     }
 
-    public function getIconUrl()
+    public function getIconUrl(): bool|string
     {
         return Craft::$app->assetManager->getPublishedUrl('@verbb/socialposter/resources/dist/img/' . $this->getHandle() . '.svg', true);
     }
@@ -52,22 +53,22 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return false;
     }
 
-    public function getManagerUrl()
+    public function getManagerUrl(): ?string
     {
         return null;
     }
 
-    public function getScopeDocsUrl()
+    public function getScopeDocsUrl(): ?string
     {
         return null;
     }
 
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         return null;
     }
 
-    public function getInputHtml($context)
+    public function getInputHtml($context): string
     {
         $variables = $context;
         $variables['provider'] = $this;
@@ -80,32 +81,22 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return 2;
     }
 
-    public function oauthConnect()
+    public function oauthConnect(): Response
     {
-        switch ($this->oauthVersion()) {
-            case 1: {
-                return $this->oauth1Connect();
-            }
-            case 2: {
-                return $this->oauth2Connect();
-            }
-        }
-
-        throw new LoginException('OAuth version not supported');
+        return match ($this->oauthVersion()) {
+            1 => $this->oauth1Connect(),
+            2 => $this->oauth2Connect(),
+            default => throw new Exception('OAuth version not supported'),
+        };
     }
 
-    public function oauthCallback()
+    public function oauthCallback(): array
     {
-        switch ($this->oauthVersion()) {
-            case 1: {
-                return $this->oauth1Callback();
-            }
-            case 2: {
-                return $this->oauth2Callback();
-            }
-        }
-
-        throw new LoginException('OAuth version not supported');
+        return match ($this->oauthVersion()) {
+            1 => $this->oauth1Callback(),
+            2 => $this->oauth2Callback(),
+            default => throw new Exception('OAuth version not supported'),
+        };
     }
 
     public function getOauthScope(): array
@@ -120,7 +111,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return $scope;
     }
 
-    public function getOauthAuthorizationOptions()
+    public function getOauthAuthorizationOptions(): array
     {
         $authorizationOptions = $this->getDefaultOauthAuthorizationOptions();
         $config = $this->getOauthProviderConfig();
@@ -161,7 +152,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         return SocialPoster::$plugin->getProviders()->getProviderConfig($this->getHandle());
     }
 
-    protected function getPostExceptionResponse($exception)
+    protected function getPostExceptionResponse($exception): array
     {
         $statusCode = '[error]';
         $data = [];
@@ -194,7 +185,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         ];
     }
 
-    protected function getPostResponse($response)
+    protected function getPostResponse($response): array
     {
         $data = Json::decode((string)$response->getBody());
 
@@ -203,7 +194,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
             'reasonPhrase' => $response->getReasonPhrase(),
         ];
 
-        $success = isset($data['id']) ? true : false;
+        $success = isset($data['id']);
 
         return [
             'success' => $success,

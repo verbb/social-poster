@@ -11,14 +11,16 @@ use craft\elements\Entry;
 use craft\events\ModelEvent;
 use craft\helpers\Db;
 use craft\helpers\ElementHelper;
-use craft\helpers\UrlHelper;
+use craft\helpers\Json;
+
+use Throwable;
 
 class Service extends Component
 {
     // Public Methods
     // =========================================================================
 
-    public function renderEntrySidebar(&$context)
+    public function renderEntrySidebar(&$context): ?string
     {
         $settings = SocialPoster::$plugin->getSettings();
 
@@ -28,7 +30,7 @@ class Service extends Component
         if (!$settings->enabledSections) {
             SocialPoster::log('New enabled sections.');
 
-            return;
+            return null;
         }
         
         if ($settings->enabledSections != '*') {
@@ -37,7 +39,7 @@ class Service extends Component
             if (!in_array($context['entry']->sectionId, $enabledSectionIds)) {
                 SocialPoster::log('Entry not in allowed section.');
 
-                return;
+                return null;
             }
         }
 
@@ -55,7 +57,7 @@ class Service extends Component
         if (!$accounts) {
             SocialPoster::log('No accounts configured.');
 
-            return;
+            return null;
         }
 
         $posts = [];
@@ -78,7 +80,7 @@ class Service extends Component
         ]);
     }
 
-    public function onAfterSaveEntry(ModelEvent $event)
+    public function onAfterSaveEntry(ModelEvent $event): void
     {
         $request = Craft::$app->getRequest();
 
@@ -139,27 +141,23 @@ class Service extends Component
                 try {
                     $assetField = $entry->{$payload['imageField']};
 
-                    if ($assetField) {
-                        $asset = $assetField->one() ?? null;
-
-                        if ($asset) {
+                    if ($assetField && $asset = $assetField->one()) {
                             $payload['picture'] = $asset->url;
-                        }
                     }
-                } catch (\Thowable $e) {
+                } catch (Throwable $e) {
                     SocialPoster::error('Unable to process asset: ' . $e->getMessage());
                 }
             }
 
             // Make the actual social post
-            $postResult = $account->provider->sendPost($account, $payload);
+            $postResult = $account->getProvider()->sendPost($account, $payload);
 
             // Save it to out Posts table - no matter the result
             if ($postResult) {
                 $post = new Post();
                 $post->ownerId = $entry->id;
                 $post->ownerSiteId = $entry->siteId;
-                $post->ownerType = get_class($entry);
+                $post->ownerType = $entry::class;
                 $post->accountId = $account->id;
                 $post->settings = $payload;
                 $post->response = $postResult['response'] ?? [];
@@ -167,10 +165,10 @@ class Service extends Component
                 $post->data = $postResult['data'] ?? [];
 
                 if (!Craft::$app->getElements()->saveElement($post)) {
-                    SocialPoster::error('Unable to save post: ' . json_encode($post->getErrors()));
+                    SocialPoster::error('Unable to save post: ' . Json::encode($post->getErrors()));
                 }
             } else {
-                SocialPoster::error('Unknown result for post: ' . json_encode($postResult));
+                SocialPoster::error('Unknown result for post: ' . Json::encode($postResult));
             }
         }
     }

@@ -13,22 +13,24 @@ use yii\base\Component;
 
 use League\OAuth2\Client\Grant\RefreshToken;
 
+use Exception;
+
 class Tokens extends Component
 {
     // Constants
     // =========================================================================
 
-    const EVENT_BEFORE_SAVE_TOKEN = 'beforeSaveToken';
-    const EVENT_AFTER_SAVE_TOKEN = 'afterSaveToken';
-    const EVENT_BEFORE_DELETE_TOKEN = 'beforeDeleteToken';
-    const EVENT_AFTER_DELETE_TOKEN = 'afterDeleteToken';
+    public const EVENT_BEFORE_SAVE_TOKEN = 'beforeSaveToken';
+    public const EVENT_AFTER_SAVE_TOKEN = 'afterSaveToken';
+    public const EVENT_BEFORE_DELETE_TOKEN = 'beforeDeleteToken';
+    public const EVENT_AFTER_DELETE_TOKEN = 'afterDeleteToken';
 
 
     // Properties
     // =========================================================================
 
-    private $_tokensById;
-    private $_fetchedAllTokens = false;
+    private ?array $_tokensById = null;
+    private bool $_fetchedAllTokens = false;
 
 
     // Public Methods
@@ -52,7 +54,7 @@ class Tokens extends Component
         return array_values($this->_tokensById);
     }
 
-    public function getTokenById(int $id)
+    public function getTokenById(int $id): ?Token
     {
         $result = $this->_createTokenQuery()
             ->where(['id' => $id])
@@ -171,7 +173,7 @@ class Tokens extends Component
         return $tokenRecord;
     }
 
-    private function _createToken($config)
+    private function _createToken($config): Token
     {
         $token = new Token($config);
 
@@ -183,7 +185,7 @@ class Tokens extends Component
         return $token;
     }
 
-    private function _refreshToken(Token $token)
+    private function _refreshToken(Token $token): bool
     {
         $time = time();
 

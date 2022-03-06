@@ -1,6 +1,8 @@
 <?php
 namespace verbb\socialposter\events;
 
+use verbb\socialposter\models\Account;
+
 use yii\base\Event;
 
 class AccountEvent extends Event
@@ -8,7 +10,7 @@ class AccountEvent extends Event
     // Properties
     // =========================================================================
 
-    public $account;
-    public $isNew = false;
+    public Account $account;
+    public bool $isNew = false;
 
 }

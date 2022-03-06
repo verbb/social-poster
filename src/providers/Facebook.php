@@ -1,15 +1,14 @@
 <?php
 namespace verbb\socialposter\providers;
 
-use verbb\socialposter\SocialPoster;
 use verbb\socialposter\base\Provider;
 use verbb\socialposter\helpers\SocialPosterHelper;
-use verbb\socialposter\models\Account;
 
 use Craft;
-use craft\helpers\Json;
 
 use League\OAuth2\Client\Provider\Facebook as FacebookProvider;
+
+use Throwable;
 
 class Facebook extends Provider
 {
@@ -21,7 +20,7 @@ class Facebook extends Provider
         return 'Facebook';
     }
 
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         $assetFieldOptions = SocialPosterHelper::getAssetFieldOptions();
 
@@ -55,12 +54,12 @@ class Facebook extends Provider
         ];
     }
 
-    public function getManagerUrl()
+    public function getManagerUrl(): ?string
     {
         return 'https://developers.facebook.com/apps';
     }
 
-    public function getScopeDocsUrl()
+    public function getScopeDocsUrl(): ?string
     {
         return 'https://developers.facebook.com/docs/facebook-login/permissions';
     }
@@ -99,14 +98,16 @@ class Facebook extends Provider
         return new FacebookProvider($config['options']);
     }
 
-    public function getResponseUrl($data)
+    public function getResponseUrl($data): ?string
     {
         if (isset($data['id'])) {
             return 'https://facebook.com/' . $data['id'];
         }
+
+        return null;
     }
 
-    public function sendPost($account, $content)
+    public function sendPost($account, $content): array
     {
         try {
             $token = $account->getToken();
@@ -122,7 +123,7 @@ class Facebook extends Provider
                 $pageOrGroupId = $endpoint = $content['groupId'];
             }
 
-            $fb = new \Facebook\Facebook([
+            $fb = new \JanuSoftware\Facebook\Facebook([
                 'app_id' => $info['options']['clientId'],
                 'app_secret' => $info['options']['clientSecret'],
                 'default_graph_version' => 'v2.10',
@@ -159,7 +160,7 @@ class Facebook extends Provider
             ]);
 
             return $this->getPostResponse($response);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $this->getPostExceptionResponse($e);
         }
     }

@@ -25,7 +25,7 @@ class ProvidersController extends Controller
 
     public function actionOauth($handle): Response
     {
-        $provider = SocialPoster::$plugin->getProviders()->getProvider($handle, false);
+        $provider = SocialPoster::$plugin->getProviders()->getProvider($handle);
         $oauthProviderConfig = SocialPoster::$plugin->getProviders()->getOauthProviderConfig($handle);
 
         if ($provider) {
@@ -38,7 +38,7 @@ class ProvidersController extends Controller
         throw new HttpException(404);
     }
 
-    public function actionSaveOauthProvider()
+    public function actionSaveOauthProvider(): ?Response
     {
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();

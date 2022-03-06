@@ -1,47 +1,44 @@
 <?php
 namespace verbb\socialposter\elements\db;
 
-use Craft;
-use craft\db\Query;
+use craft\base\ElementInterface;
 use craft\elements\db\ElementQuery;
 use craft\helpers\Db;
-
-use yii\db\Connection;
 
 class PostQuery extends ElementQuery
 {
     // Properties
     // =========================================================================
 
-    public $id;
-    public $ownerId;
-    public $ownerSiteId;
-    public $accountId;
-    public $response;
+    public mixed $id = null;
+    public mixed $ownerId = null;
+    public mixed $ownerSiteId = null;
+    public mixed $accountId = null;
+    public mixed $response = null;
 
 
     // Public Methods
     // =========================================================================
 
-    public function ownerId($value)
+    public function ownerId($value): static
     {
         $this->ownerId = $value;
         return $this;
     }
 
-    public function ownerSiteId($value)
+    public function ownerSiteId($value): static
     {
         $this->ownerSiteId = $value;
         return $this;
     }
 
-    public function accountId($value)
+    public function accountId($value): static
     {
         $this->accountId = $value;
         return $this;
     }
 
-    public function account(ElementInterface $account)
+    public function account(ElementInterface $account): static
     {
         $this->accountId = $account->id;
         return $this;
@@ -80,7 +77,7 @@ class PostQuery extends ElementQuery
     // Private Methods
     // =========================================================================
 
-    private function addWhere(string $property, string $column)
+    private function addWhere(string $property, string $column): void
     {
         if ($this->{$property}) {
             $this->subQuery->andWhere(Db::parseParam($column, $this->{$property}));

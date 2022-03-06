@@ -1,7 +1,6 @@
 <?php
 namespace verbb\socialposter\migrations;
 
-use Craft;
 use craft\db\Migration;
 use craft\helpers\MigrationHelper;
 
@@ -10,20 +9,24 @@ class Install extends Migration
     // Public Methods
     // =========================================================================
 
-    public function safeUp()
+    public function safeUp(): bool
     {
         $this->createTables();
         $this->createIndexes();
         $this->addForeignKeys();
+
+        return true;
     }
 
-    public function safeDown()
+    public function safeDown(): bool
     {
         $this->dropForeignKeys();
         $this->dropTables();
+
+        return false;
     }
 
-    public function createTables()
+    public function createTables(): void
     {
         $this->createTable('{{%socialposter_accounts}}', [
             'id' => $this->primaryKey(),
@@ -68,27 +71,31 @@ class Install extends Migration
         ]);
     }
     
-    public function dropTables()
+    public function dropTables(): void
     {
         $this->dropTable('{{%socialposter_accounts}}');
         $this->dropTable('{{%socialposter_tokens}}');
         $this->dropTable('{{%socialposter_posts}}');
     }
-    
-    protected function createIndexes()
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function createIndexes(): void
     {
         $this->createIndex(null, '{{%socialposter_accounts}}', ['name'], true);
         $this->createIndex(null, '{{%socialposter_accounts}}', ['handle'], true);
         $this->createIndex(null, '{{%socialposter_posts}}', ['ownerId'], false);
     }
 
-    protected function addForeignKeys()
+    protected function addForeignKeys(): void
     {
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['id'], '{{%elements}}', ['id'], 'CASCADE', null);
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['ownerId'], '{{%elements}}', ['id'], 'CASCADE', null);
     }
     
-    protected function dropForeignKeys()
+    protected function dropForeignKeys(): void
     {
         MigrationHelper::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id'], $this);
         MigrationHelper::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId'], $this);

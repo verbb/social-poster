@@ -3,6 +3,7 @@ namespace verbb\socialposter\elements;
 
 use verbb\socialposter\SocialPoster;
 use verbb\socialposter\elements\db\PostQuery;
+use verbb\socialposter\models\Account;
 use verbb\socialposter\records\Post as PostRecord;
 
 use Craft;
@@ -18,7 +19,7 @@ use LitEmoji\LitEmoji;
 
 class Post extends Element
 {
-    // Static
+    // Static Methods
     // =========================================================================
 
     public static function displayName(): string
@@ -69,6 +70,7 @@ class Post extends Element
 
     protected static function defineSortOptions(): array
     {
+        $attributes = [];
         $attributes['success'] = Craft::t('social-poster', 'Response');
         $attributes['provider'] = Craft::t('social-poster', 'Provider');
         $attributes['elements.dateCreated'] = Craft::t('social-poster', 'Date Posted');
@@ -79,6 +81,7 @@ class Post extends Element
 
     protected static function defineTableAttributes(): array
     {
+        $attributes = [];
         $attributes['title'] = ['label' => Craft::t('social-poster', 'Title')];
         $attributes['success'] = ['label' => Craft::t('social-poster', 'Response')];
         $attributes['provider'] = ['label' => Craft::t('social-poster', 'Provider')];
@@ -110,33 +113,65 @@ class Post extends Element
     // Properties
     // =========================================================================
 
-    public $id;
-    public $accountId;
-    public $ownerId;
-    public $ownerSiteId;
-    public $ownerType;
-    public $settings;
-    public $success;
-    public $response;
-    public $data;
+    public ?int $id = null;
+    public ?int $accountId = null;
+    public ?int $ownerId = null;
+    public ?int $ownerSiteId = null;
+    public ?string $ownerType = null;
+    public ?array $settings = null;
+    public ?bool $success = null;
+    public ?array $response = null;
+    public ?array $data = null;
 
-    private $_owner;
+    private mixed $_owner = null;
 
 
     // Public Methods
     // =========================================================================
 
-    public function init()
+    public function __construct($config = [])
+    {
+        // Config normalization
+        if (array_key_exists('settings', $config)) {
+            if (is_string($config['settings'])) {
+                $config['settings'] = Json::decodeIfJson($config['settings']);
+            }
+
+            if (!is_array($config['settings'])) {
+                unset($config['settings']);
+            }
+        }
+
+        if (array_key_exists('response', $config)) {
+            if (is_string($config['response'])) {
+                $config['response'] = Json::decodeIfJson($config['response']);
+            }
+
+            if (!is_array($config['response'])) {
+                unset($config['response']);
+            }
+        }
+
+        if (array_key_exists('data', $config)) {
+            if (is_string($config['data'])) {
+                $config['data'] = Json::decodeIfJson($config['data']);
+            }
+
+            if (!is_array($config['data'])) {
+                unset($config['data']);
+            }
+        }
+
+        parent::__construct($config);
+    }
+
+    public function init(): void
     {
         parent::init();
 
         if ($owner = $this->getOwner()) {
             $this->title = $owner->title;
         }
-
-        $this->settings = Json::decode($this->settings, true);
-        $this->response = Json::decode($this->response, true);
-        $this->data = Json::decode($this->data, true);
 
         // Add Emoji support
         if (is_array($this->settings)) {
@@ -159,17 +194,17 @@ class Post extends Element
         return $this->_owner = Craft::$app->getElements()->getElementById($this->ownerId, $this->ownerType, $this->ownerSiteId);
     }
 
-    public function setOwner($owner = null)
+    public function setOwner($owner = null): void
     {
         $this->_owner = $owner;
     }
 
-    public function getCpEditUrl()
+    public function getCpEditUrl(): ?string
     {
         return UrlHelper::cpUrl('social-poster/posts/' . $this->id);
     }
 
-    public function getAccount()
+    public function getAccount(): ?Account
     {
         if ($this->accountId) {
             $account = SocialPoster::$plugin->getAccounts()->getAccountById($this->accountId);
@@ -203,13 +238,11 @@ class Post extends Element
                 $account = $this->getProvider();
 
                 if ($provider && $account) {
-                    $html = '<span class="provider">' . 
-                        '<div class="thumb">'. 
+                    return '<span class="provider">' .
+                        '<div class="thumb">'.
                             '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle .'" />' .
-                        '</div>'. $account->name . 
+                        '</div>'. $account->name .
                     '</span>';
-
-                    return $html;
                 }
             }
             case 'success': {
@@ -217,11 +250,11 @@ class Post extends Element
                     $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
 
                     return '<span class="status on"></span> ' . $message;
-                } else {
-                    $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
-
-                    return '<span class="status off"></span> ' . $message;
                 }
+
+                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
+
+                return '<span class="status off"></span> ' . $message;
             }
         }
 
@@ -232,7 +265,7 @@ class Post extends Element
     // Events
     // -------------------------------------------------------------------------
 
-    public function afterSave(bool $isNew)
+    public function afterSave(bool $isNew): void
     {
         if (!$isNew) {
             $record = PostRecord::findOne($this->id);

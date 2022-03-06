@@ -1,17 +1,18 @@
 <?php
 namespace verbb\socialposter\providers;
 
-use verbb\socialposter\SocialPoster;
 use verbb\socialposter\base\Provider;
 use verbb\socialposter\helpers\SocialPosterHelper;
-use verbb\socialposter\models\Account;
 
 use Craft;
-use craft\helpers\Json;
 
 use League\OAuth1\Client\Server\Twitter as TwitterProvider;
+
+use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+
+use Throwable;
 
 class Twitter extends Provider
 {
@@ -23,7 +24,7 @@ class Twitter extends Provider
         return 'Twitter';
     }
 
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         $assetFieldOptions = SocialPosterHelper::getAssetFieldOptions();
 
@@ -39,7 +40,7 @@ class Twitter extends Provider
         return 1;
     }
 
-    public function getManagerUrl()
+    public function getManagerUrl(): ?string
     {
         return 'https://dev.twitter.com/apps';
     }
@@ -60,14 +61,16 @@ class Twitter extends Provider
         return new TwitterProvider($config);
     }
 
-    public function getResponseUrl($data)
+    public function getResponseUrl($data): ?string
     {
         if (isset($data['id'])) {
             return 'https://twitter.com/' . $data['user']['screen_name'] . '/status/' . $data['id'];
         }
+
+        return null;
     }
 
-    public function sendPost($account, $content)
+    public function sendPost($account, $content): array
     {
         try {
             $token = $account->getToken();
@@ -80,7 +83,7 @@ class Twitter extends Provider
             ]);
 
             return $this->getPostResponse($response);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $this->getPostExceptionResponse($e);
         }
     }
@@ -89,7 +92,7 @@ class Twitter extends Provider
     // Private Methods
     // =========================================================================
 
-    private function getClient($token)
+    private function getClient($token): Client
     {
         $info = $this->getOauthProviderConfig();
 

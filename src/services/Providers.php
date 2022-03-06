@@ -2,7 +2,6 @@
 namespace verbb\socialposter\services;
 
 use verbb\socialposter\SocialPoster;
-use verbb\socialposter\base\Provider;
 use verbb\socialposter\base\ProviderInterface;
 use verbb\socialposter\events\RegisterProviderTypesEvent;
 use verbb\socialposter\providers\Facebook;
@@ -18,7 +17,7 @@ class Providers extends Component
     // Constants
     // =========================================================================
 
-    const EVENT_REGISTER_PROVIDER_TYPES = 'registerProviderTypes';
+    public const EVENT_REGISTER_PROVIDER_TYPES = 'registerProviderTypes';
 
 
     // Public Methods
@@ -50,6 +49,8 @@ class Providers extends Component
                 return $provider;
             }
         }
+
+        return null;
     }
 
     public function getOauthProviderConfig($handle): array
@@ -73,14 +74,10 @@ class Providers extends Component
     {
         $configSettings = Craft::$app->config->getConfigFromFile('social-poster');
 
-        if (isset($configSettings['providers'][$handle])) {
-            return $configSettings['providers'][$handle];
-        }
-
-        return [];
+        return $configSettings['providers'][$handle] ?? [];
     }
 
-    public function saveProviderSettings($handle, $providerSettings)
+    public function saveProviderSettings($handle, $providerSettings): bool
     {
         $settings = SocialPoster::$plugin->getSettings()->toArray();
         $storedSettings = Craft::$app->plugins->getStoredPluginInfo('social-poster')['settings'];
@@ -134,11 +131,7 @@ class Providers extends Component
 
         $storedSettings = Craft::$app->plugins->getStoredPluginInfo('social-poster')['settings'];
 
-        if (isset($storedSettings['providers'][$providerHandle]['oauth'][$key])) {
-            return $storedSettings['providers'][$providerHandle]['oauth'][$key];
-        }
-
-        return [];
+        return $storedSettings['providers'][$providerHandle]['oauth'][$key] ?? [];
     }
 
 }
