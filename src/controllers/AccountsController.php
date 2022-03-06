@@ -338,10 +338,8 @@ class AccountsController extends Controller
 
     private function _deleteToken($account): void
     {
-        $token = null;
-
         if (!SocialPoster::$plugin->getTokens()->deleteTokenById($account->tokenId)) {
-            SocialPoster::error('Unable to delete token - ' . Json::encode($token->getErrors()) . '.');
+            SocialPoster::error('Unable to delete token ' . $account->tokenId . '.');
         }
 
         $account->tokenId = null;

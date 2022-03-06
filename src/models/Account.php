@@ -99,7 +99,9 @@ class Account extends Model
 
     public function getCanPost(): bool
     {
-        return $this->enabled && $this->getProvider()->isConfigured() && $this->getToken();
+        $provider = $this->getProvider();
+
+        return $this->enabled && $provider && $provider->isConfigured() && $this->getToken();
     }
 
     public function getToken(): ?Token

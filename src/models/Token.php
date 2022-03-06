@@ -35,22 +35,14 @@ class Token extends Model
 
     public function getToken(): AccessToken|TokenCredentials|null
     {
-        $response = [];
-        $provider = $this->getProvider();
-
-        if ($provider) {
+        if ($provider = $this->getProvider()) {
             switch ($provider->oauthVersion()) {
                 case 1: {
                     $realToken = new TokenCredentials();
-                    $realToken->setIdentifier($response['identifier']);
-                    $realToken->setSecret($response['secret']);
+                    $realToken->setIdentifier($this->accessToken);
+                    $realToken->setSecret($this->secret);
 
                     return $realToken;
-
-                    // return $provider->createAccessToken([
-                    //     'identifier' => $this->accessToken,
-                    //     'secret' => $this->secret,
-                    // ]);
                 }
                 case 2: {
                     return new AccessToken([

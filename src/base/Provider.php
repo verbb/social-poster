@@ -159,8 +159,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         $reasonPhrase = $exception->getMessage();
 
         // Check for Guzzle errors, which are truncated in the exception `getMessage()`.
-        if ($exception instanceof RequestException && $exception->getResponse()) {
-            $response = $exception->getResponse();
+        if ($exception instanceof RequestException && $response = $exception->getResponse()) {
             $statusCode = $response->getStatusCode();
             $reasonPhrase = $response->getReasonPhrase();
 
@@ -230,14 +229,8 @@ abstract class Provider extends SavableComponent implements ProviderInterface
 
         Craft::$app->getSession()->set('socialposter.oauthState', $provider->getState());
 
-        $scope = $this->getOauthScope();
         $options = $this->getOauthAuthorizationOptions();
-
-        if (!is_array($options)) {
-            $options = [];
-        }
-
-        $options['scope'] = $scope;
+        $options['scope'] = $this->getOauthScope();
 
         $authorizationUrl = $provider->getAuthorizationUrl($options);
 

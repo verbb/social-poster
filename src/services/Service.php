@@ -84,6 +84,7 @@ class Service extends Component
     {
         $request = Craft::$app->getRequest();
 
+        /** @var Entry $entry */
         $entry = $event->sender;
 
         if ($entry->propagating || ElementHelper::isDraftOrRevision($entry)) {
