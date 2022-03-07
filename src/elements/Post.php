@@ -32,7 +32,7 @@ class Post extends Element
         return true;
     }
 
-    public static function find(): ElementQueryInterface
+    public static function find(): PostQuery
     {
         return new PostQuery(static::class);
     }

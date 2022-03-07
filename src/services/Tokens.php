@@ -158,7 +158,7 @@ class Tokens extends Component
             ->from(['{{%socialposter_tokens}}']);
     }
 
-    private function _getTokenRecordById(int $tokenId = null): TokenRecord
+    private function _getTokenRecordById(int $tokenId = null): ?TokenRecord
     {
         if ($tokenId !== null) {
             $tokenRecord = TokenRecord::findOne(['id' => $tokenId]);

@@ -238,7 +238,7 @@ class Accounts extends Component
             ->orderBy(['sortOrder' => SORT_ASC]);
     }
 
-    private function _getAccountRecordById(int $accountId = null): AccountRecord
+    private function _getAccountRecordById(int $accountId = null): ?AccountRecord
     {
         if ($accountId !== null) {
             $accountRecord = AccountRecord::findOne(['id' => $accountId]);

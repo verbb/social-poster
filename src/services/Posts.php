@@ -12,8 +12,9 @@ class Posts extends Component
     // Public Methods
     // =========================================================================
 
-    public function getPostById(int $id, $siteId = null): ?ElementInterface
+    public function getPostById(int $id, $siteId = null): ?Post
     {
+        /* @noinspection PhpIncompatibleReturnTypeInspection */
         return Craft::$app->getElements()->getElementById($id, Post::class, $siteId);
     }
 
