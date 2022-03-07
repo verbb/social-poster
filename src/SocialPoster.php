@@ -77,28 +77,28 @@ class SocialPoster extends Plugin
         $currentUser = Craft::$app->getUser()->getIdentity();
 
         // Only show sub-navs the user has permission to view
-        if ($currentUser->can('social-poster:posts')) {
+        if ($currentUser->can('socialPoster-posts')) {
             $subNavs['posts'] = [
                 'label' => Craft::t('social-poster', 'Posts'),
                 'url' => 'social-poster/posts',
             ];
         }
 
-        if ($currentUser->can('social-poster:accounts')) {
+        if ($currentUser->can('socialPoster-accounts')) {
             $subNavs['accounts'] = [
                 'label' => Craft::t('social-poster', 'Accounts'),
                 'url' => 'social-poster/accounts',
             ];
         }
 
-        if ($currentUser->can('social-poster:providers')) {
+        if ($currentUser->can('socialPoster-providers')) {
             $subNavs['providers'] = [
                 'label' => Craft::t('social-poster', 'Providers'),
                 'url' => 'social-poster/providers',
             ];
         }
 
-        if ($currentUser->can('social-poster:settings')) {
+        if ($currentUser->can('socialPoster-settings')) {
             $subNavs['settings'] = [
                 'label' => Craft::t('social-poster', 'Settings'),
                 'url' => 'social-poster/settings',
@@ -168,11 +168,14 @@ class SocialPoster extends Plugin
     private function _registerPermissions(): void
     {
         Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function(RegisterUserPermissionsEvent $event) {
-            $event->permissions[Craft::t('social-poster', 'Social Poster')] = [
-                'social-poster:posts' => ['label' => Craft::t('social-poster', 'Posts')],
-                'social-poster:accounts' => ['label' => Craft::t('social-poster', 'Accounts')],
-                'social-poster:providers' => ['label' => Craft::t('social-poster', 'Providers')],
-                'social-poster:settings' => ['label' => Craft::t('social-poster', 'Settings')],
+            $event->permissions[] = [
+                'heading' => Craft::t('social-poster', 'Social Poster'),
+                'permissions' => [
+                    'socialPoster-posts' => ['label' => Craft::t('social-poster', 'Posts')],
+                    'socialPoster-accounts' => ['label' => Craft::t('social-poster', 'Accounts')],
+                    'socialPoster-providers' => ['label' => Craft::t('social-poster', 'Providers')],
+                    'socialPoster-settings' => ['label' => Craft::t('social-poster', 'Settings')],
+                ],
             ];
         });
     }
