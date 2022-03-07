@@ -131,42 +131,6 @@ class Post extends Element
     // Public Methods
     // =========================================================================
 
-    public function __construct($config = [])
-    {
-        // Config normalization
-        if (array_key_exists('settings', $config)) {
-            if (is_string($config['settings'])) {
-                $config['settings'] = Json::decodeIfJson($config['settings']);
-            }
-
-            if (!is_array($config['settings'])) {
-                $config['settings'] = [];
-            }
-        }
-
-        if (array_key_exists('response', $config)) {
-            if (is_string($config['response'])) {
-                $config['response'] = Json::decodeIfJson($config['response']);
-            }
-
-            if (!is_array($config['response'])) {
-                $config['response'] = [];
-            }
-        }
-
-        if (array_key_exists('data', $config)) {
-            if (is_string($config['data'])) {
-                $config['data'] = Json::decodeIfJson($config['data']);
-            }
-
-            if (!is_array($config['data'])) {
-                $config['data'] = [];
-            }
-        }
-
-        parent::__construct($config);
-    }
-
     public function init(): void
     {
         parent::init();

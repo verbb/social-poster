@@ -30,22 +30,6 @@ class Account extends Model
     // Public Methods
     // =========================================================================
 
-    public function __construct($config = [])
-    {
-        // Config normalization
-        if (array_key_exists('settings', $config)) {
-            if (is_string($config['settings'])) {
-                $config['settings'] = Json::decodeIfJson($config['settings']);
-            }
-
-            if (!is_array($config['settings'])) {
-                $config['settings'] = [];
-            }
-        }
-
-        parent::__construct($config);
-    }
-
     public function init(): void
     {
         parent::init();
