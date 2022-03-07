@@ -78,7 +78,7 @@
                 instructions: 'Select an image for this post. If not specified, {p} will grab the first image on your page.' | t('social-poster', { p: provider.name }),
                 id: 'imageField',
                 name: 'imageField',
-                options: craft.socialPoster.getAssetFieldOptions(context.entry),
+                options: craft.socialPoster.getAssetFieldOptions(entry),
                 value: imageField,
                 disabled: static is defined,
                 class: static is defined ? 'disabled',

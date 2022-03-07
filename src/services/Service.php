@@ -8,6 +8,7 @@ use Craft;
 use craft\base\Component;
 use craft\db\Table;
 use craft\elements\Entry;
+use craft\events\DefineHtmlEvent;
 use craft\events\ModelEvent;
 use craft\helpers\Db;
 use craft\helpers\ElementHelper;
@@ -20,7 +21,7 @@ class Service extends Component
     // Public Methods
     // =========================================================================
 
-    public function renderEntrySidebar(&$context): ?string
+    public function renderEntrySidebar(DefineHtmlEvent $event): void
     {
         $settings = SocialPoster::$plugin->getSettings();
 
@@ -30,51 +31,51 @@ class Service extends Component
         if (!$settings->enabledSections) {
             SocialPoster::log('New enabled sections.');
 
-            return null;
+            return;
         }
 
         if ($settings->enabledSections != '*') {
             $enabledSectionIds = Db::idsByUids(Table::SECTIONS, $settings->enabledSections);
 
-            if (!in_array($context['entry']->sectionId, $enabledSectionIds)) {
+            if (!in_array($entry->sectionId, $enabledSectionIds)) {
                 SocialPoster::log('Entry not in allowed section.');
 
-                return null;
+                return;
             }
         }
 
         $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
         // Remove any accounts that don't have settings - they haven't been configured!
-        foreach ($accounts as $key => $account) {
-            if (!$account->settings) {
-                SocialPoster::log('Account ' . $key . ' not configured.');
+        // foreach ($accounts as $key => $account) {
+        //     if (!$account->settings) {
+        //         SocialPoster::log('Account ' . $key . ' not configured.');
 
-                unset($accounts[$key]);
-            }
-        }
+        //         unset($accounts[$key]);
+        //     }
+        // }
 
-        if (!$accounts) {
-            SocialPoster::log('No accounts configured.');
+        // if (!$accounts) {
+        //     SocialPoster::log('No accounts configured.');
 
-            return null;
-        }
+        //     return;
+        // }
 
         $posts = [];
 
-        if ($context['entry']->id) {
+        if ($entry->id) {
             $posts = Post::find()
-                ->ownerId($context['entry']->id)
-                ->ownerSiteId($context['entry']->siteId)
+                ->ownerId($entry->id)
+                ->ownerSiteId($entry->siteId)
                 ->indexBy('accountId')
                 ->orderBy('dateCreated asc')
                 ->all();
         }
 
-        SocialPoster::log('Rendering #' . $context['entry']->id);
+        SocialPoster::log('Rendering #' . $entry->id);
 
-        return Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
-            'context' => $context,
+        $event->html = Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
+            'entry' => $entry,
             'accounts' => $accounts,
             'posts' => $posts,
         ]);

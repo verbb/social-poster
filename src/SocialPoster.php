@@ -53,10 +53,6 @@ class SocialPoster extends Plugin
         $this->_registerElementTypes();
         $this->_registerPermissions();
 
-        if (Craft::$app->getRequest()->getIsCpRequest()) {
-            Craft::$app->view->hook('cp.entries.edit.details', [$this->getService(), 'renderEntrySidebar']);
-        }
-
         $this->hasCpSection = $this->getSettings()->hasCpSection;
     }
 
@@ -156,6 +152,8 @@ class SocialPoster extends Plugin
         if (Craft::$app->getRequest()->getIsCpRequest() || Craft::$app->getRequest()->getIsSiteRequest()) {
             Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, [$this->getService(), 'onAfterSaveEntry']);
         }
+
+        Event::on(Entry::class, Entry::EVENT_DEFINE_SIDEBAR_HTML, [$this->getService(), 'renderEntrySidebar']);
     }
 
     private function _registerElementTypes(): void
