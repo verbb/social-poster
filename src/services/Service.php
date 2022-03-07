@@ -23,6 +23,8 @@ class Service extends Component
 
     public function renderEntrySidebar(DefineHtmlEvent $event): void
     {
+        $entry = $event->sender;
+        
         $settings = SocialPoster::$plugin->getSettings();
 
         SocialPoster::log('Try to render sidebar');
@@ -47,19 +49,19 @@ class Service extends Component
         $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
         // Remove any accounts that don't have settings - they haven't been configured!
-        // foreach ($accounts as $key => $account) {
-        //     if (!$account->settings) {
-        //         SocialPoster::log('Account ' . $key . ' not configured.');
+        foreach ($accounts as $key => $account) {
+            if (!$account->settings) {
+                SocialPoster::log('Account ' . $key . ' not configured.');
 
-        //         unset($accounts[$key]);
-        //     }
-        // }
+                unset($accounts[$key]);
+            }
+        }
 
-        // if (!$accounts) {
-        //     SocialPoster::log('No accounts configured.');
+        if (!$accounts) {
+            SocialPoster::log('No accounts configured.');
 
-        //     return;
-        // }
+            return;
+        }
 
         $posts = [];
 
