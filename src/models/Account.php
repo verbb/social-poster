@@ -39,7 +39,7 @@ class Account extends Model
             }
 
             if (!is_array($config['settings'])) {
-                unset($config['settings']);
+                $config['settings'] = [];
             }
         }
 

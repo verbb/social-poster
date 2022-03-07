@@ -140,7 +140,7 @@ class Post extends Element
             }
 
             if (!is_array($config['settings'])) {
-                unset($config['settings']);
+                $config['settings'] = [];
             }
         }
 
@@ -150,7 +150,7 @@ class Post extends Element
             }
 
             if (!is_array($config['response'])) {
-                unset($config['response']);
+                $config['response'] = [];
             }
         }
 
@@ -160,7 +160,7 @@ class Post extends Element
             }
 
             if (!is_array($config['data'])) {
-                unset($config['data']);
+                $config['data'] = [];
             }
         }
 
