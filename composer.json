@@ -26,7 +26,7 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "craftcms/cms": "^4.0.0-alpha",
+        "craftcms/cms": "^4.0.0-beta.1",
         "verbb/base": "^2.0.0-beta",
         "guzzlehttp/oauth-subscriber": "^0.6.0",
         "janu-software/facebook-php-sdk": "^0.1",
