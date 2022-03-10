@@ -185,7 +185,7 @@ class Accounts extends Component
 
         try {
             $posts = Post::find()
-                ->anyStatus()
+                ->status(null)
                 ->accountId($account->id)
                 ->all();
 

@@ -2,7 +2,7 @@
 namespace verbb\socialposter\migrations;
 
 use craft\db\Migration;
-use craft\helpers\MigrationHelper;
+use craft\helpers\Db;
 
 class Install extends Migration
 {
@@ -97,7 +97,7 @@ class Install extends Migration
 
     protected function dropForeignKeys(): void
     {
-        MigrationHelper::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id'], $this);
-        MigrationHelper::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId'], $this);
+        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id'], $this);
+        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId'], $this);
     }
 }

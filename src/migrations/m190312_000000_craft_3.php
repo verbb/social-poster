@@ -9,7 +9,7 @@ use craft\db\Query;
 use craft\elements\Entry;
 use craft\helpers\ArrayHelper;
 use craft\helpers\Json;
-use craft\helpers\MigrationHelper;
+use craft\helpers\Db;
 
 class m190312_000000_craft_3 extends Migration
 {
@@ -82,7 +82,7 @@ class m190312_000000_craft_3 extends Migration
             }
 
             if ($this->db->columnExists('{{%socialposter_accounts}}', 'providerSettings')) {
-                MigrationHelper::renameColumn('{{%socialposter_accounts}}', 'providerSettings', 'settings', $this);
+                Db::renameColumn('{{%socialposter_accounts}}', 'providerSettings', 'settings', $this);
             }
         }
 
@@ -107,7 +107,7 @@ class m190312_000000_craft_3 extends Migration
         }
 
         if ($this->db->tableExists('{{%socialposter_posts}}')) {
-            MigrationHelper::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
+            Db::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
 
             // Convert IDs to Element IDs (and create the elements)
             $this->convertPostsToElements();
@@ -126,7 +126,7 @@ class m190312_000000_craft_3 extends Migration
             }
 
             if ($this->db->columnExists('{{%socialposter_posts}}', 'elementId')) {
-                MigrationHelper::renameColumn('{{%socialposter_posts}}', 'elementId', 'ownerId', $this);
+                Db::renameColumn('{{%socialposter_posts}}', 'elementId', 'ownerId', $this);
             }
 
             if ($this->db->columnExists('{{%socialposter_posts}}', 'handle')) {
@@ -148,7 +148,7 @@ class m190312_000000_craft_3 extends Migration
             }
 
             if ($this->db->columnExists('{{%socialposter_posts}}', 'providerSettings')) {
-                MigrationHelper::renameColumn('{{%socialposter_posts}}', 'providerSettings', 'settings', $this);
+                Db::renameColumn('{{%socialposter_posts}}', 'providerSettings', 'settings', $this);
             }
 
             $queryBuilder = $this->db->getSchema()->getQueryBuilder();
