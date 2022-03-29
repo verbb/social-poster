@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.3 - 2022-03-29
+
+### Fixed
+- Fix some providers not having their scopes applied correctly.
+
 ## 2.3.2 - 2022-01-13
 
 ### Added
