@@ -16,13 +16,13 @@ return [
 ];
 ```
 
-### Configuration options
+## Configuration options
 - `pluginName` - If you wish to customise the plugin name.
 - `hasCpSection` - Whether to have the plugin pages appear on the main CP sidebar menu.
 - `enabledSections` - An array of section UIDs to enable social poster on. Use '\*' for all.
 - `providers` - A collection of options for each provider.
 
-#### Providers
+### Providers
 Supply your client configurations as per the below.
 
 ```php

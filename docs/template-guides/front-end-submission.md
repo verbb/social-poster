@@ -25,7 +25,7 @@ Here, we've used a checkbox to allow the user to enable posting to social media.
 
 Options vary from provider-to-provider, but are as below. Please note to update the first parameter to the handle used for your account. For example, where we have `socialPoster[facebook][autoPost]`, ensure that the handle for your Facebook account is indeed `facebook`, otherwise, change this to match the account handle.
 
-### Facebook
+## Facebook
 
 ```twig
 <input name="socialPoster[facebook][autoPost]">
@@ -36,14 +36,14 @@ Options vary from provider-to-provider, but are as below. Please note to update 
 <input name="socialPoster[facebook][imageField]">
 ```
 
-### Twitter
+## Twitter
 
 ```twig
 <input name="socialPoster[twitter][autoPost]">
 <input name="socialPoster[twitter][message]">
 ```
 
-### Linked.in
+## Linked.in
 
 ```twig
 <input name="socialPoster[linkedin][autoPost]">
