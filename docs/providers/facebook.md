@@ -17,7 +17,7 @@ Please note there are some limitations when it comes to posting to Facebook, due
 
 ## Posting to Facebook Profile/Wall
 
-It is currently not possible to automatically post to your Facebook Wall/Timeline, due to Facebook removing the permission to do so. Even if you have a published app, you'll not be able to use this functionality any more.
+It is currently not possible to automatically post to your Facebook Wall/Timeline, due to Facebook removing the permission to do so. Even if you have a published app, you'll not be able to use this functionality anymore.
 
 According to [Facebook API docs](https://developers.facebook.com/docs/graph-api/changelog/non-versioned-changes/apr-24-2018#login-4-24):
 
@@ -84,7 +84,7 @@ It's a requirement to provide a screencast, with a step-by-step outline of how y
 1. Logging into Craft
 1. Showing the Facebook account in Social Poster.
 1. Showing the Facebook provider in Social Poster. Its advisable your Facebook app is in development mode still, so that you can show posting functionality.
-1. Disconnect and re-connect with Facebook to show the authorisation process. Its important to show the Facebook account you're authorising Social Poster to use to do the actual posting.
+1. Disconnect and re-connect with Facebook to show the authorisation process. It's important to show the Facebook account you're authorising Social Poster to use to do the actual posting.
 1. Navigate to an entry which has Social Poster enabled, so that the right-hand sidebar is shown. Either create a new entry, or edit an existing one.
 1. Save the entry, ensuring you have posting to Facebook enabled.
 1. Show the post, posted to your chosen page in Facebook. As the app is in development mode, only you can see the post - which is the reason you need these permissions, so that everyone can see them.

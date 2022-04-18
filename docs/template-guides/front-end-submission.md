@@ -1,6 +1,6 @@
 # Front-end submission
 
-As you can save or update existing entries from the front-end of your site, so can you post to social media. By default, Social Poster will use whatever defaults you have setup in your accounts. This means, if by default you have auto-posting set to `off`, posts won't be posted to social media.
+As you can save or update existing entries from the front-end of your site, so can you post to social media. By default, Social Poster will use whatever defaults you have set up in your accounts. This means, if by default you have auto-posting set to `off`, posts won't be posted to social media.
 
 However, you can override each field per-entry, just as you can through the control panel. You're just required to add this information into your form.
 

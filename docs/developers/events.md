@@ -31,7 +31,7 @@ Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(Event $e) {
 ## Account related events
 ### The `beforeSaveAccount` event
 
-Plugins can get notified before a account is being saved.
+Plugins can get notified before an account is being saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
@@ -44,7 +44,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(Account
 ```
 
 ### The `afterSaveAccount` event
-Plugins can get notified after a account has been saved.
+Plugins can get notified after an account has been saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
@@ -70,7 +70,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(Accou
 ```
 
 ### The `afterDeleteAccount` event
-Plugins can get notified after a account has been deleted
+Plugins can get notified after an account has been deleted
 
 ```php
 use verbb\socialposter\events\AccountEvent;
