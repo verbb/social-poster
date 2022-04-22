@@ -3,12 +3,12 @@
 You can fetch posts in your templates or PHP post using **post queries**.
 
 :::code
-```twig
+```twig Twig
 {# Create a new post query #}
 {% set myQuery = craft.socialPoster.posts() %}
 ```
 
-```php
+```php PHP
 // Create a new post query
 $myQuery = \verbb\socialposter\elements\Post::find();
 ```
