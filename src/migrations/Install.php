@@ -28,6 +28,7 @@ class Install extends Migration
 
     public function createTables(): void
     {
+        $this->archiveTableIfExists('{{%socialposter_accounts}}');
         $this->createTable('{{%socialposter_accounts}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
@@ -43,6 +44,7 @@ class Install extends Migration
             'uid' => $this->uid(),
         ]);
 
+        $this->archiveTableIfExists('{{%socialposter_tokens}}');
         $this->createTable('{{%socialposter_tokens}}', [
             'id' => $this->primaryKey(),
             'providerHandle' => $this->string()->notNull(),
@@ -55,6 +57,7 @@ class Install extends Migration
             'uid' => $this->uid(),
         ]);
 
+        $this->archiveTableIfExists('{{%socialposter_posts}}');
         $this->createTable('{{%socialposter_posts}}', [
             'id' => $this->primaryKey(),
             'accountId' => $this->integer()->notNull(),
