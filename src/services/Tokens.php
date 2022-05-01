@@ -7,7 +7,9 @@ use verbb\socialposter\models\Token;
 use verbb\socialposter\records\Token as TokenRecord;
 
 use Craft;
+use craft\base\MemoizableArray;
 use craft\db\Query;
+use craft\helpers\Db;
 
 use yii\base\Component;
 
@@ -29,8 +31,7 @@ class Tokens extends Component
     // Properties
     // =========================================================================
 
-    private ?array $_tokensById = null;
-    private bool $_fetchedAllTokens = false;
+    private ?MemoizableArray $_tokens = null;
 
 
     // Public Methods
@@ -38,29 +39,12 @@ class Tokens extends Component
 
     public function getAllTokens(): array
     {
-        if ($this->_fetchedAllTokens) {
-            return array_values($this->_tokensById);
-        }
-
-        $this->_tokensById = [];
-
-        foreach ($this->_createTokenQuery()->all() as $result) {
-            $token = $this->_createToken($result);
-            $this->_tokensById[$token->id] = $token;
-        }
-
-        $this->_fetchedAllTokens = true;
-
-        return array_values($this->_tokensById);
+        return $this->_tokens()->all();
     }
 
     public function getTokenById(int $id): ?Token
     {
-        $result = $this->_createTokenQuery()
-            ->where(['id' => $id])
-            ->one();
-
-        return $result ? $this->_createToken($result) : null;
+        return $this->_tokens()->firstWhere('id', $id);
     }
 
     public function saveToken(Token $token, bool $runValidation = true): bool
@@ -124,9 +108,9 @@ class Tokens extends Component
             ]));
         }
 
-        Craft::$app->getDb()->createCommand()
-            ->delete('{{%socialposter_tokens}}', ['id' => $token->id])
-            ->execute();
+        Db::delete('{{%socialposter_tokens}}', [
+            'id' => $token->id,
+        ]);
 
         // Fire an 'afterDeleteToken' event
         if ($this->hasEventHandlers(self::EVENT_AFTER_DELETE_TOKEN)) {
@@ -141,6 +125,21 @@ class Tokens extends Component
 
     // Private Methods
     // =========================================================================
+
+    private function _tokens(): MemoizableArray
+    {
+        if (!isset($this->_tokens)) {
+            $tokens = [];
+            
+            foreach ($this->_createTokenQuery()->all() as $result) {
+                $tokens[] = $this->_createToken($result);
+            }
+
+            $this->_tokens = new MemoizableArray($tokens);
+        }
+
+        return $this->_tokens;
+    }
 
     private function _createTokenQuery(): Query
     {

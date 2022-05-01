@@ -7,6 +7,7 @@ use verbb\socialposter\models\Account;
 use verbb\socialposter\records\Account as AccountRecord;
 
 use Craft;
+use craft\base\MemoizableArray;
 use craft\db\Query;
 
 use yii\base\Component;
@@ -29,8 +30,7 @@ class Accounts extends Component
     // Properties
     // =========================================================================
 
-    private ?array $_accountsById = null;
-    private bool $_fetchedAllAccounts = false;
+    private ?MemoizableArray $_accounts = null;
     private ?array $_overrides = null;
 
 
@@ -39,38 +39,17 @@ class Accounts extends Component
 
     public function getAllAccounts(): array
     {
-        if ($this->_fetchedAllAccounts) {
-            return array_values($this->_accountsById);
-        }
-
-        $this->_accountsById = [];
-
-        foreach ($this->_createAccountQuery()->all() as $result) {
-            $account = new Account($result);
-            $this->_accountsById[$account->id] = $account;
-        }
-
-        $this->_fetchedAllAccounts = true;
-
-        return array_values($this->_accountsById);
+        return $this->_accounts()->all();
     }
 
-    public function getAccountById($id): ?Account
+    public function getAccountById(int $id): ?Account
     {
-        $result = $this->_createAccountQuery()
-            ->where(['id' => $id])
-            ->one();
-
-        return $result ? new Account($result) : null;
+        return $this->_accounts()->firstWhere('id', $id);
     }
 
-    public function getAccountByHandle($handle): ?Account
+    public function getAccountByHandle(string $handle): ?Account
     {
-        $result = $this->_createAccountQuery()
-            ->where(['handle' => $handle])
-            ->one();
-
-        return $result ? new Account($result) : null;
+        return $this->_accounts()->firstWhere('handle', $handle, true);
     }
 
     public function saveAccount(Account $account, bool $runValidation = true): bool
@@ -217,6 +196,21 @@ class Accounts extends Component
 
     // Private Methods
     // =========================================================================
+
+    private function _accounts(): MemoizableArray
+    {
+        if (!isset($this->_accounts)) {
+            $accounts = [];
+
+            foreach ($this->_createAccountQuery()->all() as $result) {
+                $accounts[] = new Account($result);
+            }
+
+            $this->_accounts = new MemoizableArray($accounts);
+        }
+
+        return $this->_accounts;
+    }
 
     private function _createAccountQuery(): Query
     {
