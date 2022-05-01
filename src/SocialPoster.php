@@ -9,7 +9,11 @@ use verbb\socialposter\variables\SocialPosterVariable;
 use Craft;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\console\Application as ConsoleApplication;
+use craft\console\Controller as ConsoleController;
+use craft\console\controllers\ResaveController;
 use craft\elements\Entry;
+use craft\events\DefineConsoleActionsEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterUserPermissionsEvent;
@@ -54,6 +58,10 @@ class SocialPoster extends Plugin
 
         if (Craft::$app->getRequest()->getIsCpRequest()) {
             $this->_registerCpRoutes();
+        }
+
+        if (Craft::$app->getRequest()->getIsConsoleRequest()) {
+            $this->_registerResaveCommand();
         }
         
         if (Craft::$app->getEdition() === Craft::Pro) {
@@ -181,6 +189,25 @@ class SocialPoster extends Plugin
                     'socialPoster-providers' => ['label' => Craft::t('social-poster', 'Providers')],
                     'socialPoster-settings' => ['label' => Craft::t('social-poster', 'Settings')],
                 ],
+            ];
+        });
+    }
+
+    private function _registerResaveCommand(): void
+    {
+        if (!Craft::$app instanceof ConsoleApplication) {
+            return;
+        }
+
+        Event::on(ResaveController::class, ConsoleController::EVENT_DEFINE_ACTIONS, function(DefineConsoleActionsEvent $e) {
+            $e->actions['socialposter-posts'] = [
+                'action' => function(): int {
+                    $controller = Craft::$app->controller;
+                    $query = Post::find();
+                    return $controller->resaveElements($query);
+                },
+                'options' => [],
+                'helpSummary' => 'Re-saves Social Poster posts.',
             ];
         });
     }
