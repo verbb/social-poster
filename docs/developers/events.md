@@ -1,11 +1,9 @@
 # Events
-
 Events can be used to extend the functionality of Social Poster.
 
 ## Post related events
 
 ### The `beforeSavePost` event
-
 Plugins can get notified before a post is saved. Event handlers can prevent the post from getting sent by setting `$event->isValid` to false.
 
 ```php
@@ -19,7 +17,6 @@ Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(Event $e) {
 ```
 
 ### The `afterSavePost` event
-
 Plugins can get notified after a post has been saved
 
 ```php
@@ -32,10 +29,9 @@ Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(Event $e) {
 ```
 
 ## Account related events
-
 ### The `beforeSaveAccount` event
 
-Plugins can get notified before a account is being saved.
+Plugins can get notified before an account is being saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
@@ -48,8 +44,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(Account
 ```
 
 ### The `afterSaveAccount` event
-
-Plugins can get notified after a account has been saved.
+Plugins can get notified after an account has been saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
@@ -62,7 +57,6 @@ Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountE
 ```
 
 ### The `beforeDeleteAccount` event
-
 Plugins can get notified before an account is deleted
 
 ```php
@@ -76,8 +70,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(Accou
 ```
 
 ### The `afterDeleteAccount` event
-
-Plugins can get notified after a account has been deleted
+Plugins can get notified after an account has been deleted
 
 ```php
 use verbb\socialposter\events\AccountEvent;
@@ -92,7 +85,6 @@ Event::on(Accounts::class, Accounts::EVENT_AFTER_DELETE_ACCOUNT, function(Accoun
 ## Token related events
 
 ### The `beforeSaveToken` event
-
 Plugins can get notified before a token is being saved.
 
 ```php
@@ -106,7 +98,6 @@ Event::on(Tokens::class, Tokens::EVENT_BEFORE_SAVE_TOKEN, function(TokenEvent $e
 ```
 
 ### The `afterSaveToken` event
-
 Plugins can get notified after a token has been saved.
 
 ```php
@@ -120,7 +111,6 @@ Event::on(Tokens::class, Tokens::EVENT_AFTER_SAVE_TOKEN, function(TokenEvent $e)
 ```
 
 ### The `beforeDeleteToken` event
-
 Plugins can get notified before an token is deleted
 
 ```php
@@ -134,7 +124,6 @@ Event::on(Tokens::class, Tokens::EVENT_BEFORE_DELETE_TOKEN, function(TokenEvent 
 ```
 
 ### The `afterDeleteToken` event
-
 Plugins can get notified after a token has been deleted
 
 ```php

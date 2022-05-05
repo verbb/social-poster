@@ -1,6 +1,7 @@
 # Configuration
+Create a `social-poster.php` file under your `/config` directory with the following options available to you. You can also use multi-environment options to change these per environment.
 
-Create an `social-poster.php` file under your `/config` directory with the following options available to you. You can also use multi-environment options to change these per environment.
+The below shows the defaults already used by Social Poster, so you don't need to add these options unless you want to modify the values.
 
 ```php
 <?php
@@ -15,14 +16,13 @@ return [
 ];
 ```
 
-### Configuration options
-
+## Configuration options
 - `pluginName` - If you wish to customise the plugin name.
 - `hasCpSection` - Whether to have the plugin pages appear on the main CP sidebar menu.
 - `enabledSections` - An array of section UIDs to enable social poster on. Use '\*' for all.
 - `providers` - A collection of options for each provider.
 
-#### Providers
+### Providers
 Supply your client configurations as per the below.
 
 ```php
@@ -59,11 +59,9 @@ Supply your client configurations as per the below.
 ```
 
 ## Control Panel
-
 You can also manage configuration settings through the Control Panel by visiting Settings → Social Poster.
 
 ## PATH_INFO
-
 It's also a good idea to enable `PATH_INFO` in your project. See [Craft Guide](https://craftcms.com/guides/enabling-path-info). This is particularly important for the redirect URLs, as they need to be valid and match with what you put in each provider's app.
 
 For example, with `PATH_INFO` off, you may get a redirect URL similar to:

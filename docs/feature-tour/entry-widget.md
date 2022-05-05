@@ -1,6 +1,6 @@
 # Entry Widget
 
-When editing any entry on a section you've allowed Social Poster to appear on, you'll be shown the a small widget to the right-hand side on your entry.
+When editing any entry on a section you've allowed Social Poster to appear on, you'll be shown a small widget to the right-hand side on your entry.
 
 ![](/docs/screenshots/entry-edit.png)
 

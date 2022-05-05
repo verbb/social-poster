@@ -104,7 +104,8 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         $scope = $this->getDefaultOauthScope();
         $oauthProviderConfig = $this->getOauthProviderConfig();
 
-        if (isset($oauthProviderConfig['scope'])) {
+        // Override any scopes set at the config level
+        if (isset($oauthProviderConfig['scope']) && $oauthProviderConfig['scope']) {
             $scope = $oauthProviderConfig['scope'];
         }
 
@@ -116,7 +117,8 @@ abstract class Provider extends SavableComponent implements ProviderInterface
         $authorizationOptions = $this->getDefaultOauthAuthorizationOptions();
         $config = $this->getOauthProviderConfig();
 
-        if (isset($config['authorizationOptions'])) {
+        // Override any options set at the config level
+        if (isset($config['authorizationOptions']) && $config['authorizationOptions']) {
             $authorizationOptions = array_merge($authorizationOptions, $config['authorizationOptions']);
         }
 

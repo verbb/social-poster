@@ -1,8 +1,7 @@
 # Post
-
 Whenever you're dealing with a post in your template, you're actually working with a `Post` object.
 
-### Attributes
+## Attributes
 
 Attribute | Description
 --- | ---
