@@ -62,7 +62,7 @@ Possible values include:
 | a [DateTime](http://php.net/class.datetime) object | that were posted after the date represented by the object.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts posted this month #}
 {% set firstDayOfMonth = date('first day of this month') %}
 
@@ -71,7 +71,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts posted this month
 $firstDayOfMonth = new \DateTime('first day of this month');
 
@@ -88,14 +88,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Clears out the [status()](https://docs.craftcms.com/api/v3/craft-elements-db-elementquery.html#method-status) and [enabledForSite()](https://docs.craftcms.com/api/v3/craft-elements-db-elementquery.html#method-enabledforsite) parameters.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch all posts, regardless of status #}
 {% set posts = craft.socialPoster.posts()
     .anyStatus()
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch all posts, regardless of status
 $posts = \verbb\socialposter\elements\Post::find()
     ->anyStatus()
@@ -110,14 +110,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Causes the query to return matching posts as arrays of data, rather than [Post](docs:developers/post) objects.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts as arrays #}
 {% set posts = craft.socialPoster.posts()
     .asArray()
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts as arrays
 $posts = \verbb\socialposter\elements\Post::find()
     ->asArray()
@@ -139,7 +139,7 @@ Possible values include:
 | a [DateTime](http://php.net/class.datetime) object | that were posted before the date represented by the object.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts posted before this month #}
 {% set firstDayOfMonth = date('first day of this month') %}
 
@@ -148,7 +148,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts posted before this month
 $firstDayOfMonth = new \DateTime('first day of this month');
 
@@ -173,7 +173,7 @@ Possible values include:
 | `['and', '>= 2018-04-04', '< 2018-05-01']` | that were created between 2018-04-01 and 2018-05-01.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts created last month #}
 {% set start = date('first day of last month') | atom %}
 {% set end = date('first day of this month') | atom %}
@@ -183,7 +183,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts created last month
 $start = new \DateTime('first day of next month')->format(\DateTime::ATOM);
 $end = new \DateTime('first day of this month')->format(\DateTime::ATOM);
@@ -209,7 +209,7 @@ Possible values include:
 | `['and', '>= 2018-04-04', '< 2018-05-01']` | that were updated between 2018-04-01 and 2018-05-01.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts updated in the last week #}
 {% set lastWeek = date('1 week ago')|atom %}
 
@@ -218,7 +218,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts updated in the last week
 $lastWeek = new \DateTime('1 week ago')->format(\DateTime::ATOM);
 
@@ -235,7 +235,7 @@ $posts = \verbb\socialposter\elements\Post::find()
 Causes the query results to be returned in the order specified by [id](#id).
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts in a specific order #}
 {% set posts = craft.socialPoster.posts()
     .id([1, 2, 3, 4, 5])
@@ -243,7 +243,7 @@ Causes the query results to be returned in the order specified by [id](#id).
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts in a specific order
 $posts = \verbb\socialposter\elements\Post::find()
     ->id([1, 2, 3, 4, 5])
@@ -268,14 +268,14 @@ Possible values include:
 | `['not', 1, 2]` | not with an ID of 1 or 2.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch the post by its ID #}
 {% set post = craft.socialPoster.posts()
     .id(1)
     .one() %}
 ```
 
-```php
+```php PHP
 // Fetch the post by its ID
 $post = \verbb\socialposter\elements\Post::find()
     ->id(1)
@@ -294,14 +294,14 @@ This can be combined with [fixedOrder](#fixedorder) if you want the results to b
 Causes the query results to be returned in reverse order.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts in reverse #}
 {% set posts = craft.socialPoster.posts()
     .inReverse()
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts in reverse
 $posts = \verbb\socialposter\elements\Post::find()
     ->inReverse()
@@ -316,14 +316,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Determines the number of posts that should be returned.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch up to 10 posts  #}
 {% set posts = craft.socialPoster.posts()
     .limit(10)
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch up to 10 posts
 $posts = \verbb\socialposter\elements\Post::find()
     ->limit(10)
@@ -338,14 +338,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Determines how many posts should be skipped in the results.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch all posts except for the first 3 #}
 {% set posts = craft.socialPoster.posts()
     .offset(3)
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch all posts except for the first 3
 $posts = \verbb\socialposter\elements\Post::find()
     ->offset(3)
@@ -360,14 +360,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Determines the order that the posts should be returned in.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch all posts in order of date created #}
 {% set posts = craft.socialPoster.posts()
     .orderBy('elements.dateCreated asc')
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch all posts in order of date created
 $posts = \verbb\socialposter\elements\Post::find()
     ->orderBy('elements.dateCreated asc')
@@ -382,14 +382,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Sets the [ownerId](#ownerid) and [siteId](#siteid) parameters based on a given element.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts created for this entry #}
 {% set posts = craft.socialPoster.posts()
     .owner(myEntry)
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts created for this entry
 $posts = \verbb\socialposter\elements\Post::find()
     ->owner($myEntry)
@@ -413,14 +413,14 @@ Possible values include:
 | `['not', 1, 2]` | not created for an element with an ID of 1 or 2.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts created for an element with an ID of 1 #}
 {% set posts = craft.socialPoster.posts()
     .ownerId(1)
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts created for an element with an ID of 1
 $posts = \verbb\socialposter\elements\Post::find()
     ->ownerId(1)
@@ -442,7 +442,7 @@ Possible values include:
 | `a [Site](https://docs.craftcms.com/api/v3/craft-models-site.html)` object | created for an element in the site represented by the object.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts created for an element with an ID of 1, for a site with a handle of 'foo' #}
 {% set posts = craft.socialPoster.posts()
     .ownerId(1)
@@ -450,7 +450,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts created for an element with an ID of 1, for a site with a handle of 'foo'
 $posts = \verbb\socialposter\elements\Post::find()
     ->ownerId(1)
@@ -473,7 +473,7 @@ Possible values include:
 | `':empty:'` | created in a field that isn’t set to manage blocks on a per-site basis.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch posts created for an element with an ID of 1, for a site with an ID of 2 #}
 {% set posts = craft.socialPoster.posts()
     .ownerId(1)
@@ -481,7 +481,7 @@ Possible values include:
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch posts created for an element with an ID of 1, for a site with an ID of 2
 $posts = \verbb\socialposter\elements\Post::find()
     ->ownerId(1)
@@ -507,14 +507,14 @@ Possible values include:
 | `['live', 'pending']` | that are live or pending.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch disabled posts #}
 {% set posts = craft.socialPoster.posts()
     .status('disabled')
     .all() %}
 ```
 
-```php
+```php PHP
 // Fetch disabled posts
 $posts = \verbb\socialposter\elements\Post::find()
     ->status('disabled')
@@ -529,14 +529,14 @@ $posts = \verbb\socialposter\elements\Post::find()
 Narrows the query results based on the posts’ UIDs.
 
 ::: code
-```twig
+```twig Twig
 {# Fetch the post by its UID #}
 {% set post = craft.socialPoster.posts()
     .uid('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
     .one() %}
 ```
 
-```php
+```php PHP
 // Fetch the post by its UID
 $post = \verbb\socialposter\elements\Post::find()
     ->uid('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')

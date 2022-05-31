@@ -7,10 +7,11 @@ Events can be used to extend the functionality of Social Poster.
 Plugins can get notified before a post is saved. Event handlers can prevent the post from getting sent by setting `$event->isValid` to false.
 
 ```php
+use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(Event $e) {
+Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $e) {
     $post = $event->sender;
     $event->isValid = false;
 });
@@ -20,10 +21,11 @@ Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(Event $e) {
 Plugins can get notified after a post has been saved
 
 ```php
+use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(Event $e) {
+Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $e) {
     $post = $event->sender;
 });
 ```
