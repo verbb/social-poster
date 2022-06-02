@@ -100,7 +100,7 @@ class Install extends Migration
 
     protected function dropForeignKeys(): void
     {
-        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id'], $this);
-        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId'], $this);
+        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id']);
+        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId']);
     }
 }
