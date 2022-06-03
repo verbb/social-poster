@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.4 - 2022-06-03
+
+### Fixed
+- Fix Facebook scopes to work with FB API v7.0+.
+
 ## 2.3.3 - 2022-03-29
 
 ### Fixed
