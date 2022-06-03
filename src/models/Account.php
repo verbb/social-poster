@@ -93,10 +93,10 @@ class Account extends Model
         return false;
     }
 
-    public function getToken()
+    public function getToken($createToken = true)
     {
         if ($this->tokenId) {
-            return SocialPoster::$plugin->getTokens()->getTokenById($this->tokenId);
+            return SocialPoster::$plugin->getTokens()->getTokenById($this->tokenId, $createToken);
         }
 
         return null;
@@ -104,7 +104,7 @@ class Account extends Model
 
     public function getConnected()
     {
-        return $this->getToken();
+        return $this->getToken(false);
     }
 
 }

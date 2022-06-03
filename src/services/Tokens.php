@@ -52,13 +52,13 @@ class Tokens extends Component
         return array_values($this->_tokensById);
     }
 
-    public function getTokenById(int $id)
+    public function getTokenById(int $id, bool $createToken = true)
     {
         $result = $this->_createTokenQuery()
             ->where(['id' => $id])
             ->one();
 
-        return $result ? $this->_createToken($result) : null;
+        return $result && $createToken ? $this->_createToken($result) : null;
     }
 
     public function saveToken(Token $token, bool $runValidation = true): bool
