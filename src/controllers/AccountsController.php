@@ -243,7 +243,7 @@ class AccountsController extends Controller
 
         if ($request->getAcceptsJson()) {
             return $this->asJson([
-                'success' => true
+                'success' => true,
             ]);
         }
 
@@ -309,7 +309,7 @@ class AccountsController extends Controller
 
         if (!SocialPoster::$plugin->getTokens()->saveToken($token)) {
             SocialPoster::error('Unable to save token - ' . json_encode($token->getErrors()) . '.');
-        
+
             return null;
         }
 
@@ -317,7 +317,7 @@ class AccountsController extends Controller
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
             SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
-        
+
             return null;
         }
 
@@ -336,7 +336,7 @@ class AccountsController extends Controller
     {
         if (!SocialPoster::$plugin->getTokens()->deleteTokenById($account->tokenId)) {
             SocialPoster::error('Unable to delete token - ' . json_encode($token->getErrors()) . '.');
-        
+
             return null;
         }
 
@@ -344,7 +344,7 @@ class AccountsController extends Controller
 
         if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
             SocialPoster::error('Unable to save account - ' . json_encode($account->getErrors()) . '.');
-        
+
             return null;
         }
     }

@@ -54,7 +54,7 @@ class SocialPoster extends Plugin
         $this->_registerPermissions();
 
         if (Craft::$app->getRequest()->getIsCpRequest()) {
-            Craft::$app->view->hook('cp.entries.edit.details', [$this->getService(), 'renderEntrySidebar']);
+            Craft::$app->getView()->hook('cp.entries.edit.details', [$this->getService(), 'renderEntrySidebar']);
         }
         
         $this->hasCpSection = $this->getSettings()->hasCpSection;

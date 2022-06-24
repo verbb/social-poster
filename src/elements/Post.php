@@ -38,13 +38,15 @@ class Post extends Element
 
     protected static function defineSources(string $context = null): array
     {
-        $sources = [[
-            'key' => '*',
-            'label' => Craft::t('social-poster', 'All accounts'),
-            'criteria' => [],
-            'hasThumbs' => false,
-            'defaultSort' => ['elements.dateCreated', 'desc']
-        ]];
+        $sources = [
+            [
+                'key' => '*',
+                'label' => Craft::t('social-poster', 'All accounts'),
+                'criteria' => [],
+                'hasThumbs' => false,
+                'defaultSort' => ['elements.dateCreated', 'desc'],
+            ],
+        ];
 
         $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
 
@@ -59,7 +61,7 @@ class Post extends Element
                     'label' => Craft::t('social-poster', $account->name),
                     'criteria' => ['accountId' => $account->id],
                     'hasThumbs' => false,
-                    'defaultSort' => ['elements.dateCreated', 'desc']
+                    'defaultSort' => ['elements.dateCreated', 'desc'],
                 ];
             }
         }
@@ -198,21 +200,23 @@ class Post extends Element
     protected function tableAttributeHtml(string $attribute): string
     {
         switch ($attribute) {
-            case 'provider': {
+            case 'provider':
+            {
                 $provider = $this->getProvider();
                 $account = $this->getProvider();
 
                 if ($provider && $account) {
-                    $html = '<span class="provider">' . 
-                        '<div class="thumb">'. 
-                            '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle .'" />' .
-                        '</div>'. $account->name . 
-                    '</span>';
+                    $html = '<span class="provider">' .
+                        '<div class="thumb">' .
+                        '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle . '" />' .
+                        '</div>' . $account->name .
+                        '</span>';
 
                     return $html;
                 }
             }
-            case 'success': {
+            case 'success':
+            {
                 if ($this->success) {
                     $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
 

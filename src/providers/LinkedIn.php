@@ -101,7 +101,7 @@ class LinkedIn extends Provider
                             [
                                 'entityLocation' => $content['url'],
                                 'thumbnails' => $thumbnails,
-                            ]
+                            ],
                         ],
                         'title' => $content['title'],
                     ],

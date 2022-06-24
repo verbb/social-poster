@@ -67,14 +67,14 @@ class Install extends Migration
             'uid' => $this->uid(),
         ]);
     }
-    
+
     public function dropTables()
     {
         $this->dropTable('{{%socialposter_accounts}}');
         $this->dropTable('{{%socialposter_tokens}}');
         $this->dropTable('{{%socialposter_posts}}');
     }
-    
+
     protected function createIndexes()
     {
         $this->createIndex(null, '{{%socialposter_accounts}}', ['name'], true);
@@ -87,7 +87,7 @@ class Install extends Migration
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['id'], '{{%elements}}', ['id'], 'CASCADE', null);
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['ownerId'], '{{%elements}}', ['id'], 'CASCADE', null);
     }
-    
+
     protected function dropForeignKeys()
     {
         MigrationHelper::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id'], $this);

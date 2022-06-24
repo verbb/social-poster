@@ -76,7 +76,7 @@ class Twitter extends Provider
             $response = $client->post('statuses/update.json', [
                 'form_params' => [
                     'status' => $content['message'],
-                ]
+                ],
             ]);
 
             return $this->getPostResponse($response);
@@ -105,7 +105,7 @@ class Twitter extends Provider
         return Craft::createGuzzleClient([
             'base_uri' => 'https://api.twitter.com/1.1/',
             'handler' => $stack,
-            'auth' => 'oauth'
+            'auth' => 'oauth',
         ]);
     }
 }

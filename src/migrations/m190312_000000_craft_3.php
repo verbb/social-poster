@@ -159,11 +159,11 @@ class m190312_000000_craft_3 extends Migration
 
             $this->addForeignKey(null, '{{%socialposter_posts}}', ['id'], '{{%elements}}', ['id'], 'CASCADE', null);
             $this->addForeignKey(null, '{{%socialposter_posts}}', ['ownerId'], '{{%elements}}', ['id'], 'CASCADE', null);
-        
+
             // Re-enable FK checks
             $this->execute($queryBuilder->checkIntegrity(true));
         }
-   }
+    }
 
     public function safeDown()
     {
@@ -212,6 +212,5 @@ class m190312_000000_craft_3 extends Migration
 
             $this->update('{{%socialposter_posts}}', ['id' => $elementId], ['id' => $postId], [], false);
         }
-
     }
 }
