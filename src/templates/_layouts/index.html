@@ -24,7 +24,7 @@
     {% set title = craft.socialPoster.getPluginName() | t('social-poster') %}
 {% endif %}
 
-{% set content %}
+{% block content %}
     {% block blockContent %}
 
     {% endblock %}
@@ -52,4 +52,4 @@
             </a>
         </div>
     </div>
-{% endset %}
+{% endblock %}
