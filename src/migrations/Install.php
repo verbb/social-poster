@@ -3,6 +3,7 @@ namespace verbb\socialposter\migrations;
 
 use craft\db\Migration;
 use craft\helpers\Db;
+use craft\helpers\MigrationHelper;
 
 class Install extends Migration
 {
@@ -23,7 +24,7 @@ class Install extends Migration
         $this->dropForeignKeys();
         $this->dropTables();
 
-        return false;
+        return true;
     }
 
     public function createTables(): void
@@ -74,33 +75,34 @@ class Install extends Migration
         ]);
     }
 
-    public function dropTables(): void
-    {
-        $this->dropTable('{{%socialposter_accounts}}');
-        $this->dropTable('{{%socialposter_tokens}}');
-        $this->dropTable('{{%socialposter_posts}}');
-    }
-
-
-    // Protected Methods
-    // =========================================================================
-
-    protected function createIndexes(): void
+    public function createIndexes(): void
     {
         $this->createIndex(null, '{{%socialposter_accounts}}', ['name'], true);
         $this->createIndex(null, '{{%socialposter_accounts}}', ['handle'], true);
         $this->createIndex(null, '{{%socialposter_posts}}', ['ownerId'], false);
     }
 
-    protected function addForeignKeys(): void
+    public function addForeignKeys(): void
     {
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['id'], '{{%elements}}', ['id'], 'CASCADE', null);
         $this->addForeignKey(null, '{{%socialposter_posts}}', ['ownerId'], '{{%elements}}', ['id'], 'CASCADE', null);
     }
 
-    protected function dropForeignKeys(): void
+    public function dropTables(): void
     {
-        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['id']);
-        Db::dropForeignKeyIfExists('{{%socialposter_posts}}', ['ownerId']);
+        $this->dropTableIfExists('{{%socialposter_accounts}}');
+        $this->dropTableIfExists('{{%socialposter_tokens}}');
+        $this->dropTableIfExists('{{%socialposter_posts}}');
+    }
+
+    public function dropForeignKeys(): void
+    {
+        if ($this->db->tableExists('{{%socialposter_posts}}')) {
+            MigrationHelper::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
+        }
+
+        if ($this->db->tableExists('{{%socialposter_posts}}')) {
+            MigrationHelper::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
+        }
     }
 }
