@@ -1,7 +1,4 @@
-{% extends 'social-poster/_layouts' %}
-{% import '_includes/forms' as forms %}
-
-{% set parentLayout = '_layouts/elementindex' %}
+{% extends '_layouts/elementindex' %}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
