@@ -9,7 +9,7 @@ Attribute | Description
 `accountId` | The account ID this post was made from.
 `ownerId` | The entry ID this post was made on.
 `ownerSiteId` | The site ID this post was made on.
-`owner` | [Entry](https://docs.craftcms.com/api/v3/craft-elements-entry.html) this post was made on.
+`owner` | [Entry](https://docs.craftcms.com/api/v4/craft-elements-entry.html) this post was made on.
 `ownerType` | The class name of the element this post was made on.
 `settings` | Serialized content that was used to send out this post.
 `success` | Boolean whether the post was successfully sent to social media platforms.

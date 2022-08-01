@@ -20,4 +20,4 @@ composer require verbb/social-poster && php craft plugin/install social-poster
 ## Licensing
 You can try Social Poster in a development environment for as long as you like. Once your site goes live, you are required to purchase a license for the plugin.
 
-For more information, see [Craft's Commercial Plugin Licensing](https://docs.craftcms.com/v3/plugins.html#commercial-plugin-licensing).
+For more information, see [Craft's Commercial Plugin Licensing](https://craftcms.com/docs/4.x/plugins.html#commercial-plugin-licensing).
