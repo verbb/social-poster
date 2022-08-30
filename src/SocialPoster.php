@@ -203,8 +203,8 @@ class SocialPoster extends Plugin
             $e->actions['socialposter-posts'] = [
                 'action' => function(): int {
                     $controller = Craft::$app->controller;
-                    $query = Post::find();
-                    return $controller->resaveElements($query);
+                    
+                    return $controller->resaveElements(Post::class);
                 },
                 'options' => [],
                 'helpSummary' => 'Re-saves Social Poster posts.',
