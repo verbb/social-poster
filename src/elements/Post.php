@@ -10,6 +10,7 @@ use Craft;
 use craft\base\Element;
 use craft\elements\actions\Delete;
 use craft\elements\db\ElementQueryInterface;
+use craft\elements\User;
 use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
@@ -145,6 +146,31 @@ class Post extends Element
                 $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
             }
         }
+    }
+
+    public function canView(User $user): bool
+    {
+        return true;
+    }
+
+    public function canSave(User $user): bool
+    {
+        return true;
+    }
+
+    public function canDuplicate(User $user): bool
+    {
+        return true;
+    }
+
+    public function canDelete(User $user): bool
+    {
+        return true;
+    }
+
+    public function canCreateDrafts(User $user): bool
+    {
+        return true;
     }
 
     public function getOwner()
