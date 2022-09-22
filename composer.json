@@ -2,7 +2,7 @@
     "name": "verbb/social-poster",
     "description": "A Craft CMS plugin for automatically posting entries to social media.",
     "type": "craft-plugin",
-    "version": "3.0.0-beta.1",
+    "version": "3.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -26,8 +26,8 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "craftcms/cms": "^4.0.0-beta.1",
-        "verbb/base": "^2.0.0-beta",
+        "craftcms/cms": "^4.0.0",
+        "verbb/base": "^2.0.0",
         "guzzlehttp/oauth-subscriber": "^0.6.0",
         "janu-software/facebook-php-sdk": "^0.1",
         "league/oauth1-client": "^1.8.0",
