@@ -84,7 +84,7 @@
                     </div>
                 {% else %}
                     <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
-                        {{ provider.getInputHtml(entry) | raw }}
+                        {{ provider.getInputHtml(_context) | raw }} 
 
                         <div class="field">
                             <span class="info-item">
