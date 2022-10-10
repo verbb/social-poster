@@ -1,10 +1,21 @@
 # Changelog
 
-## 3.0.0 - 2022-05-05
+## 3.0.0 - 2022-10-11
+
+### Added
+- Add `archiveTableIfExists()` to install migration.
+- Memoize all services for performance.
+- Add checks for registering events for performance.
+- Add resave console command for elements.
+- Add missing English translations.
 
 ### Changed
 - Now requires PHP `8.0.2+`.
 - Now requires Craft `4.0.0+`.
+- Rename base plugin methods.
+
+### Fixed
+- Fix an error when uninstalling.
 
 ## 2.3.3 - 2022-03-29
 
