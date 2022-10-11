@@ -108,10 +108,14 @@ class AccountsController extends Controller
         $session = Craft::$app->getSession();
 
         $accountId = $request->getBodyParam('accountId');
-        $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
+        $account = new Account();
 
-        if (!$account) {
-            $account = new Account();
+        if ($accountId) {
+            $account = SocialPoster::$plugin->getAccounts()->getAccountById($accountId);
+
+            if (!$account) {
+                $account = new Account();
+            }
         }
 
         $account->id = $accountId;
