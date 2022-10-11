@@ -45,6 +45,7 @@ class Account extends Model
     public function rules(): array
     {
         return [
+            [['name', 'handle'], 'required'],
             [['id', 'sortOrder'], 'number', 'integerOnly' => true],
         ];
     }

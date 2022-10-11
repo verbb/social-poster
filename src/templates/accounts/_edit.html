@@ -47,6 +47,7 @@
     {{ forms.textField({
         first: true,
         label: 'Name' | t('app'),
+        instructions: 'What this account will be called in the control panel.' | t('social-poster'),
         id: 'name',
         name: 'name',
         value: (account is defined ? account.name : null),
@@ -56,8 +57,8 @@
     }) }}
 
     {{ forms.textField({
-        first: true,
         label: 'Handle' | t('app'),
+        instructions: 'How you’ll refer to this account in the templates.' | t('social-poster'),
         id: 'handle',
         name: 'handle',
         class: 'code',

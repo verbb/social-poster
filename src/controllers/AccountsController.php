@@ -99,9 +99,8 @@ class AccountsController extends Controller
         ]);
     }
 
-    public function actionSave(): Response
+    public function actionSave(): ?Response
     {
-        $result = null;
         $this->requirePostRequest();
 
         $request = Craft::$app->getRequest();
@@ -126,11 +125,17 @@ class AccountsController extends Controller
         $account->providerHandle = $request->getBodyParam('providerHandle');
         $account->settings = $request->getBodyParam('providerSettings.' . $account->providerHandle);
 
-        if (SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
-            $session->setNotice(Craft::t('social-poster', 'Account saved successfully.'));
-        } else {
-            $session->setError($result);
+        if (!SocialPoster::$plugin->getAccounts()->saveAccount($account)) {
+            $session->setError(Craft::t('social-poster', 'Unable to save account.'));
+
+            Craft::$app->getUrlManager()->setRouteParams([
+                'account' => $account,
+            ]);
+
+            return null;
         }
+
+        $session->setNotice(Craft::t('social-poster', 'Account saved successfully.'));
 
         return $this->redirectToPostedUrl();
     }
