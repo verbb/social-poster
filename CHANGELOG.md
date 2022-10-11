@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1 - 2022-10-12
+
+### Fixed
+- Fix lack of validation on account settings.
+- Fix an error when saving new accounts.
+
 ## 3.0.0 - 2022-10-11
 
 ### Added
