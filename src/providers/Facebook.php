@@ -34,23 +34,13 @@ class Facebook extends Provider
     public function getDefaultOauthScope(): array
     {
         return [
+            // API version 7.0+
+            'public_profile',
+            'email',
+            'pages_manage_posts',
             'publish_to_groups',
-            'user_posts',
-            'user_photos',
-
-            // Deprecated
-            // https://developers.facebook.com/docs/graph-api/changelog/non-versioned-changes/apr-24-2018#login-4-24
-            // 'publish_actions',
-            // 'user_managed_groups',
-
-            // Deprecated
-            // https://developers.facebook.com/docs/graph-api/changelog/version7.0/
-            'manage_pages',
-            'publish_pages',
-
-            // To be replaced with:
-            // 'pages_manage_posts',
-            // 'pages_read_user_content',
+            'pages_read_engagement',
+            'pages_read_user_content',
         ];
     }
 
