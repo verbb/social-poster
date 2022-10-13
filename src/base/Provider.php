@@ -8,6 +8,7 @@ use verbb\socialposter\models\Account;
 use Craft;
 use craft\base\SavableComponent;
 use craft\helpers\Json;
+use craft\helpers\UrlHelper;
 use craft\web\Response;
 
 use GuzzleHttp\Exception\RequestException;
@@ -127,7 +128,7 @@ abstract class Provider extends SavableComponent implements ProviderInterface
 
     public function getRedirectUri(): string
     {
-        return SocialPosterHelper::siteActionUrl('social-poster/accounts/callback');
+        return UrlHelper::siteUrl('social-poster/accounts/callback');
     }
 
 

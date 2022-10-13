@@ -10,21 +10,6 @@ class SocialPosterHelper
     // Static Methods
     // =========================================================================
 
-    public static function siteActionUrl(string $path = '', $params = null, string $protocol = null): string
-    {
-        // Force `addTrailingSlashesToUrls` to `false` while we generate the redirectUri
-        $addTrailingSlashesToUrls = Craft::$app->getConfig()->getGeneral()->addTrailingSlashesToUrls;
-        Craft::$app->getConfig()->getGeneral()->addTrailingSlashesToUrls = false;
-
-        $redirectUri = UrlHelper::actionUrl($path, $params, $protocol);
-
-        // Set `addTrailingSlashesToUrls` back to its original value
-        Craft::$app->getConfig()->getGeneral()->addTrailingSlashesToUrls = $addTrailingSlashesToUrls;
-
-        // We don't want the CP trigger showing in the action URL.
-        return str_replace(Craft::$app->getConfig()->getGeneral()->cpTrigger . '/', '', $redirectUri);
-    }
-
     public static function getAssetFieldOptions(): array
     {
         $imageOptions = [];

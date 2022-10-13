@@ -63,6 +63,10 @@ class SocialPoster extends Plugin
         if (Craft::$app->getRequest()->getIsConsoleRequest()) {
             $this->_registerResaveCommand();
         }
+
+        if (Craft::$app->getRequest()->getIsSiteRequest()) {
+            $this->_registerSiteRoutes();
+        }
         
         if (Craft::$app->getEdition() === Craft::Pro) {
             $this->_registerPermissions();
@@ -152,6 +156,13 @@ class SocialPoster extends Plugin
                 'social-poster/providers/<handle:{handle}>' => 'social-poster/providers/oauth',
                 'social-poster/settings' => 'social-poster/plugin/settings',
             ]);
+        });
+    }
+
+    private function _registerSiteRoutes(): void
+    {
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES, function(RegisterUrlRulesEvent $event) {
+            $event->rules['social-poster/accounts/callback'] = 'social-poster/accounts/callback';
         });
     }
 
