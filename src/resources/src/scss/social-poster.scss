@@ -10,19 +10,15 @@
 // Providers
 // ==========================================================================
 
-.provider .thumb {
-    display: inline-block;
-    margin-right: 7px;
-}
+.sp-provider {
+    display: flex;
+    align-items: center;
 
-.provider .thumb img {
-    height: 20px;
-    vertical-align: middle;
-}
-
-.provider .label {
-    display: inline-block;
-    vertical-align: middle;
+    img {
+        height: 20px;
+        width: 20px;
+        margin-right: 7px;
+    }
 }
 
 

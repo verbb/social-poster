@@ -265,7 +265,7 @@ class Post extends Element
                 $account = $this->getProvider();
 
                 if ($provider && $account) {
-                    return '<span class="provider">' .
+                    return '<span class="sp-provider">' .
                         '<div class="thumb">' .
                         '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle . '" />' .
                         '</div>' . $account->name .
