@@ -10,6 +10,8 @@ use League\OAuth2\Client\Provider\Facebook as FacebookProvider;
 
 use Throwable;
 
+use GuzzleHttp\Psr7\Response;;
+
 class Facebook extends Provider
 {
     // Public Methods
@@ -59,7 +61,7 @@ class Facebook extends Provider
         $config = parent::getOauthProviderConfig();
 
         if (empty($config['options']['graphApiVersion'])) {
-            $config['options']['graphApiVersion'] = 'v3.0';
+            $config['options']['graphApiVersion'] = 'v15.0';
         }
 
         return $config;
@@ -92,34 +94,34 @@ class Facebook extends Provider
             $accessToken = $token->accessToken;
 
             if ($endpoint == 'page') {
-                $pageOrGroupId = $endpoint = $content['pageId'];
+                $pageOrGroupId = $content['pageId'];
             } else if ($endpoint == 'group') {
-                $pageOrGroupId = $endpoint = $content['groupId'];
+                $pageOrGroupId = $content['groupId'];
             }
 
-            $fb = new \JanuSoftware\Facebook\Facebook([
+            $client = new \JanuSoftware\Facebook\Facebook([
                 'app_id' => $info['options']['clientId'],
                 'app_secret' => $info['options']['clientSecret'],
-                'default_graph_version' => 'v2.10',
+                'default_graph_version' => 'v15.0',
             ]);
 
-            $client = Craft::createGuzzleClient([
-                'base_uri' => 'https://graph.facebook.com/',
-            ]);
+            // Get long-lived access token from the user access token
+            $accessToken = $client->getOAuth2Client()->getLongLivedAccessToken($accessToken);
+            $client->setDefaultAccessToken($accessToken);
 
-            if ($pageOrGroupId) {
-                // Get long-lived access token from the user access token
-                $accessToken = $fb->getOAuth2Client()->getLongLivedAccessToken($accessToken);
-                $fb->setDefaultAccessToken($accessToken);
-
-                // Use long-lived access token to get a page access token which will never expire
-                $response = $fb->sendRequest('GET', $pageOrGroupId, ['fields' => 'access_token'])->getDecodedBody();
-                $accessToken = $response['access_token'];
-                $fb->setDefaultAccessToken($accessToken);
+            // Use long-lived access token to get a page access token which will never expire
+            if ($endpoint == 'page') {
+                // This will fail if not a page (Business or Group) so catch and continue
+                try {
+                    $response = $client->sendRequest('GET', $pageOrGroupId, ['fields' => 'access_token'])->getDecodedBody();
+                    $accessToken = $response['access_token'];
+                    $client->setDefaultAccessToken($accessToken);
+                } catch (Throwable $e) {
+                    $this->getPostExceptionResponse($e);
+                }
             }
 
             $params = [
-                'access_token' => $accessToken,
                 'message' => $content['message'],
                 'link' => $content['url'],
             ];
@@ -129,9 +131,10 @@ class Facebook extends Provider
                 $params['picture'] = $content['picture'];
             }
 
-            $response = $client->post($endpoint . '/feed', [
-                'form_params' => $params,
-            ]);
+            $response = $client->sendRequest('POST', $pageOrGroupId . '/feed', $params);
+
+            // Ensure the response is Psr7 to be compatible with Guzzle handling
+            $response = new Response($response->getHttpStatusCode(), $response->getHeaders(), $response->getBody());
 
             return $this->getPostResponse($response);
         } catch (Throwable $e) {
