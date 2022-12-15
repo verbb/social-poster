@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.2 - 2022-12-16
+
+### Fixed
+- Fix an issue where the sidebar for posting would replace other meta info for entries.
+
 ## 3.0.1 - 2022-10-12
 
 ### Fixed
