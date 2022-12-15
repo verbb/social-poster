@@ -2,8 +2,15 @@
 
 ## 3.0.2 - 2022-12-16
 
+### Added
+- Add site-based custom route for OAuth provider callbacks, to prevent `usePathInfo` issues
+
+### Changed
+- Update Facebook integration to better handle error handling and recent API changes
+
 ### Fixed
 - Fix an issue where the sidebar for posting would replace other meta info for entries.
+- Fix provider icon alignment issues.
 
 ## 3.0.1 - 2022-10-12
 
