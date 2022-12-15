@@ -76,7 +76,7 @@ class Service extends Component
 
         SocialPoster::log('Rendering #' . $entry->id);
 
-        $event->html = Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
+        $event->html .= Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
             'entry' => $entry,
             'accounts' => $accounts,
             'posts' => $posts,
