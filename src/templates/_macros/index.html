@@ -1,17 +1,58 @@
-{% macro configWarning(setting, file) -%}
-    {%- set configArray = craft.app.config.getConfigFromFile(file) -%}
-    {%- if configArray[setting] is defined -%}
-        {{- "This is being overridden by the `#{setting}` setting in the `config/#{file}.php` file." |raw }}
-    {%- else -%}
-        {{ false }}
-    {%- endif -%}
-{%- endmacro %}
+{% macro widgetSettingsField(config, input) %}
+    {% import '_includes/forms' as forms %}
 
-{% macro providerConfigWarning(providerHandle, setting, file) -%}
-    {%- set configArray = craft.app.config.getConfigFromFile(file) -%}
-    {%- if configArray.providers[providerHandle].oauth.options[setting] is defined -%}
-        {{- "This is being overridden by the `#{setting}` setting in the `config/#{file}.php` file." |raw }}
-    {%- else -%}
-        {{ false }}
-    {%- endif -%}
-{%- endmacro %}
+    {% set random = random() %}
+    {% set id = config.id ?? (config.name | id) %}
+
+    <div class="field" id="{{ random }}">
+        <div class="heading">
+            <label class="sp-field-heading" for="{{ id }}">
+                <div class="sp-field-heading-label">{{ config.label }}</div>
+
+                <div class="sp-field-heading-checkbox">
+                    {{ forms.lightswitchField({
+                        id: id,
+                        label: 'Show in widget?' | t('social-poster'),
+                        on: config.checked,
+                        name: config.name,
+                        small: true,
+                    }) }}
+                </div>
+            </label>
+
+            <div class="instructions">
+                {{ config.instructions | e | md(inlineOnly=true) | raw }}
+            </div>
+        </div>
+
+        <div class="input ltr">
+            {{ forms.field([], input) }}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro providerSettingsField(account, config) %}
+    {% import '_includes/forms' as forms %}
+    {% import 'verbb-base/_macros' as macros %}
+
+    {% if account.isConnected() %}
+        {% set input %}
+            {{ forms.select({
+                id: config.name,
+                name: config.name,
+                options: account.getAccountSettings(config.name),
+                value: account[config.name] ?? '',
+            }) }}
+
+            <button class="btn sp-btn-transparent" type="button" data-icon="refresh" data-refresh-settings="{{ config.name }}" data-account="{{ account.handle }}"></button>
+        {% endset %}
+
+        {{ forms.field({
+            label: config.label,
+            instructions: config.instructions,
+            warning: macros.configWarning("accounts.#{account.handle}.#{config.name}", 'social-poster'),
+            errors: account.getErrors(config.name),
+            required: config.required ?? false,
+        }, input) }}
+    {% endif %}
+{% endmacro %}

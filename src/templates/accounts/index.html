@@ -1,102 +1,88 @@
 {% extends 'social-poster/_layouts' %}
-{% import '_includes/forms' as forms %}
+
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') -%}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
     { label: 'Accounts' | t('social-poster'), url: url('social-poster/accounts') }
 ] %}
 
-{% set selectedTab = 'accounts' %}
 {% set selectedSubnavItem = 'accounts' %}
 
-{% block blockContent %}
-    
-<p id="noaccounts"{% if accounts | length %} class="hidden"{% endif %}>
-    {{ 'No accounts exist yet.' | t('social-poster') }}
-</p>
-
-{% if accounts | length %}
-    {% set sortable  = (accounts | length > 1) %}
-
-    <table id="accounts" class="data fullwidth collapsible">
-        <thead>
-            <tr>
-                <th scope="col">{{ 'Name' | t('app') }}</th>
-                <th scope="col">{{ 'Status' | t('app') }}</th>
-                <th scope="col">{{ 'Auto-Post' | t('social-poster') }}</th>
-                <th scope="col">{{ 'Connected' | t('social-poster') }}</th>
-                <th scope="col">{{ 'Provider' | t('social-poster') }}</th>
-                {% if sortable %}<td class="thin"></td>{% endif %}
-                <td class="thin"></td>
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for account in accounts %}
-                <tr data-id="{{ account.id }}" data-name="{{ account.name | t('site') }}">
-                    <th scope="row" data-title="{{ 'Name' | t('app') }}">
-                        <a href="{{ url('social-poster/accounts/' ~ account.id) }}">{{ account.name | t('site') }}</a>
-                    </th>
-
-                    <td scope="row" data-title="{{ 'Status' | t('app') }}">
-                        {% if account.enabled %}
-                            <span class="status on"></span> {{ 'Enabled' | t('social-poster') }} 
-                        {% else %}
-                            <span class="status"></span> {{ 'Disabled' | t('social-poster') }} 
-                        {% endif %}
-                    </td>
-
-                    <td scope="row" data-title="{{ 'Auto-Post' | t('app') }}">
-                        {% if account.autoPost %}
-                            <span class="status on"></span> {{ 'Enabled' | t('social-poster') }} 
-                        {% else %}
-                            <span class="status"></span> {{ 'Disabled' | t('social-poster') }} 
-                        {% endif %}
-                    </td>
-
-                    <td scope="row" data-title="{{ 'Connected' | t('app') }}">
-                        {% if account.connected %}
-                            <span class="status on"></span> {{ 'Connected' | t('social-poster') }} 
-                        {% else %}
-                            <span class="status"></span> {{ 'Disconnected' | t('social-poster') }} 
-                        {% endif %}
-                    </td>
-
-                    <td scope="row" data-title="{{ 'Provider' | t('social-poster') }}">
-                        <div class="sp-provider">
-                            <div class="thumb">
-                                <img src="{{ account.provider.getIconUrl() }}" width="32" height="32" />
-                            </div>
-
-                            <div class="label">
-                                {{ account.provider.name }}
-                            </div>
-                        </div>
-                    </td>
-
-                    {% if sortable %}<td class="thin"><a class="move icon" title="{{ 'Reorder' | t('app') }}" role="button"></a></td>{% endif %}
-
-                    <td class="thin"><a class="delete icon" title="{{ 'Delete' | t('app') }}" role="button"></a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
-<div class="buttons">
+{% block actionButton %}
     <a class="btn submit add icon" href="{{ url('social-poster/accounts/new') }}">{{ 'New account' | t('social-poster') }}</a>
-</div>
+{% endblock %}
+
+{% block blockContent %}
+
+<div id="accounts-vue-admin-table"></div>
 
 {% endblock %}
 
+{% set tableData = [] %}
+
+{% for account in accounts %}
+    {% set tableData = tableData | merge([{
+        id: account.id,
+        title: account.name | t('site'),
+        url: url('social-poster/accounts/' ~ account.handle),
+        handle: account.handle,
+        enabled: account.enabled,
+        autoPost: account.autoPost,
+        connected: account.connected,
+        provider: { name: account.providerName | t('site') | e, icon: account.icon, color: account.primaryColor },
+    }]) %}
+{% endfor %}
+
 {% js %}
+    var columns = [
+        { name: '__slot:title', title: Craft.t('app', 'Name') },
+        { name: '__slot:handle', title: Craft.t('app', 'Handle') },
+        { name: 'enabled', title: Craft.t('app', 'Status'), callback: function(value) {
+            if (value) {
+                return '<span class="status on"></span>' + Craft.t('social-poster', 'Enabled');
+            } else {
+                return '<span class="status"></span>' + Craft.t('social-poster', 'Disabled');
+            }
+        } },
+        { name: 'autoPost', title: Craft.t('app', 'Auto-Post'), callback: function(value) {
+            if (value) {
+                return '<span class="status on"></span>' + Craft.t('social-poster', 'Enabled');
+            } else {
+                return '<span class="status"></span>' + Craft.t('social-poster', 'Disabled');
+            }
+        } },
+        { name: 'connected', title: Craft.t('app', 'Connected'), callback: function(value) {
+            if (value) {
+                return '<span class="status on"></span>' + Craft.t('social-poster', 'Connected');
+            } else {
+                return '<span class="status"></span>' + Craft.t('social-poster', 'Disconnected');
+            }
+        } },
+        { name: 'provider', title: Craft.t('app', 'Name'), callback: function(provider) {
+            let $icon = '';
 
-var adminTable = new Craft.AdminTable({
-    tableSelector: '#accounts',
-    noItemsSelector: '#noaccounts',
-    sortable: true,
-    reorderAction: 'social-poster/accounts/reorder',
-    deleteAction: 'social-poster/accounts/delete',
-});
+            if (!provider) {
+                return '';
+            }
 
+            if (provider.icon) {
+                $icon = '<span class="sp-provider-icon">' + provider.icon + '</span>';
+            }
+
+            return '<div class="sp-provider" style="--bg-color: ' + provider.color + '">' +
+                $icon +
+                '<span class="sp-provider-label">' + provider.name + '</span>' +
+            '</div>';
+        } },
+    ];
+
+    new Craft.VueAdminTable({
+        columns: columns,
+        container: '#accounts-vue-admin-table',
+        reorderAction: 'social-poster/accounts/reorder',
+        deleteAction: 'social-poster/accounts/delete',
+        emptyMessage: Craft.t('social-poster', 'No accounts exist yet.'),
+        tableData: {{ tableData | json_encode | raw }},
+    });
 {% endjs %}

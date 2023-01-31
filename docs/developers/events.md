@@ -1,153 +1,122 @@
 # Events
-Events can be used to extend the functionality of Social Poster.
+Social Poster provides a collection of events for extending its functionality. Modules and plugins can register event listeners, typically in their `init()` methods, to modify Social Poster’s behavior.
 
-## Post related events
+## Post Events
 
 ### The `beforeSavePost` event
-Plugins can get notified before a post is saved. Event handlers can prevent the post from getting sent by setting `$event->isValid` to false.
+The event that is triggered before a post is saved. You can set `$event->isValid` to false to prevent saving.
 
 ```php
 use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $e) {
+Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
     $post = $event->sender;
     $event->isValid = false;
+    // ...
 });
 ```
 
 ### The `afterSavePost` event
-Plugins can get notified after a post has been saved
+The event that is triggered after a post is saved.
 
 ```php
 use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $e) {
+Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $event) {
     $post = $event->sender;
+    // ...
 });
 ```
 
-## Account related events
-### The `beforeSaveAccount` event
+### The `beforeDeletePost` event
+The event that is triggered before a post is deleted.
 
-Plugins can get notified before an account is being saved.
+The `isValid` event property can be set to `false` to prevent the deletion from proceeding.
+
+```php
+use verbb\formie\elements\Form;
+use yii\base\Event;
+
+Event::on(Form::class, Form::EVENT_BEFORE_DELETE, function(Event $event) {
+    $post = $event->sender;
+    $event->isValid = false;
+    // ...
+});
+```
+
+### The `afterDeleteForm` event
+The event that is triggered after a post is deleted.
+
+```php
+use verbb\formie\elements\Form;
+use yii\base\Event;
+
+Event::on(Form::class, Form::EVENT_AFTER_DELETE, function(Event $event) {
+    $post = $event->sender;
+    // ...
+});
+```
+
+## Account Events
+
+### The `beforeSaveAccount` event
+The event that is triggered before an account is saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(AccountEvent $e) {
-    // Do something
+Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(AccountEvent $event) {
+    $account = $event->account;
+    $isNew = $event->isNew;
+    // ...
 });
 ```
 
 ### The `afterSaveAccount` event
-Plugins can get notified after an account has been saved.
+The event that is triggered after an account is saved.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountEvent $e) {
-    // Do something
+Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountEvent $event) {
+    $account = $event->account;
+    $isNew = $event->isNew;
+    // ...
 });
 ```
 
 ### The `beforeDeleteAccount` event
-Plugins can get notified before an account is deleted
+The event that is triggered before an account is deleted.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(AccountEvent $e) {
-    // Do something
+Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(AccountEvent $event) {
+    $account = $event->account;
+    // ...
 });
 ```
 
 ### The `afterDeleteAccount` event
-Plugins can get notified after an account has been deleted
+The event that is triggered after an account is deleted.
 
 ```php
 use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_AFTER_DELETE_ACCOUNT, function(AccountEvent $e) {
-    // Do something
-});
-```
-
-## Token related events
-
-### The `beforeSaveToken` event
-Plugins can get notified before a token is being saved.
-
-```php
-use verbb\socialposter\events\TokenEvent;
-use verbb\socialposter\services\Tokens;
-use yii\base\Event;
-
-Event::on(Tokens::class, Tokens::EVENT_BEFORE_SAVE_TOKEN, function(TokenEvent $e) {
-    // Do something
-});
-```
-
-### The `afterSaveToken` event
-Plugins can get notified after a token has been saved.
-
-```php
-use verbb\socialposter\events\TokenEvent;
-use verbb\socialposter\services\Tokens;
-use yii\base\Event;
-
-Event::on(Tokens::class, Tokens::EVENT_AFTER_SAVE_TOKEN, function(TokenEvent $e) {
-    // Do something
-});
-```
-
-### The `beforeDeleteToken` event
-Plugins can get notified before an token is deleted
-
-```php
-use verbb\socialposter\events\TokenEvent;
-use verbb\socialposter\services\Tokens;
-use yii\base\Event;
-
-Event::on(Tokens::class, Tokens::EVENT_BEFORE_DELETE_TOKEN, function(TokenEvent $e) {
-    // Do something
-});
-```
-
-### The `afterDeleteToken` event
-Plugins can get notified after a token has been deleted
-
-```php
-use verbb\socialposter\events\TokenEvent;
-use verbb\socialposter\services\Tokens;
-use yii\base\Event;
-
-Event::on(Tokens::class, Tokens::EVENT_AFTER_DELETE_TOKEN, function(TokenEvent $e) {
-    // Do something
-});
-```
-
-## Oauth related events
-
-### The `afterOauthCallback` event
-
-```php
-use verbb\socialposter\controllers\AccountsController;
-use verbb\socialposter\events\OauthTokenEvent;
-use yii\base\Event;
-
-Event::on(AccountsController::class, AccountsController::EVENT_AFTER_OAUTH_CALLBACK, function(OauthTokenEvent $e) {
-    // Do something
+Event::on(Accounts::class, Accounts::EVENT_AFTER_DELETE_ACCOUNT, function(AccountEvent $event) {
+    $account = $event->account;
+    // ...
 });
 ```

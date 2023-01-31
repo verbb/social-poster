@@ -6,14 +6,14 @@
             "get-started/installation-setup",
             "get-started/requirements",
             "get-started/configuration",
-            "get-started/faqs"
+            "get-started/upgrading-from-v3"
         ]
     },
     {
         "title": "Feature Tour",
         "collapsable": false,
         "children": [
-            "feature-tour/setup",
+            "feature-tour/accounts",
             "feature-tour/entry-widget"
         ]
     },
@@ -22,8 +22,9 @@
         "collapsable": false,
         "children": [
             "providers/facebook",
-            "providers/twitter",
-            "providers/linkedin"
+            "providers/instagram"
+            "providers/linkedin",
+            "providers/twitter"
         ]
     },
     {
@@ -45,7 +46,8 @@
         "title": "Developers",
         "collapsable": false,
         "children": [
-            "developers/provider",
+            "developers/account",
+            "developers/account-provider",
             "developers/post",
             "developers/events"
         ]

@@ -6,22 +6,20 @@
     { label: 'Posts' | t('social-poster'), url: url('social-poster/posts') }
 ] %}
 
-{% set account = post.account %}
-{% set provider = post.provider %}
+{% set account = post.getAccount() %}
 
 {% set title = account.name ~ ' post on ' ~ post.dateCreated | date('short') ~ ' ' ~ post.dateCreated | time('short') %}
-{% set selectedTab = 'posts' %}
 {% set selectedSubnavItem = 'posts' %}
 
 {% block content %}
 
 <div id="account-settings">
     <h5>{{ 'Payload Sent' | t('social-poster') }}</h5>
-    <pre class="codeblock">{{ post.settings | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    <pre class="sp-codeblock">{{ post.settings | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
 
     <hr>
 
-    {% set responseUrl = provider.responseUrl(post.data) %}
+    {% set responseUrl = account.getResponseUrl(post.data) %}
 
     {% if responseUrl %}
         <h5>{{ 'Provider Post URL' | t('social-poster') }}</h5>
@@ -30,10 +28,10 @@
     {% endif %}
 
     <h5>{{ 'Provider API Response' | t('social-poster') }}</h5>
-    <pre class="codeblock">{{ post.response | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    <pre class="sp-codeblock">{{ post.response | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
 
     <h5>{{ 'Provider Post Response' | t('social-poster') }}</h5>
-    <pre class="codeblock">{{ post.data | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+    <pre class="sp-codeblock">{{ post.data | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
 </div>
 
 {% endblock %}
@@ -47,7 +45,7 @@
         </div>
 
         <div class="input ltr">
-            <a href="{{ post.owner.cpEditUrl }}">{{ post.owner }}</a>
+            {% include '_elements/element' with { element: post.owner } %}
         </div>
     </div>
 
@@ -57,15 +55,16 @@
         </div>
 
         <div class="input ltr">
-            {% if provider %}
-                <span class="sp-provider">
-                    <div class="thumb">
-                        <img width="20" src="{{ provider.getIconUrl() }}" class="social-icon social-{{ provider.handle }}" />
-                    </div>
+            {% set icon = '' %}
 
-                    {{ account.name }}
-                </span>
+            {% if account.icon %}
+                {% set icon = '<span class="sp-provider-icon">' ~  account.icon ~ '</span>' %}
             {% endif %}
+
+            <div class="sp-provider" style="--bg-color: {{ account.primaryColor }}">
+                {{ icon | raw }}
+                <span class="sp-provider-label">{{ account.name }}</span>
+            </div>
         </div>
     </div>
 
@@ -89,7 +88,7 @@
         </div>
 
         <div class="input ltr">
-            <a class="btn small formsubmit submit" data-action="social-poster/posts/repost" data-param="id" data-value="{{ post.id }}" data-confirm="{{ 'Are you sure you want to re-post this post to {p}?' | t('social-poster', { p: provider.name }) }}" data-redirect="{{ (post.getCpEditUrl()) | hash }}">{{ 'Re-post' | t('social-poster') }}</a>
+            <a class="btn small formsubmit submit" data-action="social-poster/posts/repost" data-param="id" data-value="{{ post.id }}" data-confirm="{{ 'Are you sure you want to re-post this post to {p}?' | t('social-poster', { p: account.providerName }) }}" data-redirect="{{ (post.getCpEditUrl()) | hash }}">{{ 'Re-post' | t('social-poster') }}</a>
         </div>
     </div>
 
@@ -98,9 +97,14 @@
 
 <hr>
 
-<hr>
-
 <div class="meta read-only">
+    {% if post.id %}
+        <div class="data">
+            <h5 class="heading">{{ 'ID' | t('social-poster') }}</h5>
+            <div class="value">{{ post.id }}</div>
+        </div>
+    {% endif %}
+
     <div class="data">
         <h5 class="heading">{{ 'Date Created' | t('wishlist') }}</h5>
         <div class="value">{{ post.dateCreated | date('short') }} {{ post.dateCreated | time('short') }}</div>

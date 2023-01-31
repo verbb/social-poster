@@ -3,6 +3,7 @@ namespace verbb\socialposter\services;
 
 use verbb\socialposter\SocialPoster;
 use verbb\socialposter\elements\Post;
+use verbb\socialposter\models\Payload;
 
 use Craft;
 use craft\base\Component;
@@ -23,11 +24,9 @@ class Service extends Component
 
     public function renderEntrySidebar(DefineHtmlEvent $event): void
     {
-        $entry = $event->sender;
+        $entry = $event->sender->getCanonical();
         
         $settings = SocialPoster::$plugin->getSettings();
-
-        SocialPoster::log('Try to render sidebar');
 
         // Make sure social poster is enabled for this section - or all section
         if (!$settings->enabledSections) {
@@ -46,16 +45,7 @@ class Service extends Component
             }
         }
 
-        $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
-
-        // Remove any accounts that don't have settings - they haven't been configured!
-        foreach ($accounts as $key => $account) {
-            if (!$account->settings) {
-                SocialPoster::log('Account ' . $key . ' not configured.');
-
-                unset($accounts[$key]);
-            }
-        }
+        $accounts = SocialPoster::$plugin->getAccounts()->getAllConfiguredAccounts();
 
         if (!$accounts) {
             SocialPoster::log('No accounts configured.');
@@ -66,17 +56,18 @@ class Service extends Component
         $posts = [];
 
         if ($entry->id) {
-            $posts = Post::find()
-                ->ownerId($entry->id)
-                ->ownerSiteId($entry->siteId)
-                ->indexBy('accountId')
-                ->orderBy('dateCreated asc')
-                ->all();
+            foreach ($accounts as $account) {
+                $posts[$account->handle] = Post::find()
+                    ->ownerId($entry->id)
+                    ->ownerSiteId($entry->siteId)
+                    ->orderBy('dateCreated desc')
+                    ->accountId($account->id)
+                    ->limit(1)
+                    ->one();
+            }
         }
 
-        SocialPoster::log('Rendering #' . $entry->id);
-
-        $event->html = Craft::$app->view->renderTemplate('social-poster/_includes/entry-sidebar', [
+        $event->html = Craft::$app->getView()->renderTemplate('social-poster/_includes/entry-sidebar', [
             'entry' => $entry,
             'accounts' => $accounts,
             'posts' => $posts,
@@ -86,6 +77,9 @@ class Service extends Component
     public function onAfterSaveEntry(ModelEvent $event): void
     {
         $request = Craft::$app->getRequest();
+        $view = Craft::$app->getView();
+        $elementsService = Craft::$app->getElements();
+        $accountsService = SocialPoster::$plugin->getAccounts();
 
         /** @var Entry $entry */
         $entry = $event->sender;
@@ -112,41 +106,29 @@ class Service extends Component
 
         foreach ($chosenAccounts as $accountHandle => $postChosenAccount) {
             // Load in the defaults for this provider, as defined in Social Poster settings
-            $account = SocialPoster::$plugin->getAccounts()->getAccountByHandle($accountHandle);
-            $settings = $account->settings;
+            $account = $accountsService->getAccountByHandle($accountHandle);
 
             // Allow posted data to override anything in our defaults
-            $payload = array_merge($settings, $postChosenAccount);
+            Craft::configure($account, $postChosenAccount);
 
             // Only post to the enabled ones
-            if (!$payload['autoPost']) {
+            if (!$account->autoPost) {
                 SocialPoster::log('Account ' . $accountHandle . ' not set to autopost.');
 
                 continue;
             }
 
-            // Parse content with the entry's content
-            if (isset($payload['title'])) {
-                $payload['title'] = Craft::$app->getView()->renderObjectTemplate($payload['title'], $entry);
-            }
+            $payload = new Payload();
+            $payload->title = $view->renderObjectTemplate((string)$account->title, $entry);
+            $payload->url = $view->renderObjectTemplate((string)$account->url, $entry);
+            $payload->message = $view->renderObjectTemplate((string)$account->message, $entry);
 
-            if (isset($payload['url'])) {
-                $payload['url'] = Craft::$app->getView()->renderObjectTemplate($payload['url'], $entry);
-            }
-
-            if (isset($payload['message'])) {
-                $payload['message'] = Craft::$app->getView()->renderObjectTemplate($payload['message'], $entry);
-            }
-
-            // Get the image (if one)
-            $payload['picture'] = '';
-
-            if (isset($payload['imageField']) && $payload['imageField']) {
+            if ($account->imageField) {
                 try {
-                    $assetField = $entry->{$payload['imageField']};
+                    $asset = $entry->getFieldValue($account->imageField)->one();
 
-                    if ($assetField && $asset = $assetField->one()) {
-                        $payload['picture'] = $asset->url;
+                    if ($asset) {
+                        $payload->picture = $asset->url;
                     }
                 } catch (Throwable $e) {
                     SocialPoster::error('Unable to process asset: ' . $e->getMessage());
@@ -154,25 +136,21 @@ class Service extends Component
             }
 
             // Make the actual social post
-            $postResult = $account->getProvider()->sendPost($account, $payload);
+            $postResult = $account->sendPost($payload);
 
             // Save it to out Posts table - no matter the result
-            if ($postResult) {
-                $post = new Post();
-                $post->ownerId = $entry->id;
-                $post->ownerSiteId = $entry->siteId;
-                $post->ownerType = $entry::class;
-                $post->accountId = $account->id;
-                $post->settings = $payload;
-                $post->response = $postResult['response'] ?? [];
-                $post->success = $postResult['success'] ?? [];
-                $post->data = $postResult['data'] ?? [];
+            $post = new Post();
+            $post->ownerId = $entry->id;
+            $post->ownerSiteId = $entry->siteId;
+            $post->ownerType = $entry::class;
+            $post->accountId = $account->id;
+            $post->settings = $payload->toArray();
+            $post->response = $postResult->response;
+            $post->success = $postResult->success;
+            $post->data = $postResult->data;
 
-                if (!Craft::$app->getElements()->saveElement($post)) {
-                    SocialPoster::error('Unable to save post: ' . Json::encode($post->getErrors()));
-                }
-            } else {
-                SocialPoster::error('Unknown result for post: ' . Json::encode($postResult));
+            if (!$elementsService->saveElement($post)) {
+                SocialPoster::error('Unable to save post: ' . Json::encode($post->getErrors()));
             }
         }
     }

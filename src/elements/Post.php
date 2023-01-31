@@ -2,16 +2,14 @@
 namespace verbb\socialposter\elements;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\base\AccountInterface;
 use verbb\socialposter\elements\db\PostQuery;
-use verbb\socialposter\models\Account;
 use verbb\socialposter\records\Post as PostRecord;
 
 use Craft;
 use craft\base\Element;
 use craft\elements\actions\Delete;
-use craft\elements\db\ElementQueryInterface;
 use craft\elements\User;
-use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
@@ -75,7 +73,7 @@ class Post extends Element
     {
         $attributes = [];
         $attributes['success'] = Craft::t('social-poster', 'Response');
-        $attributes['provider'] = Craft::t('social-poster', 'Provider');
+        $attributes['account'] = Craft::t('social-poster', 'Account');
         $attributes['elements.dateCreated'] = Craft::t('social-poster', 'Date Posted');
         $attributes['elements.dateUpdated'] = Craft::t('social-poster', 'Date Updated');
 
@@ -87,7 +85,7 @@ class Post extends Element
         $attributes = [];
         $attributes['title'] = ['label' => Craft::t('social-poster', 'Title')];
         $attributes['success'] = ['label' => Craft::t('social-poster', 'Response')];
-        $attributes['provider'] = ['label' => Craft::t('social-poster', 'Provider')];
+        $attributes['account'] = ['label' => Craft::t('social-poster', 'Account')];
         $attributes['dateCreated'] = ['label' => Craft::t('social-poster', 'Date Posted')];
         $attributes['dateUpdated'] = ['label' => Craft::t('social-poster', 'Date Updated')];
 
@@ -96,7 +94,7 @@ class Post extends Element
 
     protected static function defineDefaultTableAttributes(string $source): array
     {
-        return ['title', 'dateCreated', 'success', 'provider', 'entry'];
+        return ['title', 'dateCreated', 'success', 'account', 'entry'];
     }
 
     protected static function defineActions(string $source = null): array
@@ -143,7 +141,9 @@ class Post extends Element
         // Add Emoji support
         if (is_array($this->settings)) {
             foreach ($this->settings as $key => $value) {
-                $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
+                if ($value && is_string($value)) {
+                    $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
+                }
             }
         }
     }
@@ -196,23 +196,10 @@ class Post extends Element
         return UrlHelper::cpUrl('social-poster/posts/' . $this->id);
     }
 
-    public function getAccount(): ?Account
+    public function getAccount(): ?AccountInterface
     {
         if ($this->accountId) {
-            $account = SocialPoster::$plugin->getAccounts()->getAccountById($this->accountId);
-
-            if ($account) {
-                return $account;
-            }
-        }
-
-        return null;
-    }
-
-    public function getProvider()
-    {
-        if ($account = $this->getAccount()) {
-            return $account->getProvider();
+            return SocialPoster::$plugin->getAccounts()->getAccountById($this->accountId);
         }
 
         return null;
@@ -233,7 +220,9 @@ class Post extends Element
 
         // Add Emoji support
         foreach ($this->settings as $key => $value) {
-            $this->settings[$key] = LitEmoji::unicodeToShortcode($value);
+            if ($value && is_string($value)) {
+                $this->settings[$key] = LitEmoji::unicodeToShortcode($value);
+            }
         }
 
         $record->accountId = $this->accountId;
@@ -259,17 +248,19 @@ class Post extends Element
     protected function tableAttributeHtml(string $attribute): string
     {
         switch ($attribute) {
-            case 'provider':
+            case 'account':
             {
-                $provider = $this->getProvider();
-                $account = $this->getProvider();
+                if ($account = $this->getAccount()) {
+                    $icon = '';
 
-                if ($provider && $account) {
-                    return '<span class="sp-provider">' .
-                        '<div class="thumb">' .
-                        '<img width="20" src="' . $provider->getIconUrl() . '" class="social-icon social-' . $provider->handle . '" />' .
-                        '</div>' . $account->name .
-                        '</span>';
+                    if ($account->icon) {
+                        $icon = '<span class="sp-provider-icon">' . $account->icon . '</span>';
+                    }
+
+                    return '<div class="sp-provider" style="--bg-color: ' . $account->primaryColor . '">' .
+                        $icon .
+                        '<span class="sp-provider-label">' . $account->name . '</span>' .
+                    '</div>';
                 }
             }
             case 'success':

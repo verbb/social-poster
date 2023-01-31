@@ -21,4 +21,3 @@ Attribute | Description
 Method | Description
 --- | ---
 `getAccount()` | Returns the account this post was made from.
-`getProvider()` | Returns the provider to post was  made from.

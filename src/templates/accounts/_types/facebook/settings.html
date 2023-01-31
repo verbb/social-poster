@@ -1,0 +1,76 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+{% import 'social-poster/_macros' as customForms %}
+
+{% set instructions %}
+To connect to {name}, follow our <a href="https://verbb.io/craft-plugins/social-poster/docs/providers/facebook" target="_blank" rel="noopener">{name} guide</a>.
+{% endset %}
+
+<div class="sp-settings-block">
+    {{ instructions | t('social-poster', { name: account.providerName, plugin: 'Social Poster' }) | md }}
+</div>
+
+{{ forms.textField({
+    readonly: true,
+    label: 'Redirect URI' | t('social-poster'),
+    instructions: 'Use this URI when setting up your {name} app.' | t('social-poster', { name: account.providerName }),
+    value: account.getRedirectUri(),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Client ID' | t('social-poster'),
+    instructions: 'Enter your {name} Client ID key here.' | t('social-poster', { name: account.providerName }),
+    name: 'clientId',
+    required: true,
+    suggestEnvVars: true,
+    value: account.clientId ?? '',
+    warning: macros.configWarning("accounts.#{account.handle}.clientId", 'social-poster'),
+    errors: account.getErrors('clientId'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Client Secret' | t('social-poster'),
+    instructions: 'Enter your {name} Client Secret here.' | t('social-poster', { name: account.providerName }),
+    name: 'clientSecret',
+    required: true,
+    suggestEnvVars: true,
+    value: account.clientSecret ?? '',
+    warning: macros.configWarning("accounts.#{account.handle}.clientSecret", 'social-poster'),
+    errors: account.getErrors('clientSecret'),
+}) }}
+
+{% set endpoint = account.endpoint ?? 'page' %}
+
+{{ forms.selectField({
+    label: '{name} Post Type' | t('social-poster', { name: account.providerName }),
+    instructions: 'Select where you‘d like this post to be posted to. Can be a {name} Page or {name} Group.' | t('social-poster', { name: account.providerName }),
+    name: 'endpoint',
+    options: [
+        { label: 'Group' | t('social-poster'), value: 'group' },
+        { label: 'Page' | t('social-poster'), value: 'page' },
+    ],
+    required: true,
+    value: endpoint,
+    warning: macros.configWarning("accounts.#{account.handle}.endpoint", 'social-poster'),
+    errors: account.getErrors('endpoint'),
+    toggle: true,
+    targetPrefix: '.endpoint-',
+}) }}
+
+<div class="endpoint-group {% if endpoint != 'group' %}hidden{% endif %}">
+    {{ customForms.providerSettingsField(account, {
+        label: '{name} Group' | t('social-poster', { name: account.providerName }),
+        instructions: 'Your {name} Group.' | t('social-poster', { name: account.providerName }),
+        name: 'groupId',
+        required: true,
+    }) }}
+</div>
+
+<div class="endpoint-page {% if endpoint != 'page' %}hidden{% endif %}">
+    {{ customForms.providerSettingsField(account, {
+        label: '{name} Page' | t('social-poster', { name: account.providerName }),
+        instructions: 'Your {name} Page.' | t('social-poster', { name: account.providerName }),
+        name: 'pageId',
+        required: true,
+    }) }}
+</div>

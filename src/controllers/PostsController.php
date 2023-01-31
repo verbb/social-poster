@@ -2,6 +2,7 @@
 namespace verbb\socialposter\controllers;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\models\Payload;
 
 use Craft;
 use craft\web\Controller;
@@ -20,8 +21,6 @@ class PostsController extends Controller
 
     public function actionEdit(int $postId = null): Response
     {
-        $request = Craft::$app->getRequest();
-
         $post = SocialPoster::$plugin->getPosts()->getPostById($postId);
 
         return $this->renderTemplate('social-poster/posts/_edit', [
@@ -45,9 +44,9 @@ class PostsController extends Controller
         }
 
         $account = $post->getAccount();
-        $payload = $post->settings;
+        $payload = new Payload($post->settings);
 
-        if ($account && $postResult = $account->provider->sendPost($account, $payload)) {
+        if ($account && $account->sendPost($payload)) {
             Craft::$app->getSession()->setNotice(Craft::t('social-poster', 'Re-posted successfully.'));
         } else {
             Craft::$app->getSession()->setError(Craft::t('social-poster', 'Couldn’t re-post.'));

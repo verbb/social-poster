@@ -5,7 +5,6 @@ use verbb\socialposter\elements\Post;
 
 use Craft;
 use craft\base\Component;
-use craft\base\ElementInterface;
 
 class Posts extends Component
 {
@@ -14,7 +13,6 @@ class Posts extends Component
 
     public function getPostById(int $id, $siteId = null): ?Post
     {
-        /* @noinspection PhpIncompatibleReturnTypeInspection */
         return Craft::$app->getElements()->getElementById($id, Post::class, $siteId);
     }
 

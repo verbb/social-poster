@@ -1,18 +1,25 @@
 <?php
 namespace verbb\socialposter\services;
 
+use verbb\socialposter\accounts as accountTypes;
+use verbb\socialposter\base\AccountInterface;
 use verbb\socialposter\elements\Post;
 use verbb\socialposter\events\AccountEvent;
-use verbb\socialposter\models\Account;
 use verbb\socialposter\records\Account as AccountRecord;
 
 use Craft;
 use craft\base\MemoizableArray;
 use craft\db\Query;
+use craft\errors\MissingComponentException;
+use craft\events\RegisterComponentTypesEvent;
+use craft\helpers\Component as ComponentHelper;
+use craft\helpers\Json;
 
 use yii\base\Component;
+use yii\base\InvalidConfigException;
 
 use LitEmoji\LitEmoji;
+
 use Exception;
 use Throwable;
 
@@ -21,6 +28,7 @@ class Accounts extends Component
     // Constants
     // =========================================================================
 
+    public const EVENT_REGISTER_ACCOUNT_TYPES = 'registerAccountTypes';
     public const EVENT_BEFORE_SAVE_ACCOUNT = 'beforeSaveAccount';
     public const EVENT_AFTER_SAVE_ACCOUNT = 'afterSaveAccount';
     public const EVENT_BEFORE_DELETE_ACCOUNT = 'beforeDeleteAccount';
@@ -37,22 +45,86 @@ class Accounts extends Component
     // Public Methods
     // =========================================================================
 
+    public function getAllAccountTypes(): array
+    {
+        $accountTypes = [
+            accountTypes\Facebook::class,
+            accountTypes\Instagram::class,
+            accountTypes\LinkedIn::class,
+            accountTypes\Twitter::class,
+        ];
+
+        $event = new RegisterComponentTypesEvent([
+            'types' => $accountTypes,
+        ]);
+
+        $this->trigger(self::EVENT_REGISTER_ACCOUNT_TYPES, $event);
+
+        return $event->types;
+    }
+
+    public function createAccount(mixed $config): AccountInterface
+    {
+        $handle = $config['handle'] ?? null;
+        $settings = $config['settings'] ?? [];
+
+        // Allow config settings to override account settings
+        if ($handle && $settings) {
+            $configOverrides = $this->getAccountOverrides($handle);
+
+            if ($configOverrides) {
+                if (is_string($settings)) {
+                    $settings = Json::decode($settings);
+                }
+
+                $config['settings'] = array_merge($settings, $configOverrides);
+            }
+        }                
+
+        try {
+            return ComponentHelper::createComponent($config, AccountInterface::class);
+        } catch (MissingComponentException|InvalidConfigException $e) {
+            $config['errorMessage'] = $e->getMessage();
+            $config['expectedType'] = $config['type'];
+            unset($config['type']);
+            return new accountTypes\MissingAccount($config);
+        }
+    }
+
     public function getAllAccounts(): array
     {
         return $this->_accounts()->all();
     }
 
-    public function getAccountById(int $id): ?Account
+    public function getAllEnabledAccounts(): array
+    {
+        return $this->_accounts()->where('enabled', true)->all();
+    }
+
+    public function getAllConfiguredAccounts(): array
+    {
+        $accounts = [];
+
+        foreach ($this->getAllEnabledAccounts() as $account) {
+            if ($account->isConfigured()) {
+                $accounts[] = $account;
+            }
+        }
+
+        return $accounts;
+    }
+
+    public function getAccountById(int $id): ?AccountInterface
     {
         return $this->_accounts()->firstWhere('id', $id);
     }
 
-    public function getAccountByHandle(string $handle): ?Account
+    public function getAccountByHandle(string $handle): ?AccountInterface
     {
         return $this->_accounts()->firstWhere('handle', $handle, true);
     }
 
-    public function saveAccount(Account $account, bool $runValidation = true): bool
+    public function saveAccount(AccountInterface $account, bool $runValidation = true): bool
     {
         $isNewAccount = !$account->id;
 
@@ -70,8 +142,12 @@ class Accounts extends Component
         }
 
         // Ensure we support Emoji's properly
-        foreach ($account->settings as $key => $value) {
-            $account->settings[$key] = LitEmoji::unicodeToShortcode($value);
+        $settings = $account->settings;
+
+        foreach ($settings as $key => $value) {
+            if ($value && is_string($value)) {
+                $settings[$key] = LitEmoji::unicodeToShortcode($value);
+            }
         }
 
         $accountRecord = $this->_getAccountRecordById($account->id);
@@ -79,9 +155,8 @@ class Accounts extends Component
         $accountRecord->handle = $account->handle;
         $accountRecord->enabled = $account->enabled;
         $accountRecord->autoPost = $account->autoPost;
-        $accountRecord->providerHandle = $account->providerHandle;
-        $accountRecord->settings = $account->settings;
-        $accountRecord->tokenId = $account->tokenId;
+        $accountRecord->type = get_class($account);
+        $accountRecord->settings = $settings;
 
         if ($isNewAccount) {
             $maxSortOrder = (new Query())
@@ -129,13 +204,13 @@ class Accounts extends Component
         return true;
     }
 
-    public function getAccountOverrides(string $handle)
+    public function getAccountOverrides(string $handle): array
     {
         if ($this->_overrides === null) {
-            $this->_overrides = Craft::$app->getConfig()->getConfigFromFile('accounts');
+            $this->_overrides = Craft::$app->getConfig()->getConfigFromFile('social-poster');
         }
 
-        return $this->_overrides[$handle] ?? null;
+        return $this->_overrides['accounts'][$handle] ?? [];
     }
 
     public function deleteAccountById(int $accountId): bool
@@ -149,7 +224,7 @@ class Accounts extends Component
         return $this->deleteAccount($account);
     }
 
-    public function deleteAccount(Account $account): bool
+    public function deleteAccount(AccountInterface $account): bool
     {
         // Fire a 'beforeDeleteAccount' event
         if ($this->hasEventHandlers(self::EVENT_BEFORE_DELETE_ACCOUNT)) {
@@ -190,6 +265,9 @@ class Accounts extends Component
             ]));
         }
 
+        // Clear caches
+        $this->_accounts = null;
+
         return true;
     }
 
@@ -203,7 +281,7 @@ class Accounts extends Component
             $accounts = [];
 
             foreach ($this->_createAccountQuery()->all() as $result) {
-                $accounts[] = new Account($result);
+                $accounts[] = $this->createAccount($result);
             }
 
             $this->_accounts = new MemoizableArray($accounts);
@@ -221,10 +299,10 @@ class Accounts extends Component
                 'handle',
                 'enabled',
                 'autoPost',
-                'providerHandle',
+                'type',
                 'settings',
                 'sortOrder',
-                'tokenId',
+                'cache',
                 'dateCreated',
                 'dateUpdated',
             ])

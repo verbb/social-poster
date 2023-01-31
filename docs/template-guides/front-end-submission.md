@@ -1,5 +1,4 @@
-# Front-end submission
-
+# Front-end Submission
 As you can save or update existing entries from the front-end of your site, so can you post to social media. By default, Social Poster will use whatever defaults you have set up in your accounts. This means, if by default you have auto-posting set to `off`, posts won't be posted to social media.
 
 However, you can override each field per-entry, just as you can through the control panel. You're just required to add this information into your form.
@@ -23,7 +22,7 @@ Take the below example (cut down) code for updating an existing entry.
 
 Here, we've used a checkbox to allow the user to enable posting to social media. All other fields can be used, as you can see we've done with the message textarea.
 
-Options vary from provider-to-provider, but are as below. Please note to update the first parameter to the handle used for your account. For example, where we have `socialPoster[facebook][autoPost]`, ensure that the handle for your Facebook account is indeed `facebook`, otherwise, change this to match the account handle.
+Options vary depending on your account provider, but are as below. Please note to update the first parameter to the handle used for your account. For example, where we have `socialPoster[facebook][autoPost]`, ensure that the handle for your Facebook account is indeed `facebook`, otherwise, change this to match the account handle.
 
 ## Facebook
 

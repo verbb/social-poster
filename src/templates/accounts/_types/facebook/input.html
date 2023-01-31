@@ -1,0 +1,53 @@
+{% import '_includes/forms' as forms %}
+
+{% if not static is defined %}
+    {{ forms.lightswitchField({
+        label: 'Post to {name}' | t('social-poster', { name: account.providerName }),
+        instructions: 'Do you wish to post this entry to {name}?' | t('social-poster', { name: account.providerName }),
+        id: 'autoPost',
+        name: 'autoPost',
+        on: autoPost,
+    }) }}
+{% endif %}
+
+{% if account.showUrl %}
+    {{ forms.textField({
+        label: 'URL' | t('social-poster'),
+        instructions: 'Enter the URL to appear on this post.' | t('social-poster'),
+        name: 'url',
+        value: account.url,
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
+    }) }}
+{% endif %}
+
+{% if account.showMessage %}
+    {{ forms.textareaField({
+        label: 'Message' | t('social-poster'),
+        instructions: 'Text for your post.' | t('social-poster'),
+        placeholder: 'Enter text here to be displayed as your post to social media.' | t('social-poster'),
+        name: 'message',
+        rows: 4,
+        value: account.message,
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
+    }) }}
+{% endif %}
+
+{% set imageField = account.imageField | replace({ '{': '' , '}': '' }) %}
+
+{% if not static is defined %}
+    {% if account.showImageField %}
+        <div class="account-imageField">
+            {{ forms.selectField({
+                label: 'Image for Post' | t('social-poster'),
+                instructions: 'Select an image for this post. If not specified, {name} will use the first image on your page.' | t('social-poster', { name: account.providerName }),
+                name: 'imageField',
+                options: account.getAssetFieldOptions(entry),
+                value: imageField,
+                disabled: static is defined,
+                class: static is defined ? 'disabled',
+            }) }}
+        </div>
+    {% endif %}
+{% endif %}

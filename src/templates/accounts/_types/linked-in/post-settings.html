@@ -1,0 +1,54 @@
+{% import '_includes/forms' as forms %}
+{% import 'social-poster/_macros' as customForms %}
+
+{% set defaultMessage = 'A new post "{title}" has been published on our website via {url}.' | t('social-poster') %}
+
+{{ customForms.widgetSettingsField({
+    label: 'Title' | t('social-poster'),
+    instructions: 'Enter the Title to appear on this post. This is the bold text shown at the top of the post. (e.g. `{title}`, `{customField}`).' | t('social-poster'),
+    name: 'showTitle',
+    value: true,
+    checked: account.showTitle ?? true,
+}, 
+forms.textField({
+    name: 'title',
+    value: account.title ?? '{title}',
+}) ) }}
+
+{{ customForms.widgetSettingsField({
+    label: 'URL' | t('social-poster'),
+    instructions: 'Enter the URL to appear on this post. This is a small link at the bottom of your post. (e.g. `{url}`).' | t('social-poster'),
+    name: 'showUrl',
+    value: true,
+    checked: account.showUrl ?? true,
+}, 
+forms.textField({
+    name: 'url',
+    value: account.url ?? '{url}',
+}) ) }}
+
+{{ customForms.widgetSettingsField({
+    label: 'Message' | t('social-poster'),
+    instructions: 'Text for your post (e.g. `{title}`, `{customField}`).' | t('social-poster'),
+    name: 'showMessage',
+    value: true,
+    checked: account.showMessage ?? true,
+}, 
+forms.textareaField({
+    name: 'message',
+    rows: 4,
+    value: account.message ?? defaultMessage,
+}) ) }}
+
+{{ customForms.widgetSettingsField({
+    label: 'Image Field for Post' | t('social-poster'),
+    instructions: 'Select the field to be used as the image for this post.' | t('social-poster'),
+    name: 'showImageField',
+    value: true,
+    checked: account.showImageField ?? true,
+}, 
+forms.selectField({
+    name: 'imageField',
+    options: assetFieldOptions,
+    value: account.imageField ?? '',
+}) ) }}

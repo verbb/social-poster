@@ -1,18 +1,19 @@
 # Linked.in
+Follow these steps to configure Linked.in for Social Poster.
 
-Follow these steps to configure Linked.in for social poster:
+## Step 1: Register a Linked.in App
+1. Go to <a href="https://www.linkedin.com/developers/apps/new" target="_blank">Linked.in Developer Apps</a> and login to your account.
+1. Click the **Create App** button and complete all the required fields.
+1. Navigate to the **Products** section.
+1. Click the **Select** button for the **Sign In with LinkedIn** product.
+1. Navigate to the **Auth** section.
+1. Click the edit icon for the **Authorized Redirect URLs** field.
+1. Enter the value from the **Redirect URI** field in Social Poster.
+1. Copy the **Client ID** from {name} and paste in the **Client ID** field in Social Poster.
+1. Copy the **Client Secret** from {name} and paste in the **Client Secret** field in Social Poster.
 
-## OAuth Configuration
-
-### Step 1: Create a new app
-1. Go to the [Linked.in Developer Apps](https://www.linkedin.com/developers/apps).
-1. Click “Create App” to create a new Linked.in application.
-1. Fill all required fields and create the app.
-1. Once created, click on the "Auth" tab, and add the Redirect URI found in **Craft Control Panel → Settings → Social Poster → Providers → Linked.in**.
-1. Go to the "Products" tab, and ensure you have "Sign In with LinkedIn" and "Share on LinkedIn" enabled under the "Added Products" heading.
 
 ## Company Pages
-
 In order to post to company pages, there are a few requirements:
 
 1. Ensure your Linked.in app is correctly linked and verified to the company page in your app **Settings** tab.
@@ -20,7 +21,6 @@ In order to post to company pages, there are a few requirements:
 1. Have [Marketing Developer Platform](https://business.linkedin.com/marketing-solutions/case-studies/businessonline) permissions (see below).
 
 ### Marketing Developer Platform
-
 To gain permissions for posting to company pages, you must sign up for the [Marketing Developer Platform](https://business.linkedin.com/marketing-solutions/case-studies/businessonline).
 
 Go to the **Products** tab in your Linked.in app and click **Add more products**. Check the **Marketing Developer Platform** checkbox and follow the prompts to fill out your application. Please note that the approval process can take up to 20-25 days. Please be aware that LinkedIn will not approve every application submitted.
@@ -38,16 +38,13 @@ Use the following for Linked.in:
 
 ```php
 'linkedin' => [
-    'oauth' => [
-        'options' => [
-            'clientId' => 'xxxxxxxxxxxx',
-            'clientSecret' => 'xxxxxxxxxxxx',
-        ],
-        'scope' => [
-            'w_organization_social',
-            'r_organization_social',
-        ],
-    ]
+    'clientId' => 'xxxxxxxxxxxx',
+    'clientSecret' => 'xxxxxxxxxxxx',
+
+    'scope' => [
+        'w_organization_social',
+        'r_organization_social',
+    ],
 ],
 ```
 

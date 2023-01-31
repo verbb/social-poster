@@ -4,14 +4,14 @@ namespace verbb\socialposter\base;
 use verbb\socialposter\SocialPoster;
 use verbb\socialposter\services\Accounts;
 use verbb\socialposter\services\Posts;
-use verbb\socialposter\services\Providers;
 use verbb\socialposter\services\Service;
-use verbb\socialposter\services\Tokens;
-use verbb\base\BaseHelper;
 
 use Craft;
 
 use yii\log\Logger;
+
+use verbb\auth\Auth;
+use verbb\base\BaseHelper;
 
 trait PluginTrait
 {
@@ -52,19 +52,9 @@ trait PluginTrait
         return $this->get('posts');
     }
 
-    public function getProviders(): Providers
-    {
-        return $this->get('providers');
-    }
-
     public function getService(): Service
     {
         return $this->get('service');
-    }
-
-    public function getTokens(): Tokens
-    {
-        return $this->get('tokens');
     }
 
 
@@ -76,11 +66,10 @@ trait PluginTrait
         $this->setComponents([
             'accounts' => Accounts::class,
             'posts' => Posts::class,
-            'providers' => Providers::class,
             'service' => Service::class,
-            'tokens' => Tokens::class,
         ]);
 
+        Auth::registerModule();
         BaseHelper::registerModule();
     }
 

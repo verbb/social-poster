@@ -1,5 +1,28 @@
 # Changelog
 
+## 4.0.0 - 2023-02-01
+> {note} This is a major release with big changes on how Accounts and Providers work. Please read the [migration](https://verbb.io/craft-plugins/social-poster/docs/get-started/migrating-from-v2) docs. You will be required to update your provider OAuth app settings and re-connect your accounts.
+
+### Added
+- Add `Payload` and `PostResponse` models for sending Posts to accounts for better consistency with how things are sent and received.
+- Add [Auth module](https://github.com/verbb/auth) to handle all authentication.
+- Add Instagram provider.
+
+### Changed
+- Revamped Accounts to combine with Providers. Provider OAuth settings are now managed in an Account.
+- Overriding provider configs are now done via `accounts` in your config files.
+- Updated provider icons.
+- Updated plugin icon.
+
+### Fixed
+- Fix being able to access settings when `allowAdminChanges` with `false`.
+
+### Removed
+- Removed the concept of Providers. These are combined into Accounts.
+- All token handling has been moved to the [Auth module](https://github.com/verbb/auth).
+- Removed `SocialPoster::getTokens()` and  `SocialPoster::getProviders()` services.
+- Removed `accounts/connect`,  `accounts/disconnect`,  `accounts/callback`
+
 ## 3.0.1 - 2022-10-12
 
 ### Fixed

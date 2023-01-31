@@ -2,120 +2,107 @@
 
 {% import '_includes/forms' as forms %}
 
-<div class="social-poster-sidebar">
-    <nav id="sp-tabs" class="social-poster-tabs">
-        <ul>
-            {% for account in accounts %}
-                {% set previousPost = false %}
-                {% set provider = account.provider %}
-                {% set providerSettings = account.settings | default([]) %}
+<div class="sp-sidebar content-pane">
+    <div class="sp-pane-header pane-header">
+        <div class="sp-pane-tabs pane-tabs">
+            <div class="scrollable" role="tablist" aria-label="Primary fields">
+                {% for account in accounts %}
+                    {% set previousPost = posts[account.handle] ?? false %}
+                    {% set autoPost = (account.autoPost and not previousPost) ? true : false %}
 
-                {# Check for previous post #}
-                {% if posts and posts[account.id] is defined %}
-                    {% set previousPost = posts[account.id] %}
-                {% endif %}
-
-                {# Opt-out of auto-posting for safety #}
-                {% set autoPost = false %}
-                {% if account.autoPost is defined and account.autoPost and not previousPost %}
-                    {% set autoPost = true %}
-                {% endif %}
-
-                <li>
-                    <a id="tab-{{ loop.index0 }}" class="tab {{ (loop.first) ? 'sel' : '' }}" href="#socialPoster-{{ account.handle }}-fields" title="{{ account.name }}">
-                        {% if autoPost %}
-                            <span class="status on"></span>
-                        {% else %}
-                            {% if previousPost and not previousPost.success %}
-                                <span class="status off"></span>
+                    <a id="tab-spa-{{ account.handle }}" class="{{ (loop.first) ? 'sel' : '' }}" href="#spa-{{ account.handle }}" tabindex="-1" role="tab" data-id="spa-{{ account.handle }}" aria-controls="spa-{{ account.handle }}" aria-selected="false">
+                        <span class="tab-label">
+                            {% if autoPost %}
+                                <span class="status on"></span>
                             {% else %}
-                                <span class="status"></span>
+                                {% if previousPost and not previousPost.success %}
+                                    <span class="status off"></span>
+                                {% else %}
+                                    <span class="status"></span>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
 
-                        {{ account.name }}
+                            {{ account.name }}
+                        </span>
                     </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </nav>
+                {% endfor %}
+            </div>
 
-    <div class="pane social-poster-pane">
+            <button type="button" class="btn menubtn hidden" title="List all tabs" aria-label="List all tabs"></button>
+            <div class="menu">
+                <ul class="padded" role="listbox">
+                    {% for account in accounts %}
+                        <li>
+                            <a href="#spa-{{ account.handle }}" data-id="spa-{{ account.handle }}">
+                                {{ account.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="sp-pane-content">
         {% for account in accounts %}
-            {% set previousPost = false %}
-            {% set provider = account.provider %}
-            {% set providerSettings = account.settings | default([]) %}
+            {% set previousPost = posts[account.handle] ?? false %}
+            {% set autoPost = (account.autoPost and not previousPost) ? true : false %}
 
-            {# Check for previous post #}
-            {% if posts and posts[account.id] is defined %}
-                {% set previousPost = posts[account.id] %}
-            {% endif %}
+            <div id="spa-{{ account.handle }}" class="{{ not loop.first ? 'hidden' }}" data-id="spa-{{ account.handle }}" role="tabpanel" aria-labelledby="tab-spa-{{ account.handle }}">
+                {% namespace 'socialPoster[' ~ account.handle ~ ']' %}
+                    {% if previousPost %}
+                        {% if previousPost.success %}
+                            <div class="field">
+                                <span class="warning">
+                                    {{ 'This entry was posted to {name} on {date}' | t('social-poster', { name: account.providerName, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="sp-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a>
+                                </span>
+                            </div>
+                        {% else %}
+                            <div class="field">
+                                <span class="error">
+                                    {{ 'Could not post to {name}. Error: {resp}' | t('social-poster', { name: account.providerName, resp: previousPost.response | json_encode }) }}. <div><a class="sp-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a></div>
+                                </span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
 
-            {# Opt-out of auto-posting for safety #}
-            {% set autoPost = false %}
-            {% if account.autoPost is defined and account.autoPost and not previousPost %}
-                {% set autoPost = true %}
-            {% endif %}
-
-            {% namespace 'socialPoster[' ~ account.handle ~ ']' %}
-
-            <div id="fields" data-id="{{ account.handle }}" class="social-poster-tab {{ (loop.first) ? '' : 'hidden' }}">
-                {% if previousPost %}
-                    {% if previousPost.success %}
+                    {% if not account.token %}
                         <div class="field">
-                            <span class="warning">
-                                {{ 'This entry was posted to {p} on {date}' | t('social-poster', { p: provider.name, date: previousPost.dateCreated | date('jS M Y g:ia') }) }}. <a class="social-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a>
+                            <span class="error">
+                                {{ 'Connect provider first via' | t('social-poster') }} <a href="{{ url('social-poster/accounts/' ~ account.handle) }}">{{ 'settings' | t('social-poster') }}</a>
                             </span>
                         </div>
                     {% else %}
-                        <div class="field">
-                            <span class="error">
-                                {{ 'Could not post to {p}. Error: {resp}' | t('social-poster', { p: provider.name, resp: previousPost.response | json_encode }) }}. <div><a class="social-expand-pane" data-id="{{ account.handle }}" href="#">{{ 'Post again?' | t('social-poster') }}</a></div>
-                            </span>
+                        <div class="sp-fields {{ (previousPost) ? 'hidden' : '' }}">
+                            {{ account.getInputHtml(_context) | raw }} 
+
+                            <div class="field">
+                                <span class="info-item">
+                                    {{ 'To publish this post to {name}, save this entry.' | t('social-poster', { name: account.providerName }) }}
+                                </span>
+                            </div>
                         </div>
                     {% endif %}
-                {% endif %}
-
-                {% if not account.token %}
-                    <div class="field">
-                        <span class="error">
-                            {{ 'Connect provider first via' | t('social-poster') }} <a href="{{ url('social-poster/accounts/' ~ account.id) }}">{{ 'settings' | t('social-poster') }}</a>
-                        </span>
-                    </div>
-                {% else %}
-                    <div class="social-poster-fields {{ (previousPost) ? 'hidden' : '' }}">
-                        {{ provider.getInputHtml(_context) | raw }} 
-
-                        <div class="field">
-                            <span class="info-item">
-                                {{ 'To publish this post to ' ~ provider.name ~ ', save this entry.' | t('social-poster') }}
-                            </span>
-                        </div>
-                    </div>
-                {% endif %}
+                {% endnamespace %}
             </div>
-
-            {% endnamespace %}
         {% endfor %}
     </div>
 </div>
 
 {% js %}
 
-new Craft.SocialPoster();
-
 $(function() {
-    $('.social-poster-pane .lightswitch').on('change', function() {
-        var account = $(this).parents('.social-poster-tab').data('id');
+    $('.sp-pane-content .lightswitch').on('change', function() {
+        var id = $(this).parents('[role="tabpanel"]').data('id');
 
         if ($(this).hasClass('on')) {
-            $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').addClass('on');
+            $('.sp-pane-tabs a[href="#' + id + '"] .status').addClass('on');
         } else {
-            $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').removeClass('on');
+            $('.sp-pane-tabs a[href="#' + id + '"] .status').removeClass('on');
         }
     });
 
-    $('.social-expand-pane').on('click', function(e) {
+    $('.sp-expand-pane').on('click', function(e) {
         e.preventDefault();
 
         var account = $(this).data('id');
@@ -124,12 +111,23 @@ $(function() {
         $(this).parents('.error').parent().remove();
 
         // Remove any error on tab
-        $('.social-poster-tabs a[href="#socialPoster-' + account + '-fields"] .status').removeClass('off');
+        $('.sp-pane-tabs a[href="#spa-' + account + '"] .status').removeClass('off');
 
         // Remove post again anchor
         $(this).remove();
 
-        $('.social-poster-tab[data-id="' + account + '"] .social-poster-fields').removeClass('hidden');
+        $('[data-id="spa-' + account + '"] .sp-fields').removeClass('hidden');
+    });
+
+    const tabManager = new Craft.Tabs($('.sp-sidebar .sp-pane-tabs'));
+
+    tabManager.on('deselectTab', (ev) => {
+        $(ev.$tab.attr('href')).addClass('hidden');
+    });
+
+    tabManager.on('selectTab', (ev) => {
+        $(ev.$tab.attr('href')).removeClass('hidden');
+        Garnish.$win.trigger('resize');
     });
 });
 

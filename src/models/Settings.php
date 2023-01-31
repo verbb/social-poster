@@ -11,6 +11,19 @@ class Settings extends Model
     public string $pluginName = 'Social Poster';
     public bool $hasCpSection = false;
     public mixed $enabledSections = '*';
-    public array $providers = [];
+    
+
+    // Public Methods
+    // =========================================================================
+
+    public function __construct(array $config = [])
+    {
+        // Config normalization
+        if (array_key_exists('providers', $config)) {
+            unset($config['providers']);
+        }
+
+        parent::__construct($config);
+    }
 
 }

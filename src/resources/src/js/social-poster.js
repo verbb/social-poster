@@ -11,83 +11,84 @@ if (typeof Craft.SocialPoster === typeof undefined) {
 
 (function($) {
 
-Craft.SocialPoster = Garnish.Base.extend({
-    init: function() {
-        this.initTabs();
-    },
-    initTabs: function() {
-        this.$selectedTab = null;
+$(document).on('click', '[data-refresh-settings]', function(e) {
+    e.preventDefault();
 
-        var $tabs = $('#sp-tabs').find('> ul > li');
-        var tabs = [];
-        var tabWidths = [];
-        var totalWidth = 0;
-        var i, a, href;
+    const $btn = $(this);
+    const $container = $btn.parent().parent();
+    const $select = $container.find('select');
+    const account = $btn.data('account');
+    const setting = $btn.data('refresh-settings');
 
-        for (i = 0; i < $tabs.length; i++) {
-            tabs[i] = $($tabs[i]);
-            tabWidths[i] = tabs[i].width();
-            totalWidth += tabWidths[i];
+    const data = {
+        account: account,
+        setting: setting,
+    }
 
-            // Does it link to an anchor?
-            a = tabs[i].children('a');
-            href = a.attr('href');
-            if (href && href.charAt(0) === '#') {
-                this.addListener(a, 'click', function(ev) {
-                    ev.preventDefault();
-                    this.selectTab(ev.currentTarget);
-                });
+    const setError = function(text) {
+        let $error = $container.find('.sp-error');
 
-                if (encodeURIComponent(href.substr(1)) === document.location.hash.substr(1)) {
-                    this.selectTab(a);
+        if (!text) {
+            $error.remove();
+        }
+
+        if (!$error.length) {
+            $error = $('<div class="sp-error error"></div>').appendTo($container);
+        }
+
+        $error.html(text);
+    }
+
+    const setSelect = function(values) {
+        let currentValue = $select.val();
+        let options = '';
+
+        $.each(values, (key, option) => {
+            options += '<option value="' + option.value + '">' + option.label + '</option>';
+        });
+
+        $select.html(options);
+
+        // Set any original value back
+        if (currentValue) {
+            $select.val(currentValue);
+        }
+    }
+
+    $btn.addClass('sp-loading sp-loading-sm');
+
+    setError(null);
+
+    Craft.sendActionRequest('POST', 'social-poster/accounts/refresh-settings', { data })
+        .then((response) => {
+            if (response.data.error) {
+                let errorMessage = Craft.t('social-poster', 'An error occurred.');
+
+                if (response.data.error) {
+                    errorMessage += `<br><code>${response.data.error}</code>`;
                 }
-            }
 
-            if (!this.$selectedTab && a.hasClass('sel')) {
-                this.$selectedTab = a;
-            }
-        }
+                setError(errorMessage)
 
-        // Now set their max widths
-        for (i = 0; i < $tabs.length; i++) {
-            tabs[i].css('max-width', (100 * tabWidths[i] / totalWidth) + '%');
-        }
-    },
-
-    selectTab: function(tab) {
-        var $tab = $(tab);
-
-        if (this.$selectedTab) {
-            if (this.$selectedTab.get(0) === $tab.get(0)) {
                 return;
             }
-            this.deselectTab();
-        }
 
-        $tab.addClass('sel');
-        var href = $tab.attr('href')
-        $(href).removeClass('hidden');
-        if (typeof history !== 'undefined') {
-            history.replaceState(undefined, undefined, href);
-        }
-        Garnish.$win.trigger('resize');
-        // Fixes Redactor fixed toolbars on previously hidden panes
-        Garnish.$doc.trigger('scroll');
-        this.$selectedTab = $tab;
-    },
+            setSelect(response.data);
+        })
+        .catch((error) => {
+            let errorMessage = error;
 
-    deselectTab: function() {
-        if (!this.$selectedTab) {
-            return;
-        }
+            if (error.response && error.response.data && error.response.data.error) {
+                errorMessage += `<br><code>${error.response.data.error}</code>`;
+            }
 
-        this.$selectedTab.removeClass('sel');
-        if (this.$selectedTab.attr('href').charAt(0) === '#') {
-            $(this.$selectedTab.attr('href')).addClass('hidden');
-        }
-        this.$selectedTab = null;
-    },
-});
+            setError(errorMessage);
+        })
+        .finally(() => {
+            $btn.removeClass('sp-loading sp-loading-sm');
+        });
+})
+
 
 
 })(jQuery);

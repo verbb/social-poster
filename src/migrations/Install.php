@@ -2,8 +2,9 @@
 namespace verbb\socialposter\migrations;
 
 use craft\db\Migration;
-use craft\helpers\Db;
 use craft\helpers\MigrationHelper;
+
+use verbb\auth\Auth;
 
 class Install extends Migration
 {
@@ -12,6 +13,9 @@ class Install extends Migration
 
     public function safeUp(): bool
     {
+        // Ensure that the Auth module kicks off setting up tables
+        Auth::$plugin->migrator->up();
+
         $this->createTables();
         $this->createIndexes();
         $this->addForeignKeys();
@@ -23,6 +27,9 @@ class Install extends Migration
     {
         $this->dropForeignKeys();
         $this->dropTables();
+
+        // Delete all tokens for this plugin
+        Auth::$plugin->getTokens()->deleteTokensByOwner('social-poster');
 
         return true;
     }
@@ -36,23 +43,10 @@ class Install extends Migration
             'handle' => $this->string()->notNull(),
             'enabled' => $this->boolean(),
             'autoPost' => $this->boolean(),
-            'providerHandle' => $this->string()->notNull(),
+            'type' => $this->string()->notNull(),
             'settings' => $this->text(),
             'sortOrder' => $this->smallInteger()->unsigned(),
-            'tokenId' => $this->integer(),
-            'dateCreated' => $this->dateTime()->notNull(),
-            'dateUpdated' => $this->dateTime()->notNull(),
-            'uid' => $this->uid(),
-        ]);
-
-        $this->archiveTableIfExists('{{%socialposter_tokens}}');
-        $this->createTable('{{%socialposter_tokens}}', [
-            'id' => $this->primaryKey(),
-            'providerHandle' => $this->string()->notNull(),
-            'accessToken' => $this->text(),
-            'secret' => $this->text(),
-            'endOfLife' => $this->string(),
-            'refreshToken' => $this->text(),
+            'cache' => $this->text(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),
@@ -91,7 +85,6 @@ class Install extends Migration
     public function dropTables(): void
     {
         $this->dropTableIfExists('{{%socialposter_accounts}}');
-        $this->dropTableIfExists('{{%socialposter_tokens}}');
         $this->dropTableIfExists('{{%socialposter_posts}}');
     }
 

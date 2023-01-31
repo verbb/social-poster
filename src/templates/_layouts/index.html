@@ -2,24 +2,6 @@
 
 {% do view.registerAssetBundle('verbb\\socialposter\\assetbundles\\SocialPosterAsset') %}
 
-{% set tabs = {} %}
-
-{% if currentUser.can('social-poster:posts') %}
-    {% set tabs = tabs | merge({ posts: { label: 'Posts' | t('social-poster'), url: url('social-poster/posts') } }) %}
-{% endif %}
-
-{% if currentUser.can('social-poster:accounts') %}
-    {% set tabs = tabs | merge({ accounts: { label: 'Accounts' | t('social-poster'), url: url('social-poster/accounts') } }) %}
-{% endif %}
-
-{% if currentUser.can('social-poster:providers') %}
-    {% set tabs = tabs | merge({ providers: { label: 'Providers' | t('social-poster'), url: url('social-poster/providers') } }) %}
-{% endif %}
-
-{% if currentUser.can('social-poster:settings') and craft.app.config.general.allowAdminChanges %}
-    {% set tabs = tabs | merge({ settings: { label: 'Settings' | t('social-poster'), url: url('social-poster/settings') } }) %}
-{% endif %}
-
 {% if title is not defined %}
     {% set title = craft.socialPoster.getPluginName() | t('social-poster') %}
 {% endif %}

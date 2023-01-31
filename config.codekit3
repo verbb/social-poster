@@ -94,6 +94,46 @@
       "rFN" : 0,
       "uCM" : 0
     },
+    "\/src\/accounts\/Facebook.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/accounts\/Facebook-output.php",
+      "oF" : 0
+    },
+    "\/src\/accounts\/Instagram.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/accounts\/Instagram-output.php",
+      "oF" : 0
+    },
+    "\/src\/accounts\/LinkedIn.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/accounts\/LinkedIn-output.php",
+      "oF" : 0
+    },
+    "\/src\/accounts\/MissingAccount.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/accounts\/MissingAccount-output.php",
+      "oF" : 0
+    },
+    "\/src\/accounts\/Twitter.php" : {
+      "cB" : 0,
+      "ft" : 8192,
+      "hM" : 0,
+      "oA" : 1,
+      "oAP" : "\/src\/accounts\/Twitter-output.php",
+      "oF" : 0
+    },
     "\/src\/assetbundles" : {
       "ft" : 65536,
       "oA" : 1,
@@ -162,12 +202,6 @@
       "oAP" : "\/src\/models",
       "oF" : 0
     },
-    "\/src\/providers" : {
-      "ft" : 65536,
-      "oA" : 1,
-      "oAP" : "\/src\/providers",
-      "oF" : 0
-    },
     "\/src\/records" : {
       "ft" : 65536,
       "oA" : 1,
@@ -179,46 +213,6 @@
       "oA" : 1,
       "oAP" : "\/src\/resources\/dist",
       "oF" : 0
-    },
-    "\/src\/resources\/src\/img\/facebook.svg" : {
-      "ft" : 2097152,
-      "miP" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/img\/facebook.svg",
-      "oF" : 0,
-      "opt" : 1,
-      "plM" : 3758088159,
-      "prP" : 0
-    },
-    "\/src\/resources\/src\/img\/google.svg" : {
-      "ft" : 2097152,
-      "miP" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/img\/google.svg",
-      "oF" : 0,
-      "opt" : 1,
-      "plM" : 3758088159,
-      "prP" : 0
-    },
-    "\/src\/resources\/src\/img\/linkedin.svg" : {
-      "ft" : 2097152,
-      "miP" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/img\/linkedin.svg",
-      "oF" : 0,
-      "opt" : 1,
-      "plM" : 3758088159,
-      "prP" : 0
-    },
-    "\/src\/resources\/src\/img\/twitter.svg" : {
-      "ft" : 2097152,
-      "miP" : 0,
-      "oA" : 0,
-      "oAP" : "\/src\/resources\/dist\/img\/twitter.svg",
-      "oF" : 0,
-      "opt" : 1,
-      "plM" : 3758088159,
-      "prP" : 0
     },
     "\/src\/resources\/src\/js\/social-poster.js" : {
       "bF" : 0,
@@ -256,8 +250,8 @@
       "cB" : 0,
       "ft" : 8192,
       "hM" : 0,
-      "oA" : 2,
-      "oAP" : "\/src\/SocialPoster.php",
+      "oA" : 1,
+      "oAP" : "\/src\/SocialPoster-output.php",
       "oF" : 0
     },
     "\/src\/templates" : {
@@ -266,12 +260,10 @@
       "oAP" : "\/src\/templates",
       "oF" : 0
     },
-    "\/src\/translations\/en\/social-poster.php" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 2,
-      "oAP" : "\/src\/translations\/en\/social-poster.php",
+    "\/src\/translations" : {
+      "ft" : 65536,
+      "oA" : 1,
+      "oAP" : "\/src\/translations",
       "oF" : 0
     },
     "\/src\/variables" : {
@@ -1796,7 +1788,17 @@
       "targetECMAVersion" : 0
     },
     "languageDefaultsUserDefined" : [
-
+      {
+        "autoOutputAction" : 1,
+        "autoOutputPathFilenamePattern" : "*-output.php",
+        "autoOutputPathRelativePath" : "",
+        "autoOutputPathReplace1" : "",
+        "autoOutputPathReplace2" : "",
+        "autoOutputPathStyle" : 0,
+        "fileExtension" : "php",
+        "htmlMinifierStyle" : 0,
+        "shouldRunCacheBuster" : 0
+      }
     ],
     "npmAbbreviatedPath" : "",
     "npmCreatePackageLock" : 1,
@@ -1845,7 +1847,7 @@
       "ENVIRONMENT:::$NODE_ENV"
     ],
     "rollupTreeshakingEnabled" : 1,
-    "skippedFoldersString" : "log, _logs, logs, _cache, cache, \/storage\/framework\/sessions, node_modules, \/src\/models, \/src\/tasks, \/src\/elements, \/src\/helpers, \/src\/migrations, \/src\/data, \/src\/templates, \/src\/records, \/src\/controllers, \/src\/assetbundles, \/src\/base, \/src\/fields, \/src\/services, \/src\/variables, \/src\/resources\/dist, \/.github, \/docs, \/src\/errors, \/src\/events, \/src\/providers",
+    "skippedFoldersString" : "log,\/src\/base,\/src\/services,\/src\/providers,_logs,logs,\/docs,\/src\/events,\/src\/assetbundles,\/src\/fields,\/src\/models,cache,\/.github,node_modules,\/src\/resources\/dist,\/src\/variables,\/src\/elements,\/src\/templates,\/src\/tasks,\/src\/controllers,\/src\/errors,\/src\/translations,_cache,\/src\/helpers,\/src\/records,\/src\/migrations,\/storage\/framework\/sessions,\/src\/data",
     "sourceFolderName" : "source",
     "susyVersion" : 3,
     "tsAllowSyntheticDefaultImports" : 0,

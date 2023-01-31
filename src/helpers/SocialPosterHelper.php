@@ -3,7 +3,6 @@ namespace verbb\socialposter\helpers;
 
 use Craft;
 use craft\fields\Assets;
-use craft\helpers\UrlHelper;
 
 class SocialPosterHelper
 {

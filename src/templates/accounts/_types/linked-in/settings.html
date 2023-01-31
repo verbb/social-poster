@@ -1,0 +1,69 @@
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% set instructions %}
+To connect to {name}, follow our <a href="https://verbb.io/craft-plugins/social-poster/docs/providers/linkedin" target="_blank" rel="noopener">{name} guide</a>.
+{% endset %}
+
+<div class="sp-settings-block">
+    {{ instructions | t('social-poster', { name: account.providerName, plugin: 'Social Poster' }) | md }}
+</div>
+
+{{ forms.textField({
+    readonly: true,
+    label: 'Redirect URI' | t('social-poster'),
+    instructions: 'Use this URI when setting up your {name} app.' | t('social-poster', { name: account.providerName }),
+    value: account.getRedirectUri(),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Client ID' | t('social-poster'),
+    instructions: 'Enter your {name} Client ID key here.' | t('social-poster', { name: account.providerName }),
+    name: 'clientId',
+    required: true,
+    suggestEnvVars: true,
+    value: account.clientId ?? '',
+    warning: macros.configWarning("accounts.#{account.handle}.clientId", 'social-poster'),
+    errors: account.getErrors('clientId'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: 'Client Secret' | t('social-poster'),
+    instructions: 'Enter your {name} Client Secret here.' | t('social-poster', { name: account.providerName }),
+    name: 'clientSecret',
+    required: true,
+    suggestEnvVars: true,
+    value: account.clientSecret ?? '',
+    warning: macros.configWarning("accounts.#{account.handle}.clientSecret", 'social-poster'),
+    errors: account.getErrors('clientSecret'),
+}) }}
+
+{% set endpoint = account.endpoint ?? 'page' %}
+
+{{ forms.selectField({
+    label: '{name} Post Type' | t('social-poster', { name: account.providerName }),
+    instructions: 'Select where you‘d like this post to be posted to. This can be a {name} person or a {name} organization.' | t('social-poster', { name: account.providerName }),
+    name: 'endpoint',
+    options: [
+        { label: 'Person' | t('social-poster'), value: 'person' },
+        { label: 'Organization' | t('social-poster'), value: 'organization' },
+    ],
+    required: true,
+    value: endpoint,
+    warning: macros.configWarning("accounts.#{account.handle}.endpoint", 'social-poster'),
+    errors: account.getErrors('endpoint'),
+    toggle: true,
+    targetPrefix: '.endpoint-',
+}) }}
+
+<div class="endpoint-organization {% if endpoint != 'organization' %}hidden{% endif %}">
+    {{ forms.textField({
+        label: '{name} Organization ID' | t('social-poster', { name: account.providerName }),
+        instructions: 'Your {name} Organization ID (the part after `https://www.linkedin.com/company/`).' | t('social-poster', { name: account.providerName }),
+        name: 'organizationId',
+        value: account.organizationId ?? '',
+        required: true,
+        warning: macros.configWarning("accounts.#{account.handle}.organizationId", 'social-poster'),
+        errors: account.getErrors('organizationId'),
+    }) }}
+</div>

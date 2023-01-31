@@ -1,6 +1,8 @@
 {% extends 'social-poster/_layouts' %}
 {% import '_includes/forms' as forms %}
-{% import 'social-poster/_macros' as macros %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% requireAdmin %}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
@@ -8,7 +10,6 @@
 ] %}
 
 {% set fullPageForm = true %}
-{% set selectedTab = 'settings' %}
 {% set selectedSubnavItem = 'settings' %}
 
 {% block blockContent %}

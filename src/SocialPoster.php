@@ -31,7 +31,7 @@ class SocialPoster extends Plugin
     // =========================================================================
 
     public bool $hasCpSettings = true;
-    public string $schemaVersion = '2.0.0';
+    public string $schemaVersion = '2.0.2';
     public string $minVersionRequired = '2.3.2';
 
 
@@ -87,53 +87,39 @@ class SocialPoster extends Plugin
 
     public function getCpNavItem(): ?array
     {
-        $subNavs = [];
-        $navItem = parent::getCpNavItem();
-        $currentUser = Craft::$app->getUser()->getIdentity();
+        $nav = parent::getCpNavItem();
 
-        // Only show sub-navs the user has permission to view
-        if ($currentUser->can('socialPoster-posts')) {
-            $subNavs['posts'] = [
+        $nav['label'] = $this->getPluginName();
+
+        if (Craft::$app->getUser()->checkPermission('socialPoster-posts')) {
+            $nav['subnav']['posts'] = [
                 'label' => Craft::t('social-poster', 'Posts'),
                 'url' => 'social-poster/posts',
             ];
         }
 
-        if ($currentUser->can('socialPoster-accounts')) {
-            $subNavs['accounts'] = [
+        if (Craft::$app->getUser()->checkPermission('socialPoster-accounts')) {
+            $nav['subnav']['accounts'] = [
                 'label' => Craft::t('social-poster', 'Accounts'),
                 'url' => 'social-poster/accounts',
             ];
         }
 
-        if ($currentUser->can('socialPoster-providers')) {
-            $subNavs['providers'] = [
-                'label' => Craft::t('social-poster', 'Providers'),
-                'url' => 'social-poster/providers',
-            ];
-        }
-
-        if ($currentUser->can('socialPoster-settings')) {
-            $subNavs['settings'] = [
+        if (Craft::$app->getUser()->getIsAdmin() && Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {
+            $nav['subnav']['settings'] = [
                 'label' => Craft::t('social-poster', 'Settings'),
                 'url' => 'social-poster/settings',
             ];
         }
 
-        $navItem = array_merge($navItem, [
-            'subnav' => $subNavs,
-        ]);
-
-        $navItem['label'] = $this->getPluginName();
-
-        return $navItem;
+        return $nav;
     }
 
 
     // Protected Methods
     // =========================================================================
 
-    protected function createSettingsModel(): ?Model
+    protected function createSettingsModel(): Settings
     {
         return new Settings();
     }
@@ -145,24 +131,20 @@ class SocialPoster extends Plugin
     private function _registerCpRoutes(): void
     {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
-            $event->rules = array_merge($event->rules, [
-                'social-poster' => 'social-poster/posts/index',
-                'social-poster/posts' => 'social-poster/posts/index',
-                'social-poster/posts/<postId:\d+>' => 'social-poster/posts/edit',
-                'social-poster/accounts' => 'social-poster/accounts/index',
-                'social-poster/accounts/new' => 'social-poster/accounts/edit',
-                'social-poster/accounts/<accountId:\d+>' => 'social-poster/accounts/edit',
-                'social-poster/providers' => 'social-poster/providers/index',
-                'social-poster/providers/<handle:{handle}>' => 'social-poster/providers/oauth',
-                'social-poster/settings' => 'social-poster/plugin/settings',
-            ]);
+            $event->rules['social-poster'] = 'social-poster/posts/index';
+            $event->rules['social-poster/posts'] = 'social-poster/posts/index';
+            $event->rules['social-poster/posts/<postId:\d+>'] = 'social-poster/posts/edit';
+            $event->rules['social-poster/accounts'] = 'social-poster/accounts/index';
+            $event->rules['social-poster/accounts/new'] = 'social-poster/accounts/edit';
+            $event->rules['social-poster/accounts/<handle:{handle}>'] = 'social-poster/accounts/edit';
+            $event->rules['social-poster/settings'] = 'social-poster/plugin/settings';
         });
     }
 
     private function _registerSiteRoutes(): void
     {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES, function(RegisterUrlRulesEvent $event) {
-            $event->rules['social-poster/accounts/callback'] = 'social-poster/accounts/callback';
+            $event->rules['social-poster/auth/callback'] = 'social-poster/auth/callback';
         });
     }
 
@@ -197,7 +179,6 @@ class SocialPoster extends Plugin
                 'permissions' => [
                     'socialPoster-posts' => ['label' => Craft::t('social-poster', 'Posts')],
                     'socialPoster-accounts' => ['label' => Craft::t('social-poster', 'Accounts')],
-                    'socialPoster-providers' => ['label' => Craft::t('social-poster', 'Providers')],
                     'socialPoster-settings' => ['label' => Craft::t('social-poster', 'Settings')],
                 ],
             ];
@@ -213,9 +194,7 @@ class SocialPoster extends Plugin
         Event::on(ResaveController::class, ConsoleController::EVENT_DEFINE_ACTIONS, function(DefineConsoleActionsEvent $e) {
             $e->actions['socialposter-posts'] = [
                 'action' => function(): int {
-                    $controller = Craft::$app->controller;
-                    
-                    return $controller->resaveElements(Post::class);
+                    return Craft::$app->controller->resaveElements(Post::class);
                 },
                 'options' => [],
                 'helpSummary' => 'Re-saves Social Poster posts.',

@@ -1,0 +1,25 @@
+{% import '_includes/forms' as forms %}
+
+{% if not static is defined %}
+    {{ forms.lightswitchField({
+        label: 'Post to {name}' | t('social-poster', { name: account.providerName }),
+        instructions: 'Do you wish to post this entry to {name}?' | t('social-poster', { name: account.providerName }),
+        name: 'autoPost',
+        on: autoPost,
+    }) }}
+{% endif %}
+
+{% if account.showMessage %}
+    {{ forms.textareaField({
+        label: 'Message' | t('social-poster'),
+        instructions: 'Text for your post.' | t('social-poster'),
+        placeholder: 'Enter text here to be displayed as your post to social media.' | t('social-poster'),
+        name: 'message',
+        rows: 4,
+        value: account.message,
+        showCharsLeft: true,
+        maxlength: '140',
+        disabled: static is defined,
+        class: static is defined ? 'disabled',
+    }) }}
+{% endif %}

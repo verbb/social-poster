@@ -1,5 +1,4 @@
 # Social Poster Plugin for Craft CMS
-
 <img width="500" src="https://verbb.io/uploads/plugins/social-poster/social-poster-social-card.png?v=1">
 
 Social Poster is a Craft CMS plugin for automatically posting entries to social media.
@@ -14,15 +13,14 @@ Social Poster is a Craft CMS plugin for automatically posting entries to social 
 
 ## Supports
 - Facebook
+- Instagram
 - Linked.in
 - Twitter
 
 ## Documentation
-
 Visit the [Social Poster Plugin page](https://verbb.io/craft-plugins/social-poster) for all documentation, guides, pricing and developer resources.
 
 ## Support
-
 Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a Github issue](https://github.com/verbb/social-poster/issues)
 
 <h2></h2>
