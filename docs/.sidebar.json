@@ -22,7 +22,7 @@
         "collapsable": false,
         "children": [
             "providers/facebook",
-            "providers/instagram"
+            "providers/instagram",
             "providers/linkedin",
             "providers/twitter"
         ]
