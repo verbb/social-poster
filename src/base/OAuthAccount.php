@@ -54,7 +54,10 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
 
     public function getRedirectUri(): ?string
     {
-        return UrlHelper::siteUrl('social-poster/auth/callback');
+        $siteId = Craft::$app->getSites()->getPrimarySite()->id;
+
+        // We should always use the primary site for the redirect
+        return UrlHelper::siteUrl('social-poster/auth/callback', null, null, $siteId);
     }
 
     public function getAuthorizationUrlOptions(): array
