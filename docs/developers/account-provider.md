@@ -19,6 +19,8 @@ Create the following class to house your Account Provider logic.
 ```php
 namespace modules;
 
+use Craft;
+use Throwable;
 use verbb\socialposter\base\OAuthAccount;
 use verbb\socialposter\models\Payload;
 use verbb\socialposter\models\PostResponse;
