@@ -91,26 +91,24 @@ class LinkedIn extends OAuthAccount
                 ];
             }
 
-            $response = $this->request('POST', 'shares', [
-                'json' => [
-                    'content' => [
-                        'contentEntities' => [
-                            [
-                                'entityLocation' => $payload->url,
-                                'thumbnails' => $thumbnails,
-                            ],
+            $response = $this->sendRequest('shares', [
+                'content' => [
+                    'contentEntities' => [
+                        [
+                            'entityLocation' => $payload->url,
+                            'thumbnails' => $thumbnails,
                         ],
-                        'title' => $payload->title,
                     ],
-                    'owner' => $ownerUrn,
-                    'subject' => $payload->title,
-                    'text' => [
-                        'text' => $payload->message,
-                    ],
-                    'distribution' => [
-                        'linkedInDistributionTarget' => [
-                            'visibleToGuest' => true,
-                        ],
+                    'title' => $payload->title,
+                ],
+                'owner' => $ownerUrn,
+                'subject' => $payload->title,
+                'text' => [
+                    'text' => $payload->message,
+                ],
+                'distribution' => [
+                    'linkedInDistributionTarget' => [
+                        'visibleToGuest' => true,
                     ],
                 ],
             ]);

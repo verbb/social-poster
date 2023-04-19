@@ -2,6 +2,7 @@
 namespace verbb\socialposter\base;
 
 use verbb\socialposter\SocialPoster;
+use verbb\socialposter\events\SendPostEvent;
 use verbb\socialposter\helpers\SocialPosterHelper;
 use verbb\socialposter\models\Payload;
 use verbb\socialposter\models\PostResponse;
@@ -22,8 +23,33 @@ use LitEmoji\LitEmoji;
 
 abstract class Account extends SavableComponent implements AccountInterface
 {
+    // Constants
+    // =========================================================================
+
+    public const EVENT_BEFORE_SEND_POST = 'beforeSendPost';
+    public const EVENT_AFTER_SEND_POST = 'afterSendPost';
+
+
     // Static Methods
     // =========================================================================
+
+    public static function log($account, $message, $throwError = false): void
+    {
+        SocialPoster::log($account->name . ': ' . $message);
+
+        if ($throwError) {
+            throw new Exception($message);
+        }
+    }
+
+    public static function error($account, $message, $throwError = false): void
+    {
+        SocialPoster::error($account->name . ': ' . $message);
+
+        if ($throwError) {
+            throw new Exception($message);
+        }
+    }
 
     public static function apiError($account, $exception, $throwError = true): void
     {
@@ -215,6 +241,65 @@ abstract class Account extends SavableComponent implements AccountInterface
     public function getAssetFieldOptions(): array
     {
         return SocialPosterHelper::getAssetFieldOptions();
+    }
+
+    public function sendRequest(string $endpoint, mixed $payload, string $method = 'POST', string $contentType = 'json'): mixed
+    {
+        // Allow events to cancel sending
+        if (!$this->beforeSendPost($endpoint, $payload, $method)) {
+            return false;
+        }
+
+        $response = $this->request($method, $endpoint, [
+            $contentType => $payload,
+        ]);
+
+        // Allow events to say the response is invalid
+        if (!$this->afterSendPost($endpoint, $payload, $method, $response)) {
+            return false;
+        }
+
+        return $response;
+    }
+
+    public function beforeSendPost(string &$endpoint, mixed &$payload, string &$method): bool
+    {
+        $event = new SendPostEvent([
+            'payload' => $payload,
+            'endpoint' => $endpoint,
+            'method' => $method,
+            'account' => $this,
+        ]);
+        $this->trigger(self::EVENT_BEFORE_SEND_POST, $event);
+
+        if (!$event->isValid) {
+            self::log($this, 'Sending post cancelled by event hook.');
+        }
+
+        // Allow events to alter some props
+        $payload = $event->payload;
+        $endpoint = $event->endpoint;
+        $method = $event->method;
+
+        return $event->isValid;
+    }
+
+    public function afterSendPost(string $endpoint, mixed $payload, string $method, mixed $response): bool
+    {
+        $event = new SendPostEvent([
+            'payload' => $payload,
+            'response' => $response,
+            'endpoint' => $endpoint,
+            'method' => $method,
+            'account' => $this,
+        ]);
+        $this->trigger(self::EVENT_AFTER_SEND_POST, $event);
+
+        if (!$event->isValid) {
+            self::log($this, 'Post marked as invalid by event hook.');
+        }
+
+        return $event->isValid;
     }
 
 

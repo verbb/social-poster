@@ -38,10 +38,10 @@ The event that is triggered before a post is deleted.
 The `isValid` event property can be set to `false` to prevent the deletion from proceeding.
 
 ```php
-use verbb\formie\elements\Form;
+use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Form::class, Form::EVENT_BEFORE_DELETE, function(Event $event) {
+Event::on(Post::class, Post::EVENT_BEFORE_DELETE, function(Event $event) {
     $post = $event->sender;
     $event->isValid = false;
     // ...
@@ -52,14 +52,52 @@ Event::on(Form::class, Form::EVENT_BEFORE_DELETE, function(Event $event) {
 The event that is triggered after a post is deleted.
 
 ```php
-use verbb\formie\elements\Form;
+use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Form::class, Form::EVENT_AFTER_DELETE, function(Event $event) {
+Event::on(Post::class, Post::EVENT_AFTER_DELETE, function(Event $event) {
     $post = $event->sender;
     // ...
 });
 ```
+
+### The `beforeSendPost` event
+The event that is triggered before an account sends a post.
+
+The `isValid` event property can be set to `false` to prevent the post from being sent.
+
+```php
+use verbb\socialposter\accounts\Twitter;
+use verbb\socialposter\events\SendPostEvent;
+use yii\base\Event;
+
+Event::on(Twitter::class, Twitter::EVENT_BEFORE_SEND_POST, function(SendPostEvent $event) {
+    $payload = $event->payload;
+    $account = $event->account;
+    $endpoint = $event->endpoint;
+    $method = $event->method;
+    // ...
+});
+```
+
+### The `afterSendPost` event
+The event that is triggered after an account sends a post.
+
+The `isValid` event property can be set to `false` to flag a post-sending response.
+
+```php
+use verbb\socialposter\accounts\Twitter;
+use verbb\socialposter\events\SendPostEvent;
+use yii\base\Event;
+
+Event::on(Twitter::class, Twitter::EVENT_AFTER_SEND_POST, function(SendPostEvent $event) {
+    $payload = $event->payload;
+    $account = $event->account;
+    $response = $event->response;
+    // ...
+});
+```
+
 
 ## Account Events
 
