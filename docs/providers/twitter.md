@@ -12,7 +12,7 @@ Follow these steps to configure Twitter for Social Poster.
 1. Go to **App settings**.
 1. Click the **Edit** button for **Authentication settings**.
 1. Fill in the form details.
-    - **App permissions** set to **Read**
+    - **App permissions** set to **Read and Write**
     - **Request email from users** is enabled
     - **Type of App** set to **Web App, Automated App or Bot**
     - In the **Callback URI / Redirect URL** field, enter the value from the **Redirect URI** field in Social Poster.
