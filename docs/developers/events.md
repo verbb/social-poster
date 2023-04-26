@@ -11,7 +11,7 @@ use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $e) {
+Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
     $post = $event->sender;
     $event->isValid = false;
 });
@@ -25,7 +25,7 @@ use craft\events\ModelEvent;
 use verbb\socialposter\elements\Post;
 use yii\base\Event;
 
-Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $e) {
+Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $event) {
     $post = $event->sender;
 });
 ```
@@ -40,7 +40,7 @@ use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(AccountEvent $e) {
+Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(AccountEvent $event) {
     // Do something
 });
 ```
@@ -53,7 +53,7 @@ use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountEvent $e) {
+Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountEvent $event) {
     // Do something
 });
 ```
@@ -66,7 +66,7 @@ use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(AccountEvent $e) {
+Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(AccountEvent $event) {
     // Do something
 });
 ```
@@ -79,7 +79,7 @@ use verbb\socialposter\events\AccountEvent;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
-Event::on(Accounts::class, Accounts::EVENT_AFTER_DELETE_ACCOUNT, function(AccountEvent $e) {
+Event::on(Accounts::class, Accounts::EVENT_AFTER_DELETE_ACCOUNT, function(AccountEvent $event) {
     // Do something
 });
 ```
@@ -94,7 +94,7 @@ use verbb\socialposter\events\TokenEvent;
 use verbb\socialposter\services\Tokens;
 use yii\base\Event;
 
-Event::on(Tokens::class, Tokens::EVENT_BEFORE_SAVE_TOKEN, function(TokenEvent $e) {
+Event::on(Tokens::class, Tokens::EVENT_BEFORE_SAVE_TOKEN, function(TokenEvent $event) {
     // Do something
 });
 ```
@@ -107,7 +107,7 @@ use verbb\socialposter\events\TokenEvent;
 use verbb\socialposter\services\Tokens;
 use yii\base\Event;
 
-Event::on(Tokens::class, Tokens::EVENT_AFTER_SAVE_TOKEN, function(TokenEvent $e) {
+Event::on(Tokens::class, Tokens::EVENT_AFTER_SAVE_TOKEN, function(TokenEvent $event) {
     // Do something
 });
 ```
@@ -120,7 +120,7 @@ use verbb\socialposter\events\TokenEvent;
 use verbb\socialposter\services\Tokens;
 use yii\base\Event;
 
-Event::on(Tokens::class, Tokens::EVENT_BEFORE_DELETE_TOKEN, function(TokenEvent $e) {
+Event::on(Tokens::class, Tokens::EVENT_BEFORE_DELETE_TOKEN, function(TokenEvent $event) {
     // Do something
 });
 ```
@@ -133,7 +133,7 @@ use verbb\socialposter\events\TokenEvent;
 use verbb\socialposter\services\Tokens;
 use yii\base\Event;
 
-Event::on(Tokens::class, Tokens::EVENT_AFTER_DELETE_TOKEN, function(TokenEvent $e) {
+Event::on(Tokens::class, Tokens::EVENT_AFTER_DELETE_TOKEN, function(TokenEvent $event) {
     // Do something
 });
 ```
@@ -147,7 +147,7 @@ use verbb\socialposter\controllers\AccountsController;
 use verbb\socialposter\events\OauthTokenEvent;
 use yii\base\Event;
 
-Event::on(AccountsController::class, AccountsController::EVENT_AFTER_OAUTH_CALLBACK, function(OauthTokenEvent $e) {
+Event::on(AccountsController::class, AccountsController::EVENT_AFTER_OAUTH_CALLBACK, function(OauthTokenEvent $event) {
     // Do something
 });
 ```
