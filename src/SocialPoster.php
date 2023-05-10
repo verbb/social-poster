@@ -191,8 +191,8 @@ class SocialPoster extends Plugin
             return;
         }
 
-        Event::on(ResaveController::class, ConsoleController::EVENT_DEFINE_ACTIONS, function(DefineConsoleActionsEvent $e) {
-            $e->actions['socialposter-posts'] = [
+        Event::on(ResaveController::class, ConsoleController::EVENT_DEFINE_ACTIONS, function(DefineConsoleActionsEvent $event) {
+            $event->actions['socialposter-posts'] = [
                 'action' => function(): int {
                     return Craft::$app->controller->resaveElements(Post::class);
                 },
