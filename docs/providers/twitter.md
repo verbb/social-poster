@@ -1,6 +1,10 @@
 # Twitter
 Follow these steps to configure Twitter for Social Poster.
 
+:::tip
+Posting to Twitter is allowed on their **Free** [API Plan](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api).
+:::
+
 ## Step 1: Register a Twitter App
 1. Go to <a href="https://developer.twitter.com/en/apps" target="_blank">Twitter Developer Portal</a> and login to your account.
 1. Click the **Create project** button.
