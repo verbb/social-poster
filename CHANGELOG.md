@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.1 - 2023-05-27
+
+### Added
+- Add `Account::EVENT_BEFORE_SEND_POST` and `Account::EVENT_AFTER_SEND_POST` events.
+
+### Fixed
+- Fix Redirect URI not working correctly for multi-sites.
+
 ## 4.0.0 - 2023-02-01
 > {note} This is a major release with big changes on how Accounts and Providers work. Please read the [migration](https://verbb.io/craft-plugins/social-poster/docs/get-started/migrating-from-v2) docs. You will be required to update your provider OAuth app settings and re-connect your accounts.
 
