@@ -1,5 +1,4 @@
 # Post Queries
-
 You can fetch posts in your templates or PHP post using **post queries**.
 
 :::code
@@ -21,7 +20,6 @@ See Introduction to [Element Queries](https://craftcms.com/docs/4.x/element-quer
 :::
 
 ## Example
-
 We can display posts for a given entry by doing the following:
 
 1. Create a post query with `craft.socialPoster.posts()`.
@@ -45,13 +43,11 @@ We can display posts for a given entry by doing the following:
 ```
 
 ## Parameters
-
 Post queries support the following parameters:
 
 <!-- BEGIN PARAMS -->
 
 ### `after`
-
 Narrows the query results to only posts that were posted on or after a certain date.
 
 Possible values include:
@@ -84,7 +80,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `anyStatus`
-
 Clears out the [status()](https://docs.craftcms.com/api/v4/craft-elements-db-elementquery.html#method-status) and [enabledForSite()](https://docs.craftcms.com/api/v4/craft-elements-db-elementquery.html#method-enabledforsite) parameters.
 
 ::: code
@@ -106,7 +101,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `asArray`
-
 Causes the query to return matching posts as arrays of data, rather than [Post](docs:developers/post) objects.
 
 ::: code
@@ -128,7 +122,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `before`
-
 Narrows the query results to only posts that were posted before a certain date.
 
 Possible values include:
@@ -161,7 +154,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `dateCreated`
-
 Narrows the query results based on the posts’ creation dates.
 
 Possible values include:
@@ -197,7 +189,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `dateUpdated`
-
 Narrows the query results based on the posts’ last-updated dates.
 
 Possible values include:
@@ -231,7 +222,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `fixedOrder`
-
 Causes the query results to be returned in the order specified by [id](#id).
 
 ::: code
@@ -255,7 +245,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `id`
-
 Narrows the query results based on the posts’ IDs.
 
 Possible values include:
@@ -290,7 +279,6 @@ This can be combined with [fixedOrder](#fixedorder) if you want the results to b
 
 
 ### `inReverse`
-
 Causes the query results to be returned in reverse order.
 
 ::: code
@@ -312,7 +300,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `limit`
-
 Determines the number of posts that should be returned.
 
 ::: code
@@ -334,7 +321,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `offset`
-
 Determines how many posts should be skipped in the results.
 
 ::: code
@@ -356,7 +342,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `orderBy`
-
 Determines the order that the posts should be returned in.
 
 ::: code
@@ -378,7 +363,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `owner`
-
 Sets the [ownerId](#ownerid) and [siteId](#siteid) parameters based on a given element.
 
 ::: code
@@ -400,7 +384,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `ownerId`
-
 Narrows the query results based on the owner element of the posts, per the owners’ IDs.
 
 Possible values include:
@@ -431,7 +414,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `ownerSite`
-
 Narrows the query results based on the site the owner element was saved for.
 
 Possible values include:
@@ -462,7 +444,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `ownerSiteId`
-
 Narrows the query results based on the site the owner element was saved for, per the site’s ID.
 
 Possible values include:
@@ -493,7 +474,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `status`
-
 Narrows the query results based on the posts’ statuses.
 
 Possible values include:
@@ -525,7 +505,6 @@ $posts = \verbb\socialposter\elements\Post::find()
 
 
 ### `uid`
-
 Narrows the query results based on the posts’ UIDs.
 
 ::: code
