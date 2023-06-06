@@ -67,7 +67,7 @@ class Service extends Component
             }
         }
 
-        $event->html = Craft::$app->getView()->renderTemplate('social-poster/_includes/entry-sidebar', [
+        $event->html .= Craft::$app->getView()->renderTemplate('social-poster/_includes/entry-sidebar', [
             'entry' => $entry,
             'accounts' => $accounts,
             'posts' => $posts,
