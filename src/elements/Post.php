@@ -10,6 +10,7 @@ use Craft;
 use craft\base\Element;
 use craft\elements\actions\Delete;
 use craft\elements\User;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
@@ -139,13 +140,9 @@ class Post extends Element
         }
 
         // Add Emoji support
-        if (is_array($this->settings)) {
-            foreach ($this->settings as $key => $value) {
-                if ($value && is_string($value)) {
-                    $this->settings[$key] = LitEmoji::shortcodeToUnicode($value);
-                }
-            }
-        }
+        $this->settings = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->settings)));
+        $this->response = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->response)));
+        $this->data = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->data)));
     }
 
     public function canView(User $user): bool
@@ -219,11 +216,9 @@ class Post extends Element
         }
 
         // Add Emoji support
-        foreach ($this->settings as $key => $value) {
-            if ($value && is_string($value)) {
-                $this->settings[$key] = LitEmoji::unicodeToShortcode($value);
-            }
-        }
+        $this->settings = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->settings)));
+        $this->response = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->response)));
+        $this->data = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->data)));
 
         $record->accountId = $this->accountId;
         $record->ownerId = $this->ownerId;
