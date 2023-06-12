@@ -8,6 +8,7 @@ use verbb\socialposter\models\Payload;
 use verbb\socialposter\models\PostResponse;
 
 use Craft;
+use craft\base\ElementInterface;
 use craft\base\SavableComponent;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
@@ -243,10 +244,10 @@ abstract class Account extends SavableComponent implements AccountInterface
         return SocialPosterHelper::getAssetFieldOptions();
     }
 
-    public function sendRequest(string $endpoint, mixed $payload, string $method = 'POST', string $contentType = 'json'): mixed
+    public function sendRequest(ElementInterface $element, string $endpoint, mixed $payload, string $method = 'POST', string $contentType = 'json'): mixed
     {
         // Allow events to cancel sending
-        if (!$this->beforeSendPost($endpoint, $payload, $method)) {
+        if (!$this->beforeSendPost($element, $endpoint, $payload, $method)) {
             return false;
         }
 
@@ -255,16 +256,17 @@ abstract class Account extends SavableComponent implements AccountInterface
         ]);
 
         // Allow events to say the response is invalid
-        if (!$this->afterSendPost($endpoint, $payload, $method, $response)) {
+        if (!$this->afterSendPost($element, $endpoint, $payload, $method, $response)) {
             return false;
         }
 
         return $response;
     }
 
-    public function beforeSendPost(string &$endpoint, mixed &$payload, string &$method): bool
+    public function beforeSendPost(ElementInterface $element, string &$endpoint, mixed &$payload, string &$method): bool
     {
         $event = new SendPostEvent([
+            'element' => $element,
             'payload' => $payload,
             'endpoint' => $endpoint,
             'method' => $method,
@@ -284,9 +286,10 @@ abstract class Account extends SavableComponent implements AccountInterface
         return $event->isValid;
     }
 
-    public function afterSendPost(string $endpoint, mixed $payload, string $method, mixed $response): bool
+    public function afterSendPost(ElementInterface $element, string $endpoint, mixed $payload, string $method, mixed $response): bool
     {
         $event = new SendPostEvent([
+            'element' => $element,
             'payload' => $payload,
             'response' => $response,
             'endpoint' => $endpoint,

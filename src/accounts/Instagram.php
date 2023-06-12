@@ -109,7 +109,7 @@ class Instagram extends OAuthAccount
             }
 
             // Then, create our media container. Image is compulsary
-            $response = $this->sendRequest("$instagramAccountId/media", [
+            $response = $this->sendRequest($payload->element, "$instagramAccountId/media", [
                 'image_url' => $payload->picture,
                 'caption' => $payload->message,
             ], 'POST', 'query');
@@ -120,7 +120,7 @@ class Instagram extends OAuthAccount
                 throw new Exception('Unable to create media container.');
             }
 
-            $response = $this->sendRequest("$instagramAccountId/media_publish", [
+            $response = $this->sendRequest($payload->element, "$instagramAccountId/media_publish", [
                 'creation_id' => $mediaObjectContainerId,
             ], 'POST', 'query');
 

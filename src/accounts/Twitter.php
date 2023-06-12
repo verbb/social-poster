@@ -52,7 +52,7 @@ class Twitter extends OAuthAccount
                 'text' => $payload->message,
             ];
 
-            $response = $this->sendRequest('tweets', $params);
+            $response = $this->sendRequest($payload->element, 'tweets', $params);
 
             return $this->getPostResponse($response);
         } catch (Throwable $e) {

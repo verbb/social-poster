@@ -91,7 +91,7 @@ class LinkedIn extends OAuthAccount
                 ];
             }
 
-            $response = $this->sendRequest('shares', [
+            $response = $this->sendRequest($payload->element, 'shares', [
                 'content' => [
                     'contentEntities' => [
                         [

@@ -177,7 +177,7 @@ class Facebook extends OAuthAccount
                 $params['picture'] = $payload->picture;
             }
 
-            $response = $this->sendRequest($pageOrGroupId . '/feed', $params);
+            $response = $this->sendRequest($payload->element, $pageOrGroupId . '/feed', $params);
 
             return $this->getPostResponse($response);
         } catch (Throwable $e) {
