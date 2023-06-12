@@ -45,6 +45,7 @@ class PostsController extends Controller
 
         $account = $post->getAccount();
         $payload = new Payload($post->settings);
+        $payload->element = $post->getOwner();
 
         if ($account && $account->sendPost($payload)) {
             Craft::$app->getSession()->setNotice(Craft::t('social-poster', 'Re-posted successfully.'));

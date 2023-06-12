@@ -215,6 +215,9 @@ class Post extends Element
             $record->id = $this->id;
         }
 
+        // Remove the recorded element from the payload, which is stored during posting for events
+        unset($this->settings['element']);
+
         // Add Emoji support
         $this->settings = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->settings)));
         $this->response = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->response)));

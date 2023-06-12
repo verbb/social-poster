@@ -119,6 +119,7 @@ class Service extends Component
             }
 
             $payload = new Payload();
+            $payload->element = $entry;
             $payload->title = $view->renderObjectTemplate((string)$account->title, $entry);
             $payload->url = $view->renderObjectTemplate((string)$account->url, $entry);
             $payload->message = $view->renderObjectTemplate((string)$account->message, $entry);
