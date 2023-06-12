@@ -72,6 +72,7 @@ use verbb\socialposter\events\SendPostEvent;
 use yii\base\Event;
 
 Event::on(Twitter::class, Twitter::EVENT_BEFORE_SEND_POST, function(SendPostEvent $event) {
+    $element = $event->element;
     $payload = $event->payload;
     $account = $event->account;
     $endpoint = $event->endpoint;
@@ -91,6 +92,7 @@ use verbb\socialposter\events\SendPostEvent;
 use yii\base\Event;
 
 Event::on(Twitter::class, Twitter::EVENT_AFTER_SEND_POST, function(SendPostEvent $event) {
+    $element = $event->element;
     $payload = $event->payload;
     $account = $event->account;
     $response = $event->response;
