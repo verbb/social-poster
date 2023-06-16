@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.0.2 - 2023-06-16
+
+### Added
+- Add `element` to `Account::EVENT_BEFORE_SEND_POST` and `Account::EVENT_AFTER_SEND_POST` events.
+- Add the posted element to Payload models.
+
+### Fixed
+- Fix an issue where the Auth module wasn’t initialised properly for upgraded Social Poster installs.
+- Fix emoji support for posts.
+- Fix entry sidebar overwriting default Craft sidebar meta.
+
 ## 4.0.1 - 2023-05-27
 
 ### Added
