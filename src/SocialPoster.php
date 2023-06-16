@@ -31,7 +31,7 @@ class SocialPoster extends Plugin
     // =========================================================================
 
     public bool $hasCpSettings = true;
-    public string $schemaVersion = '2.0.2';
+    public string $schemaVersion = '2.0.3';
     public string $minVersionRequired = '2.3.2';
 
 
