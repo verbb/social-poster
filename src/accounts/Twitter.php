@@ -36,6 +36,7 @@ class Twitter extends OAuthAccount
                 'tweet.read',
                 'tweet.write',
                 'users.read',
+                'offline.access',
             ],
         ];
     }
