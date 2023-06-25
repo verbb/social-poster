@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.3 - 2023-06-25
+
+### Fixed
+- Fix Twitter missing `offline.access` scope, preventing refresh tokens.
+
 ## 4.0.2 - 2023-06-16
 
 ### Added
