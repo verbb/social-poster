@@ -67,20 +67,18 @@ class Facebook extends OAuthAccount
         return $config;
     }
 
-    public function getAuthorizationUrlOptions(): array
+    public function getDefaultScopes(): array
     {
         return [
             // API version 7.0+
-            'scope' => [
-                'public_profile',
-                'email',
-                'pages_manage_posts',
-                'publish_to_groups',
-                'pages_read_engagement',
-                'pages_read_user_content',
-                'pages_show_list',
-            ],
-        ];
+            'public_profile',
+            'email',
+            'pages_manage_posts',
+            'publish_to_groups',
+            'pages_read_engagement',
+            'pages_read_user_content',
+            'pages_show_list',
+    ];
     }
 
     public function getResponseUrl($data): ?string

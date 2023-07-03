@@ -61,9 +61,21 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
         return UrlHelper::siteUrl('social-poster/auth/callback', null, null, $siteId);
     }
 
-    public function getAuthorizationUrlOptions(): array
+    public function getDefaultScopes(): array
     {
         return [];
+    }
+
+    public function getAuthorizationUrlOptions(): array
+    {
+        // Use any auth options defined in config files
+        $options = $this->authorizationOptions;
+
+        // Combine default scopes at the provider level, with account level ones, and any in the config.
+        $defaultScopes = $this->getOAuthProvider()->defaultScopes();
+        $options['scope'] = array_values(array_unique(array_merge($defaultScopes, $this->getDefaultScopes(), $this->scopes)));
+
+        return $options;
     }
 
     public function getToken(): ?Token

@@ -29,15 +29,13 @@ class Twitter extends OAuthAccount
     // Public Methods
     // =========================================================================
 
-    public function getAuthorizationUrlOptions(): array
+    public function getDefaultScopes(): array
     {
         return [
-            'scope' => [
-                'tweet.read',
-                'tweet.write',
-                'users.read',
-                'offline.access',
-            ],
+            'tweet.read',
+            'tweet.write',
+            'users.read',
+            'offline.access',
         ];
     }
 

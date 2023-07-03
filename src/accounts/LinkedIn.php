@@ -45,7 +45,7 @@ class LinkedIn extends OAuthAccount
         return $rules;
     }
 
-    public function getAuthorizationUrlOptions(): array
+    public function getDefaultScopes(): array
     {
         $scopes = [
             'r_liteprofile',
@@ -58,9 +58,7 @@ class LinkedIn extends OAuthAccount
             $scopes[] = 'r_organization_social';
         }
 
-        return [
-            'scope' => $scopes,
-        ];
+        return $scopes;
     }
 
     public function getResponseUrl($data): ?string

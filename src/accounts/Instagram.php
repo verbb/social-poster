@@ -59,13 +59,11 @@ class Instagram extends OAuthAccount
         return $config;
     }
 
-    public function getAuthorizationUrlOptions(): array
+    public function getDefaultScopes(): array
     {
         return [
-            'scope' => [
-                'instagram_basic',
-                'pages_show_list',
-            ],
+            'instagram_basic',
+            'pages_show_list',
         ];
     }
 
