@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.4 - 2023-07-11
+
+### Added
+- Add ability to set `scopes` and `authorizationOptions` for accounts in config files.
+- Add current site support to Redirect URI for multi-sites.
+
 ## 4.0.3 - 2023-06-25
 
 ### Fixed
