@@ -78,7 +78,7 @@ class Facebook extends OAuthAccount
             'pages_read_engagement',
             'pages_read_user_content',
             'pages_show_list',
-    ];
+        ];
     }
 
     public function getResponseUrl($data): ?string
