@@ -23,5 +23,5 @@ Posting to Twitter is allowed on their **Free** [API Plan](https://developer.twi
 1. Click the **Save** button.
 1. Click the **Keys & Tokens** tab.
 1. Click the **Regenerate** button for the **OAuth 2.0 Client ID and Client Secret**.
-1. Copy the **Client ID** from {name} and paste in the **Client ID** field in Social Poster.
-1. Copy the **Client Secret** from {name} and paste in the **Client Secret** field in Social Poster.
+1. Copy the **Client ID** from Twitter and paste in the **Client ID** field in Social Poster.
+1. Copy the **Client Secret** from Twitter and paste in the **Client Secret** field in Social Poster.

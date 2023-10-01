@@ -9,8 +9,8 @@ Follow these steps to configure Linked.in for Social Poster.
 1. Navigate to the **Auth** section.
 1. Click the edit icon for the **Authorized Redirect URLs** field.
 1. Enter the value from the **Redirect URI** field in Social Poster.
-1. Copy the **Client ID** from {name} and paste in the **Client ID** field in Social Poster.
-1. Copy the **Client Secret** from {name} and paste in the **Client Secret** field in Social Poster.
+1. Copy the **Client ID** from Linked.in and paste in the **Client ID** field in Social Poster.
+1. Copy the **Client Secret** from Linked.in and paste in the **Client Secret** field in Social Poster.
 
 
 ## Company Pages
@@ -23,7 +23,7 @@ In order to post to company pages, there are a few requirements:
 ### Marketing Developer Platform
 To gain permissions for posting to company pages, you must sign up for the [Marketing Developer Platform](https://business.linkedin.com/marketing-solutions/case-studies/businessonline).
 
-Go to the **Products** tab in your Linked.in app and click **Add more products**. Check the **Marketing Developer Platform** checkbox and follow the prompts to fill out your application. Please note that the approval process can take up to 20-25 days. Please be aware that LinkedIn will not approve every application submitted.
+Go to the **Products** tab in your Linked.in app and click **Add more products**. Check the **Marketing Developer Platform** checkbox and follow the prompts to fill out your application. Please note that the approval process can take up to 20-25 days. Please be aware that Linked.in will not approve every application submitted.
 
 Once approved, verify you have the correct permissions via the **Auth** tab. Ensure you have `w_organization_social` and `r_organization_social` permissions. You should now be able to post to Linked.in company pages.
 
