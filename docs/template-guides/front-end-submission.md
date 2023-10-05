@@ -42,7 +42,7 @@ Options vary depending on your account provider, but are as below. Please note t
 <input name="socialPoster[twitter][message]">
 ```
 
-## Linked.in
+## LinkedIn
 
 ```twig
 <input name="socialPoster[linkedin][autoPost]">

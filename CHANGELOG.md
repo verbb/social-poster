@@ -127,12 +127,12 @@
 ## 2.1.1 - 2020-04-13
 
 ### Added
-- Add support Linked.in for company pages. See [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linked-in).
-- Updated Facebook and Linked.in provider docs with more detailed instructions.
+- Add support LinkedIn for company pages. See [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linked-in).
+- Updated Facebook and LinkedIn provider docs with more detailed instructions.
 
 ### Changed
-- Remove `r_basicprofile` and `w_share` permissions for Linked.in. These are no longer valid.
-- Remove `visibility` settings for Linked.in. No longer valid.
+- Remove `r_basicprofile` and `w_share` permissions for LinkedIn. These are no longer valid.
+- Remove `visibility` settings for LinkedIn. No longer valid.
 
 ### Fixed
 - Fix checking for valid asset field and asset.
@@ -147,7 +147,7 @@
 ## 2.0.10 - 2020-01-10
 
 ### Fixed
-- Fix posting to Linked.in
+- Fix posting to LinkedIn
 
 ## 2.0.9 - 2020-01-10
 
@@ -165,7 +165,7 @@
 ## 2.0.8 - 2019-04-24
 
 ### Changed
-- Remove `r_liteprofile` for Linked.in.
+- Remove `r_liteprofile` for LinkedIn.
 
 ### Fixed
 - Fix error when trying to post to Twitter.
@@ -266,10 +266,10 @@
 ## 1.1.0 - 2016-07-03
 
 ### Added
-- Added support for Linked.in as a provider.
+- Added support for LinkedIn as a provider.
 - Added support for Facebook Pages, along with Personal timelines.
-- Added Title field to set the post title for Facebook and Linked.in posts.
-- Added URL field to allow specific URLs to be used with Facebook and Linked.in posts.
+- Added Title field to set the post title for Facebook and LinkedIn posts.
+- Added URL field to allow specific URLs to be used with Facebook and LinkedIn posts.
 - Added new setting for auto-post. Handy if you want the widget to appear, but not be default to on.
 
 ### Changed

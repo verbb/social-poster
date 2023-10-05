@@ -14,7 +14,7 @@ Social Poster is a Craft CMS plugin for automatically posting entries to social 
 ## Supports
 - Facebook
 - Instagram
-- Linked.in
+- LinkedIn
 - Twitter
 
 ## Documentation
