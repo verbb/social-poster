@@ -48,8 +48,6 @@ class LinkedIn extends OAuthAccount
     public function getDefaultScopes(): array
     {
         $scopes = [
-            'r_liteprofile',
-            'r_emailaddress',
             'w_member_social',
         ];
 
