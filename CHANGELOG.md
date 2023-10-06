@@ -1,7 +1,12 @@
 # Changelog
 
+## 4.0.6 - 2023-10-06
+> {note} If you are using LinkedIn, your LinkedIn app will need to include new products. Refer to the [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linkedin).
+
+### Changed
+- Change LinkedIn from using deprecated “Shares API”.
+
 ## 4.0.5 - 2023-10-05
-> {warning} If you are using LinkedIn, your LinkedIn app will need to now include the **Sign In with LinkedIn using OpenID Connect** product.
 
 ### Changed
 - Change LinkedIn to use new OpenID Connect API.
