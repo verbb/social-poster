@@ -1,5 +1,5 @@
 # Upgrading from v3
-While the [changelog](https://github.com/verbb/social-poster/blob/craft-4/CHANGELOG.md) is the most comprehensive list of changes, this guide provides high-level overview and organizes changes by category.
+While the [changelog](https://github.com/verbb/social-poster/blob/craft-5/CHANGELOG.md) is the most comprehensive list of changes, this guide provides high-level overview and organizes changes by category.
 
 ## Accounts & Providers
 Social Poster v4 combines Accounts and Providers into a single concept - Accounts. This is to better handle multiple clients for the same social media provider, and multi-site handling.

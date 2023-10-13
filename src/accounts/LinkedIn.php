@@ -32,19 +32,6 @@ class LinkedIn extends OAuthAccount
     // Public Methods
     // =========================================================================
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['organizationId'], 'required', 'when' => function($model) {
-                return $model->enabled && $model->endpoint === 'organization';
-            },
-        ];
-
-        return $rules;
-    }
-
     public function getDefaultScopes(): array
     {
         $scopes = [
@@ -115,6 +102,23 @@ class LinkedIn extends OAuthAccount
         } catch (Throwable $e) {
             return $this->getPostExceptionResponse($e);
         }
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['organizationId'], 'required', 'when' => function($model) {
+                return $model->enabled && $model->endpoint === 'organization';
+            },
+        ];
+
+        return $rules;
     }
 
 }

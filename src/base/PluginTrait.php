@@ -6,36 +6,40 @@ use verbb\socialposter\services\Accounts;
 use verbb\socialposter\services\Posts;
 use verbb\socialposter\services\Service;
 
-use Craft;
-
-use yii\log\Logger;
+use verbb\base\LogTrait;
+use verbb\base\helpers\Plugin;
 
 use verbb\auth\Auth;
-use verbb\base\BaseHelper;
 
 trait PluginTrait
 {
     // Properties
     // =========================================================================
 
-    public static SocialPoster $plugin;
+    public static ?SocialPoster $plugin = null;
+
+
+    // Traits
+    // =========================================================================
+
+    use LogTrait;
 
 
     // Static Methods
     // =========================================================================
 
-    public static function log(string $message, array $params = []): void
+    public static function config(): array
     {
-        $message = Craft::t('social-poster', $message, $params);
+        Auth::registerModule();
+        Plugin::bootstrapPlugin('social-poster');
 
-        Craft::getLogger()->log($message, Logger::LEVEL_INFO, 'social-poster');
-    }
-
-    public static function error(string $message, array $params = []): void
-    {
-        $message = Craft::t('social-poster', $message, $params);
-
-        Craft::getLogger()->log($message, Logger::LEVEL_ERROR, 'social-poster');
+        return [
+            'components' => [
+                'accounts' => Accounts::class,
+                'posts' => Posts::class,
+                'service' => Service::class,
+            ],
+        ];
     }
 
 
@@ -55,27 +59,6 @@ trait PluginTrait
     public function getService(): Service
     {
         return $this->get('service');
-    }
-
-
-    // Private Methods
-    // =========================================================================
-
-    private function _registerComponents(): void
-    {
-        $this->setComponents([
-            'accounts' => Accounts::class,
-            'posts' => Posts::class,
-            'service' => Service::class,
-        ]);
-
-        Auth::registerModule();
-        BaseHelper::registerModule();
-    }
-
-    private function _registerLogTarget(): void
-    {
-        BaseHelper::setFileLogging('social-poster');
     }
 
 }

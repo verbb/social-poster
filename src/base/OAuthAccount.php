@@ -30,19 +30,6 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
         return $attributes;
     }
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['clientId', 'clientSecret'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        return $rules;
-    }
-
     public function isConfigured(): bool
     {
         return $this->clientId && $this->clientSecret;
@@ -85,5 +72,22 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
         }
 
         return null;
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['clientId', 'clientSecret'], 'required', 'when' => function($model) {
+                return $model->enabled;
+            },
+        ];
+
+        return $rules;
     }
 }

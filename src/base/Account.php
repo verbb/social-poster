@@ -20,8 +20,6 @@ use Exception;
 
 use GuzzleHttp\Exception\RequestException;
 
-use LitEmoji\LitEmoji;
-
 abstract class Account extends SavableComponent implements AccountInterface
 {
     // Constants
@@ -36,7 +34,7 @@ abstract class Account extends SavableComponent implements AccountInterface
 
     public static function log($account, $message, $throwError = false): void
     {
-        SocialPoster::log($account->name . ': ' . $message);
+        SocialPoster::info($account->name . ': ' . $message);
 
         if ($throwError) {
             throw new Exception($message);
@@ -126,7 +124,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         // Add Emoji support
         foreach ($this->getSettings() as $key => $value) {
             if ($value && is_string($value)) {
-                $this->$key = LitEmoji::shortcodeToUnicode($value);
+                $this->$key = StringHelper::shortcodesToEmoji($value);
             }
         }
     }
@@ -145,29 +143,6 @@ abstract class Account extends SavableComponent implements AccountInterface
         $attributes[] = 'imageField';
 
         return $attributes;
-    }
-
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [['name', 'handle'], 'required'];
-        $rules[] = [['id', 'sortOrder'], 'number', 'integerOnly' => true];
-
-        $rules[] = [
-            ['handle'],
-            HandleValidator::class,
-            'reservedWords' => [
-                'dateCreated',
-                'dateUpdated',
-                'edit',
-                'id',
-                'title',
-                'uid',
-            ],
-        ];
-
-        return $rules;
     }
 
     public function getProviderName(): string
@@ -279,7 +254,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         $this->trigger(self::EVENT_BEFORE_SEND_POST, $event);
 
         if (!$event->isValid) {
-            self::log($this, 'Sending post cancelled by event hook.');
+            self::info($this, 'Sending post cancelled by event hook.');
         }
 
         // Allow events to alter some props
@@ -303,7 +278,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         $this->trigger(self::EVENT_AFTER_SEND_POST, $event);
 
         if (!$event->isValid) {
-            self::log($this, 'Post marked as invalid by event hook.');
+            self::info($this, 'Post marked as invalid by event hook.');
         }
 
         return $event->isValid;
@@ -312,6 +287,29 @@ abstract class Account extends SavableComponent implements AccountInterface
 
     // Protected Methods
     // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [['name', 'handle'], 'required'];
+        $rules[] = [['id', 'sortOrder'], 'number', 'integerOnly' => true];
+
+        $rules[] = [
+            ['handle'],
+            HandleValidator::class,
+            'reservedWords' => [
+                'dateCreated',
+                'dateUpdated',
+                'edit',
+                'id',
+                'title',
+                'uid',
+            ],
+        ];
+
+        return $rules;
+    }
 
     protected function getPostExceptionResponse(mixed $exception): PostResponse
     {

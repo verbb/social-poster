@@ -2,7 +2,7 @@
     "name": "verbb/social-poster",
     "description": "Automatically post entries to social media.",
     "type": "craft-plugin",
-    "version": "4.0.4",
+    "version": "5.0.0-beta.1",
     "keywords": [
         "craft",
         "cms",
@@ -25,20 +25,20 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
-        "craftcms/cms": "^4.0.0",
-        "verbb/auth": "^1.0.0",
-        "verbb/base": "^2.0.0"
+        "php": "^8.2",
+        "craftcms/cms": "^5.0.0-alpha.1",
+        "verbb/auth": "^2.0.0-beta.1",
+        "verbb/base": "^3.0.0-beta.1"
     },
     "autoload": {
         "psr-4": {
-          "verbb\\socialposter\\": "src/"
+            "verbb\\socialposter\\": "src/"
         }
     },
     "extra": {
         "name": "Social Poster",
         "handle": "social-poster",
-        "changelogUrl": "https://raw.githubusercontent.com/verbb/social-poster/craft-4/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/verbb/social-poster/craft-5/CHANGELOG.md",
         "class": "verbb\\socialposter\\SocialPoster"
     }
 }

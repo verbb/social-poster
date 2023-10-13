@@ -50,10 +50,8 @@ class SocialPoster extends Plugin
 
         self::$plugin = $this;
 
-        $this->_registerComponents();
-        $this->_registerLogTarget();
         $this->_registerVariables();
-        $this->_registerCraftEventListeners();
+        $this->_registerEventHandlers();
         $this->_registerElementTypes();
 
         if (Craft::$app->getRequest()->getIsCpRequest()) {
@@ -155,7 +153,7 @@ class SocialPoster extends Plugin
         });
     }
 
-    private function _registerCraftEventListeners(): void
+    private function _registerEventHandlers(): void
     {
         if (Craft::$app->getRequest()->getIsCpRequest() || Craft::$app->getRequest()->getIsSiteRequest()) {
             Event::on(Entry::class, Entry::EVENT_AFTER_SAVE, [$this->getService(), 'onAfterSaveEntry']);

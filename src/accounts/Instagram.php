@@ -32,25 +32,6 @@ class Instagram extends OAuthAccount
     // Public Methods
     // =========================================================================
 
-    public function defineRules(): array
-    {
-        $rules = parent::defineRules();
-
-        $rules[] = [
-            ['pageId'], 'required', 'when' => function($model) {
-                return $model->enabled && $model->isConnected();
-            },
-        ];
-
-        $rules[] = [
-            ['imageField'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        return $rules;
-    }
-
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
@@ -132,5 +113,28 @@ class Instagram extends OAuthAccount
         } catch (Throwable $e) {
             return $this->getPostExceptionResponse($e);
         }
+    }
+
+
+    // Protected Methods
+    // =========================================================================
+
+    protected function defineRules(): array
+    {
+        $rules = parent::defineRules();
+
+        $rules[] = [
+            ['pageId'], 'required', 'when' => function($model) {
+                return $model->enabled && $model->isConnected();
+            },
+        ];
+
+        $rules[] = [
+            ['imageField'], 'required', 'when' => function($model) {
+                return $model->enabled;
+            },
+        ];
+
+        return $rules;
     }
 }

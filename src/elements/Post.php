@@ -11,11 +11,10 @@ use craft\base\Element;
 use craft\elements\actions\Delete;
 use craft\elements\User;
 use craft\helpers\Json;
+use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
-
-use LitEmoji\LitEmoji;
 
 class Post extends Element
 {
@@ -140,9 +139,9 @@ class Post extends Element
         }
 
         // Add Emoji support
-        $this->settings = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->settings)));
-        $this->response = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->response)));
-        $this->data = Json::decode(LitEmoji::shortcodeToUnicode(Json::encode($this->data)));
+        $this->settings = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->settings)));
+        $this->response = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->response)));
+        $this->data = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->data)));
     }
 
     public function canView(User $user): bool
@@ -188,11 +187,6 @@ class Post extends Element
         $this->_owner = $owner;
     }
 
-    public function getCpEditUrl(): ?string
-    {
-        return UrlHelper::cpUrl('social-poster/posts/' . $this->id);
-    }
-
     public function getAccount(): ?AccountInterface
     {
         if ($this->accountId) {
@@ -219,9 +213,9 @@ class Post extends Element
         unset($this->settings['element']);
 
         // Add Emoji support
-        $this->settings = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->settings)));
-        $this->response = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->response)));
-        $this->data = Json::decode(LitEmoji::unicodeToShortcode(Json::encode($this->data)));
+        $this->settings = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->settings)));
+        $this->response = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->response)));
+        $this->data = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->data)));
 
         $record->accountId = $this->accountId;
         $record->ownerId = $this->ownerId;
@@ -243,38 +237,48 @@ class Post extends Element
     // Protected Methods
     // =========================================================================
 
-    protected function tableAttributeHtml(string $attribute): string
+    protected function attributeHtml(string $attribute): string
     {
-        switch ($attribute) {
-            case 'account':
-            {
-                if ($account = $this->getAccount()) {
-                    $icon = '';
+        if ($attribute == 'account') {
+            if ($account = $this->getAccount()) {
+                $icon = '';
 
-                    if ($account->icon) {
-                        $icon = '<span class="sp-provider-icon">' . $account->icon . '</span>';
-                    }
+                if ($account->icon) {
+                    $icon = '<span class="sp-provider-icon">' . $account->icon . '</span>';
+                }
 
-                    return '<div class="sp-provider" style="--bg-color: ' . $account->primaryColor . '">' .
-                        $icon .
-                        '<span class="sp-provider-label">' . $account->name . '</span>' .
+                return '<div class="sp-provider" style="--bg-color: ' . $account->primaryColor . '">' .
+                    $icon .
+                    '<span class="sp-provider-label">' . $account->name . '</span>' .
                     '</div>';
-                }
             }
-            case 'success':
-            {
-                if ($this->success) {
-                    $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
 
-                    return '<span class="status on"></span> ' . $message;
-                }
+            if ($this->success) {
+                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
 
-                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
-
-                return '<span class="status off"></span> ' . $message;
+                return '<span class="status on"></span> ' . $message;
             }
+
+            $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
+
+            return '<span class="status off"></span> ' . $message;
+        } else if ($attribute == 'success') {
+            if ($this->success) {
+                $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
+
+                return '<span class="status on"></span> ' . $message;
+            }
+
+            $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
+
+            return '<span class="status off"></span> ' . $message;
         }
 
-        return parent::tableAttributeHtml($attribute);
+        return parent::attributeHtml($attribute);
+    }
+
+    protected function cpEditUrl(): ?string
+    {
+        return UrlHelper::cpUrl('social-poster/posts/' . $this->id);
     }
 }

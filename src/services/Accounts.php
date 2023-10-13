@@ -1,6 +1,7 @@
 <?php
 namespace verbb\socialposter\services;
 
+use verbb\socialposter\SocialPoster;
 use verbb\socialposter\accounts as accountTypes;
 use verbb\socialposter\base\AccountInterface;
 use verbb\socialposter\elements\Post;
@@ -14,11 +15,10 @@ use craft\errors\MissingComponentException;
 use craft\events\RegisterComponentTypesEvent;
 use craft\helpers\Component as ComponentHelper;
 use craft\helpers\Json;
+use craft\helpers\StringHelper;
 
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-
-use LitEmoji\LitEmoji;
 
 use Exception;
 use Throwable;
@@ -137,7 +137,7 @@ class Accounts extends Component
         }
 
         if ($runValidation && !$account->validate()) {
-            Craft::info('Account not saved due to validation error.', __METHOD__);
+            SocialPoster::info('Account not saved due to validation error.');
             return false;
         }
 
@@ -146,7 +146,7 @@ class Accounts extends Component
 
         foreach ($settings as $key => $value) {
             if ($value && is_string($value)) {
-                $settings[$key] = LitEmoji::unicodeToShortcode($value);
+                $settings[$key] = StringHelper::emojiToShortcodes($value);
             }
         }
 

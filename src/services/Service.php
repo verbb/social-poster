@@ -30,7 +30,7 @@ class Service extends Component
 
         // Make sure social poster is enabled for this section - or all section
         if (!$settings->enabledSections) {
-            SocialPoster::log('New enabled sections.');
+            SocialPoster::info('New enabled sections.');
 
             return;
         }
@@ -39,7 +39,7 @@ class Service extends Component
             $enabledSectionIds = Db::idsByUids(Table::SECTIONS, $settings->enabledSections);
 
             if (!in_array($entry->sectionId, $enabledSectionIds)) {
-                SocialPoster::log('Entry not in allowed section.');
+                SocialPoster::info('Entry not in allowed section.');
 
                 return;
             }
@@ -48,7 +48,7 @@ class Service extends Component
         $accounts = SocialPoster::$plugin->getAccounts()->getAllConfiguredAccounts();
 
         if (!$accounts) {
-            SocialPoster::log('No accounts configured.');
+            SocialPoster::info('No accounts configured.');
 
             return;
         }
@@ -90,7 +90,7 @@ class Service extends Component
 
         // Check to make sure the entry is live
         if ($entry->status != Entry::STATUS_LIVE) {
-            SocialPoster::log('Entry not set to live, skipping.');
+            SocialPoster::info('Entry not set to live, skipping.');
 
             return;
         }
@@ -99,7 +99,7 @@ class Service extends Component
 
         // Firstly, has the user selected any social media to post to?
         if (!$chosenAccounts) {
-            SocialPoster::log('No accounts set to post to, skipping.');
+            SocialPoster::info('No accounts set to post to, skipping.');
 
             return;
         }
@@ -113,7 +113,7 @@ class Service extends Component
 
             // Only post to the enabled ones
             if (!$account->autoPost) {
-                SocialPoster::log('Account ' . $accountHandle . ' not set to autopost.');
+                SocialPoster::info('Account ' . $accountHandle . ' not set to autopost.');
 
                 continue;
             }
