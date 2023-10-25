@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.7 - 2023-10-25
+
+### Fixed
+- Implement `Element::trackChanges()` for Blitz compatibility.
+
 ## 4.0.6 - 2023-10-06
 > {note} If you are using LinkedIn, your LinkedIn app will need to include new products. Refer to the [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linkedin).
 
