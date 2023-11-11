@@ -39,6 +39,32 @@ In order to post to a Facebook Page or Facebook Group, you must be an Admin for 
 1. If you're using a Facebook Page, you can skip this step.
 1. Ensure you install the Facebook app to your Facebook Group as per [instructions](https://www.facebook.com/help/261149227954100). Note that in order to install your app, it will need to be reviewed and published by Facebook.
 
+## Troubleshooting
+
+### No Pages appear in the dropdown
+Some users are unable to choose any Pages from the dropdown for the settings of an account, once their app has been authorized. This is due to how your Facebook app has been setup in relation to the Pages it has access to.
+
+If you're finding this is the case for you, ensure that you provide the `business_management` additional scope. You'll need to disconnect and reconnect your account. You can do this by adding the following to your [configuration file](docs:get-started/configuration).
+
+
+```php
+<?php
+
+return [
+    '*' => [
+        // ...
+        'accounts' => [
+            'facebook' => [
+                // ...
+                'scopes' => [
+                    'business_management',
+                ],
+            ],
+        ],
+    ]
+];
+```
+
 ## Limitations
 Please note there are some limitations when it comes to posting to Facebook, due to Facebook API restrictions.
 

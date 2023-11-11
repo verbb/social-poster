@@ -31,8 +31,8 @@ return [
         'facebook' => [
             'enabled' => true,
             'autoPost' => false,
-            'clientId' => 'xxxxxxxxxxxx',
-            'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'clientId' => '••••••••••••••••••••••••••••',
+            'clientSecret' => '••••••••••••••••••••••••••••',
 
             // Add in any additional OAuth scopes
             'scopes' => [
@@ -46,12 +46,12 @@ return [
             ],
         ],
         'linkedIn' => [
-            'clientId' => 'xxxxxxxxxxxx',
-            'clientSecret' => 'xxxxxxxxxxxx',
+            'clientId' => '••••••••••••••••••••••••••••',
+            'clientSecret' => '••••••••••••••••••••••••••••',
         ],
         'twitter' => [
-            'clientId' => 'xxxxxxxxxxxx',
-            'clientSecret' => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'clientId' => '••••••••••••••••••••••••••••',
+            'clientSecret' => '••••••••••••••••••••••••••••',
         ],
     ],
 ];
