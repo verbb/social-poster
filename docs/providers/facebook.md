@@ -18,7 +18,7 @@ In order to post to a Facebook Page or Facebook Group, you must be an Admin for 
 1. Navigate to the **Facebook Login** section in the left-hand siderbar, click **Settings**.
 1. For the **Valid OAuth Redirect URIs** setting, enter the value from the **Redirect URI** field in Social Poster.
 1. Click the **Save Changes** button.
-1. Navigate to **Settings** → **Basic** item in the left-hand sidebar.
+1. Navigate to **App Settings** → **Basic** item in the left-hand sidebar.
 1. Enter your domain name to the **App Domains** field.
 1. Enter your **Privacy Policy URL**, **Terms of Service URL** and **Site URL**.
 1. Click the **Save Changes** button.
@@ -38,6 +38,10 @@ In order to post to a Facebook Page or Facebook Group, you must be an Admin for 
 ## Step 5: Facebook Group
 1. If you're using a Facebook Page, you can skip this step.
 1. Ensure you install the Facebook app to your Facebook Group as per [instructions](https://www.facebook.com/help/261149227954100). Note that in order to install your app, it will need to be reviewed and published by Facebook.
+
+:::tip
+Ensure that you pick **Facebook Login for Business** and not **Facebook Login**, which are different products. If you must use **Facebook Login for Business**, you'll need to provide additional scopes, as per the below. 
+:::
 
 ## Troubleshooting
 
