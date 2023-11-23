@@ -118,15 +118,6 @@ class LinkedIn extends OAuthAccount
                 ],
             ];
 
-            // If we're sharing a URL, make it an article. Can only be either article or image though
-            if ($payload->url && !$payload->picture) {
-                $content['content']['article'] = [
-                    'source' => $payload->url,
-                    'title' => $payload->title,
-                    'description' => $payload->message,
-                ];
-            }
-
             if ($payload->picture) {
                 // Images are required to be uploaded first via 2 separate API calls.
                 // Generate an asset request first, which will tell us where to upload and the Asset URN.
@@ -155,6 +146,27 @@ class LinkedIn extends OAuthAccount
                     ]);
 
                     $content['content']['media']['id'] = $imageUrn;
+                }
+            }
+
+            // If we're sharing a URL, make it an article.
+            // https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads/advertising-targeting/version/article-ads-integrations?view=li-lms-2023-11&tabs=http#create-article-content
+            if ($payload->url) {
+                $content['content']['article'] = [
+                    'source' => $payload->url,
+                    'title' => $payload->title,
+                    'description' => $payload->message,
+                ];
+
+                // LinkedIn doesn't support scraping, so if there's an image, it's been uploaded and set elsewhere
+                // in the payload, so we need to move it.
+                $imageId = $content['content']['media']['id'] ?? null;
+
+                if ($imageId) {
+                    $content['content']['article']['thumbnail'] = $imageId;
+
+                    // Remove the image content, LinkedIn can only be one type of post
+                    unset($content['content']['media']);
                 }
             }
 
