@@ -42,7 +42,7 @@ In order to post to a Facebook Page or Facebook Group, you must be an Admin for 
 ## Troubleshooting
 
 ### No Pages appear in the dropdown
-Some users are unable to choose any Pages from the dropdown for the settings of an account, once their app has been authorized. This is due to how your Facebook app has been setup in relation to the Pages it has access to.
+Some users are unable to choose any Pages from the dropdown for the settings of an account, once their app has been authorized. This is due to how your Facebook app has been setup in relation to the Pages it has access to. This may also be due to selecting the **Facebook Login for Business** and not **Facebook Login**.
 
 If you're finding this is the case for you, ensure that you provide the `business_management` additional scope. You'll need to disconnect and reconnect your account. You can do this by adding the following to your [configuration file](docs:get-started/configuration).
 
