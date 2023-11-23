@@ -146,9 +146,12 @@ class LinkedIn extends OAuthAccount
                 $imageUrn = $response['value']['image'] ?? null;
 
                 if ($uploadUrl && $imageUrn) {
+                    // Use Guzzle to get the content, just to support local dev/SSL issues
+                    $imageBody = $this->request('GET', $payload->picture);
+
                     // Upload the image itself
                     $response = $this->request('POST', $uploadUrl, [
-                        'body' => file_get_contents($payload->picture),
+                        'body' => $imageBody,
                     ]);
 
                     $content['content']['media']['id'] = $imageUrn;
