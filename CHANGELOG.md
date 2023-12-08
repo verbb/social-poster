@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.8 - 2023-12-08
+
+### Fixed
+- Fix LinkedIn not switching from an image post to an article post, when containing both a link and image.
+- Fix LinkedIn not respecting custom Guzzle config when fetching images when posts contain an image.
+
 ## 4.0.7 - 2023-10-25
 
 ### Fixed
