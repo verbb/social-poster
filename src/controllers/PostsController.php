@@ -32,9 +32,7 @@ class PostsController extends Controller
     {
         $this->requirePostRequest();
 
-        $request = Craft::$app->getRequest();
-
-        $postId = $request->getParam('id');
+        $postId = $this->request->getParam('id');
         $post = SocialPoster::$plugin->getPosts()->getPostById($postId);
 
         if (!$post) {
