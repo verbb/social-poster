@@ -139,9 +139,9 @@ class Post extends Element
         }
 
         // Add Emoji support
-        $this->settings = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->settings)));
-        $this->response = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->response)));
-        $this->data = Json::decode(StringHelper::shortcodesToEmoji(Json::encode($this->data)));
+        $this->settings = Json::decode(Json::encode($this->settings));
+        $this->response = Json::decode(Json::encode($this->response));
+        $this->data = Json::decode(Json::encode($this->data));
     }
 
     public function canView(User $user): bool
@@ -213,9 +213,9 @@ class Post extends Element
         unset($this->settings['element']);
 
         // Add Emoji support
-        $this->settings = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->settings)));
-        $this->response = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->response)));
-        $this->data = Json::decode(StringHelper::emojiToShortcodes(Json::encode($this->data)));
+        $this->settings = Json::decode(Json::encode($this->settings));
+        $this->response = Json::decode(Json::encode($this->response));
+        $this->data = Json::decode(Json::encode($this->data));
 
         $record->accountId = $this->accountId;
         $record->ownerId = $this->ownerId;

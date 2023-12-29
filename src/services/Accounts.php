@@ -145,12 +145,6 @@ class Accounts extends Component
         // Ensure we support Emoji's properly
         $settings = $account->settings;
 
-        foreach ($settings as $key => $value) {
-            if ($value && is_string($value)) {
-                $settings[$key] = StringHelper::emojiToShortcodes($value);
-            }
-        }
-
         $accountRecord = $this->_getAccountRecordById($account->id);
         $accountRecord->name = $account->name;
         $accountRecord->handle = $account->handle;

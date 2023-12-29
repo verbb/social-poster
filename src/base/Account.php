@@ -118,18 +118,6 @@ abstract class Account extends SavableComponent implements AccountInterface
         parent::__construct($config);
     }
 
-    public function init(): void
-    {
-        parent::init();
-
-        // Add Emoji support
-        foreach ($this->getSettings() as $key => $value) {
-            if ($value && is_string($value)) {
-                $this->$key = StringHelper::shortcodesToEmoji($value);
-            }
-        }
-    }
-
     public function settingsAttributes(): array
     {
         $attributes = parent::settingsAttributes();
