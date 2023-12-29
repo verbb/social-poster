@@ -36,7 +36,7 @@ Despite not posting to your Facebook page, you must link your Instagram Business
 1. Click the **Save Changes** button.
 1. In the left-hand sidebar, click the **Add Product** button.
 1. Under **Instagram Graph API** click the **Set Up** button.
-1. Navigate to **Settings** → **Basic** item in the left-hand sidebar.
+1. Navigate to **App Settings** → **Basic** item in the left-hand sidebar.
 1. Enter your domain name to the **App Domains** field.
 1. Click the **Save Changes** button.
 1. Copy the **App ID** from Facebook and paste in the **Client ID** field in Social Poster.

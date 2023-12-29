@@ -26,6 +26,11 @@ class Post extends Element
         return Craft::t('social-poster', 'Post');
     }
 
+    public static function trackChanges(): bool
+    {
+        return true;
+    }
+
     public static function hasStatuses(): bool
     {
         return true;

@@ -2,9 +2,10 @@
 You can register your own Account Provider to add support for other social media platforms, or even extend an existing Account Provider.
 
 ```php
-use modules\MyAccountProvider;
+namespace modules\sitemodule;
 
 use craft\events\RegisterComponentTypesEvent;
+use modules\sitemodule\MyAccountProvider;
 use verbb\socialposter\services\Accounts;
 use yii\base\Event;
 
@@ -17,7 +18,7 @@ Event::on(Accounts::class, Accounts::EVENT_REGISTER_ACCOUNT_TYPES, function(Regi
 Create the following class to house your Account Provider logic.
 
 ```php
-namespace modules;
+namespace modules\sitemodule;
 
 use Craft;
 use Throwable;
