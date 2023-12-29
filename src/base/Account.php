@@ -10,6 +10,7 @@ use verbb\socialposter\models\PostResponse;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\SavableComponent;
+use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\validators\HandleValidator;
@@ -362,9 +363,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         $data = Json::encode($this->cache);
 
         // Direct DB update to keep it out of PC, plus speed
-        Craft::$app->getDb()->createCommand()
-            ->update('{{%socialposter_accounts}}', ['cache' => $data], ['id' => $this->id])
-            ->execute();
+        Db::update('{{%socialposter_accounts}}', ['cache' => $data], ['id' => $this->id]);
     }
 
     private function getDataCache(string $key): mixed

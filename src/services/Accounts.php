@@ -14,6 +14,7 @@ use craft\db\Query;
 use craft\errors\MissingComponentException;
 use craft\events\RegisterComponentTypesEvent;
 use craft\helpers\Component as ComponentHelper;
+use craft\helpers\Db;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 
@@ -247,9 +248,7 @@ class Accounts extends Component
                 $elementsService->deleteElement($post);
             }
 
-            $db->createCommand()
-                ->delete('{{%socialposter_accounts}}', ['id' => $account->id])
-                ->execute();
+            Db::delete('{{%socialposter_accounts}}', ['id' => $account->id]);
 
             $transaction->commit();
         } catch (Throwable $e) {
