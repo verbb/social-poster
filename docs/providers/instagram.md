@@ -31,7 +31,7 @@ Despite not posting to your Facebook page, you must link your Instagram Business
 1. Once created, in the left-hand sidebar, click the **Add Product** button.
 1. Under **Facebook Login** click the **Set Up** button.
 1. Select **Web** as the type and your website address into **Site URL**, and click the **Save** button.
-1. Navigate to the **Facebook Login** section in the left-hand siderbar, click **Settings**.
+1. Navigate to the **Facebook Login** section in the left-hand sidebar, click **Settings**.
 1. For the **Valid OAuth Redirect URIs** setting, enter the value from the **Redirect URI** field in Social Poster.
 1. Click the **Save Changes** button.
 1. In the left-hand sidebar, click the **Add Product** button.
