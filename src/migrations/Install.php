@@ -30,7 +30,8 @@ class Install extends Migration
         $this->dropTables();
 
         // Delete all tokens for this plugin
-        Auth::$plugin->getTokens()->deleteTokensByOwner('social-poster');
+        // Use `Auth::getInstance()` not `Auth::$plugin` as it doesn't seem to work well in migrations
+        Auth::getInstance()->getTokens()->deleteTokensByOwner('social-poster');
 
         return true;
     }
