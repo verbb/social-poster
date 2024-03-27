@@ -68,7 +68,7 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
     public function getToken(): ?Token
     {
         if ($this->id) {
-            return Auth::$plugin->getTokens()->getTokenByOwnerReference('social-poster', $this->id);
+            return Auth::getInstance()->getTokens()->getTokenByOwnerReference('social-poster', $this->id);
         }
 
         return null;

@@ -46,7 +46,7 @@ class AuthController extends Controller
             // Keep track of which account instance is for, so we can fetch it in the callback
             Session::set('accountHandle', $accountHandle);
 
-            return Auth::$plugin->getOAuth()->connect('social-poster', $account);
+            return Auth::getInstance()->getOAuth()->connect('social-poster', $account);
         } catch (Throwable $e) {
             SocialPoster::error('Unable to authorize connect “{account}”: “{message}” {file}:{line}', [
                 'account' => $accountHandle,
@@ -80,7 +80,7 @@ class AuthController extends Controller
 
         try {
             // Fetch the access token from the account and create a Token for us to use
-            $token = Auth::$plugin->getOAuth()->callback('social-poster', $account);
+            $token = Auth::getInstance()->getOAuth()->callback('social-poster', $account);
 
             if (!$token) {
                 Session::setError('social-poster', Craft::t('social-poster', 'Unable to fetch token.'), true);
@@ -90,7 +90,7 @@ class AuthController extends Controller
 
             // Save the token to the Auth plugin, with a reference to this account
             $token->reference = $account->id;
-            Auth::$plugin->getTokens()->upsertToken($token);
+            Auth::getInstance()->getTokens()->upsertToken($token);
         } catch (Throwable $e) {
             $error = Craft::t('social-poster', 'Unable to process callback for “{account}”: “{message}” {file}:{line}', [
                 'account' => $accountHandle,
@@ -121,7 +121,7 @@ class AuthController extends Controller
         }
 
         // Delete all tokens for this account
-        Auth::$plugin->getTokens()->deleteTokenByOwnerReference('social-poster', $account->id);
+        Auth::getInstance()->getTokens()->deleteTokenByOwnerReference('social-poster', $account->id);
 
         return $this->asModelSuccess($account, Craft::t('social-poster', '{provider} disconnected.', ['provider' => $account->providerName]), 'account');
     }
