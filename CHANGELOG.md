@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.9 - 2024-04-05
+
+### Added
+- Add improved session-handling for authorization and callback methods, to improve failed sessions in some cases.
+
 ## 4.0.8 - 2023-12-08
 
 ### Fixed
