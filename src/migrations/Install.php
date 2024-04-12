@@ -14,7 +14,6 @@ class Install extends Migration
     public function safeUp(): bool
     {
         // Ensure that the Auth module kicks off setting up tables
-        // Use `Auth::getInstance()` not `Auth::$plugin` as it doesn't seem to work well in migrations
         Auth::getInstance()->migrator->up();
 
         $this->createTables();
@@ -30,7 +29,6 @@ class Install extends Migration
         $this->dropTables();
 
         // Delete all tokens for this plugin
-        // Use `Auth::getInstance()` not `Auth::$plugin` as it doesn't seem to work well in migrations
         Auth::getInstance()->getTokens()->deleteTokensByOwner('social-poster');
 
         return true;
