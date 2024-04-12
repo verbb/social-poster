@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.0.0-beta.2 - 2024-04-12
+
+### Added
+- Add improved session-handling for authorization and callback methods, to improve failed sessions in some cases.
+
+### Fixed
+- Update `Auth::getInstance()` references.
+- Update `elementChip()` references.
+- Fix an error when uninstalling.
+
 ## 5.0.0-beta.1 - 2024-03-04
 
 ### Changed
