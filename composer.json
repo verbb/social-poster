@@ -2,7 +2,7 @@
     "name": "verbb/social-poster",
     "description": "Automatically post entries to social media.",
     "type": "craft-plugin",
-    "version": "5.0.0-beta.2",
+    "version": "5.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -26,9 +26,9 @@
     ],
     "require": {
         "php": "^8.2",
-        "craftcms/cms": "^5.0.0-beta.1",
-        "verbb/auth": "^2.0.0-beta.2",
-        "verbb/base": "^3.0.0-beta.1"
+        "craftcms/cms": "^5.0.0",
+        "verbb/auth": "^2.0.0",
+        "verbb/base": "^3.0.0"
     },
     "autoload": {
         "psr-4": {
