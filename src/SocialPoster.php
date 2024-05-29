@@ -136,6 +136,10 @@ class SocialPoster extends Plugin
             $event->rules['social-poster/accounts/new'] = 'social-poster/accounts/edit';
             $event->rules['social-poster/accounts/<handle:{handle}>'] = 'social-poster/accounts/edit';
             $event->rules['social-poster/settings'] = 'social-poster/plugin/settings';
+
+            if (Craft::$app->getConfig()->getGeneral()->headlessMode || !Craft::$app->getConfig()->getGeneral()->cpTrigger) {
+                $event->rules['social-poster/auth/callback'] = 'social-poster/auth/callback';
+            }
         });
     }
 
