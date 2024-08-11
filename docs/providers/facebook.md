@@ -2,11 +2,11 @@
 Follow these steps to configure Facebook for Social Poster.
 
 :::tip
-When posting to a Facebook Page, your Facebook App **does not** require review and approval by Facebook. However, to post to a Facebook Group, it **does** require review and approval by Facebook.
+When posting to a Facebook Page, your Facebook App **does not** require review and approval by Facebook.
 :::
 
-## Step 1. Admin Access to Facebook Page or Facebook Group
-In order to post to a Facebook Page or Facebook Group, you must be an Admin for the page/group you want to post to.
+## Step 1. Admin Access to Facebook Page
+In order to post to a Facebook Page, you must be an Admin for the page you want to post to.
 
 ## Step 2: Register a Facebook App
 1. Go to the <a href="https://developers.facebook.com/apps/" target="_blank">Meta for Developers</a> page.
@@ -29,15 +29,11 @@ In order to post to a Facebook Page or Facebook Group, you must be an Admin for 
 
 ## Step 3: Connect to Facebook
 1. In the Social Poster account settings, click the **Connect** button and login to Facebook.
-1. Ensure you pick either the Facebook Group or Facebook Page you have admin access to.
+1. Ensure you pick either the Facebook Page you have admin access to.
 
-## Step 4: Select your Facebook Page or Facebook Group
-1. Select either a **Facebook Page** or a **Facebook Group** that you'd like connected to.
+## Step 4: Select your Facebook Page
+1. Select either a **Facebook Page** that you'd like connected to.
 1. Click the **Save** button for the account.
-
-## Step 5: Facebook Group
-1. If you're using a Facebook Page, you can skip this step.
-1. Ensure you install the Facebook app to your Facebook Group as per [instructions](https://www.facebook.com/help/261149227954100). Note that in order to install your app, it will need to be reviewed and published by Facebook.
 
 :::tip
 Ensure that you pick **Facebook Login** and not **Facebook Login for Business**, which are different products. If you must use **Facebook Login for Business**, you'll need to provide additional scopes, as per the below. 
@@ -81,22 +77,10 @@ According to [Facebook API docs](https://developers.facebook.com/docs/graph-api/
 As of April 24,2018, the `publish_actions` permission has been removed. Please see the [Breaking Changes Changelog](https://developers.facebook.com/docs/graph-api/changelog/breaking-changes#login-4-24) for more details. To provide a way for your app users to share content to Facebook, we encourage you to use our [Sharing products](https://developers.facebook.com/docs/sharing) instead.
 ```
 
-### Posting to Facebook Group
-In order to post to a Group, you'll be required to submit your Facebook App for review. 
-
-From the Facebook docs:
-
-```
-Use of this endpoint requires App Review. Apps that have already been approved to access this endpoint have until August 1, 2018, to resubmit for review or lose endpoint access.
-```
-
-Please refer to our [Submit Facebook App for Review](#submit-facebook-app-for-review) section.
-
 ### Submit Facebook App for Review
 Facebook's API's have become much more restricted in recent years, and in some cases you'll be required to submit your Facebook App for review. Credit to [@geoffreyvandamme](https://github.com/verbb/social-poster/issues/32) for outlining these steps.
 
 1. First, create a user in Craft with permissions to access Social Poster, and to edit/publish entries in the desired section(s). Take note of the username/password of this account, as you'll be providing this to Facebook in your submission.
-1. Take note of the permissions required for the posting type you've selected (Page or Group).
 1. Turn your Facebook App to "Development" mode. There's a lightswitch control at the top of the page to toggle this.
 1. Go to "App Review" → "Permission and Features" menu.
 1. Find the permissions required as per the second step (`pages_manage_posts`, `pages_read_user_content`, etc). Click the "Request" button for each.

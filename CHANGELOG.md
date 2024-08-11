@@ -22,6 +22,11 @@
 - Update `elementChip()` references.
 - Fix an error when uninstalling.
 
+## 4.0.12 - 2024-08-11
+
+### Changed
+- Remove the ability to post to a Facebook Group (no longer possible via Facebook’s API).
+
 ## 4.0.11 - 2024-05-29
 
 ### Changed

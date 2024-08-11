@@ -26,14 +26,19 @@ class Facebook extends OAuthAccount
 
     public static string $providerHandle = 'facebook';
     
-    public ?string $endpoint = null;
-    public ?string $groupId = null;
     public ?string $pageId = null;
 
 
     // Public Methods
     // =========================================================================
 
+    public function __construct(array $config = [])
+    {
+        unset($config['endpoint'], $config['groupId']);
+
+        parent::__construct($config);
+    }
+    
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
@@ -49,7 +54,6 @@ class Facebook extends OAuthAccount
             'public_profile',
             'email',
             'pages_manage_posts',
-            'publish_to_groups',
             'pages_read_engagement',
             'pages_read_user_content',
             'pages_show_list',
@@ -83,22 +87,6 @@ class Facebook extends OAuthAccount
 
                 return $pages;
             }
-
-            if ($settingsKey === 'groupId') {
-                $pages = [];
-
-                $response = $this->request('GET', 'me/groups');
-                $accounts = $response['data'] ?? [];
-
-                foreach ($accounts as $account) {
-                    $pages[] = [
-                        'label' => $account['name'] ?? null,
-                        'value' => $account['id'] ?? null,
-                    ];
-                }
-
-                return $pages;
-            }
         } catch (Throwable $e) {
             self::apiError($this, $e);
         }
@@ -109,35 +97,23 @@ class Facebook extends OAuthAccount
     public function sendPost(Payload $payload): PostResponse
     {
         try {
-            $pageOrGroupId = '';
-            $endpoint = $this->endpoint;
-
-            if ($endpoint == 'page') {
-                $pageOrGroupId = $this->pageId;
-            } else if ($endpoint == 'group') {
-                $pageOrGroupId = $this->groupId;
-            }
-
             // Auth will deliver us a long-lived token, but if we're dealing with pages, we can generate
             // a never-expiring token.
-            if ($endpoint == 'page') {
-                // This will fail if not a page (Business or Group) so catch and continue
-                try {
-                    $response = $this->request('GET', $pageOrGroupId, [
-                        'query' => ['fields' => 'access_token'],
-                    ]);
+            try {
+                $response = $this->request('GET', $this->pageId, [
+                    'query' => ['fields' => 'access_token'],
+                ]);
 
-                    $pageAccessToken = $response['access_token'] ?? null;
+                $pageAccessToken = $response['access_token'] ?? null;
 
-                    // Update the token in Auth to use this from now on.
-                    if ($pageAccessToken && $token = $this->getToken()) {
-                        $token->accessToken = $pageAccessToken;
+                // Update the token in Auth to use this from now on.
+                if ($pageAccessToken && $token = $this->getToken()) {
+                    $token->accessToken = $pageAccessToken;
 
                         Auth::getInstance()->getTokens()->saveToken($token);
-                    }
-                } catch (Throwable $e) {
-                    $this->getPostExceptionResponse($e);
                 }
+            } catch (Throwable $e) {
+                $this->getPostExceptionResponse($e);
             }
 
             $params = [
@@ -150,7 +126,7 @@ class Facebook extends OAuthAccount
                 $params['picture'] = $payload->picture;
             }
 
-            $response = $this->sendRequest($payload->element, $pageOrGroupId . '/feed', $params);
+            $response = $this->sendRequest($payload->element, $this->pageId . '/feed', $params);
 
             return $this->getPostResponse($response);
         } catch (Throwable $e) {
@@ -167,20 +143,8 @@ class Facebook extends OAuthAccount
         $rules = parent::defineRules();
 
         $rules[] = [
-            ['endpoint'], 'required', 'when' => function($model) {
-                return $model->enabled;
-            },
-        ];
-
-        $rules[] = [
-            ['groupId'], 'required', 'when' => function($model) {
-                return $model->enabled && $model->endpoint === 'group' && $model->isConnected();
-            },
-        ];
-
-        $rules[] = [
             ['pageId'], 'required', 'when' => function($model) {
-                return $model->enabled && $model->endpoint === 'page' && $model->isConnected();
+                return $model->enabled && $model->isConnected();
             },
         ];
 
