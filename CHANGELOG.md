@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.3 - 2024-09-07
+
+### Fixed
+- Fix an error with Twitter provider.
+
 ## 5.0.2 - 2024-08-11
 
 ### Changed
