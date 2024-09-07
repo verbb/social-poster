@@ -27,6 +27,11 @@
 - Update `elementChip()` references.
 - Fix an error when uninstalling.
 
+## 4.0.13 - 2024-09-07
+
+### Fixed
+- Fix an error with Twitter provider.
+
 ## 4.0.12 - 2024-08-11
 
 ### Changed
