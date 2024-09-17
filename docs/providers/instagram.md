@@ -27,17 +27,24 @@ Despite not posting to your Facebook page, you must link your Instagram Business
 ## Step 3: Register a Facebook App
 1. Go to the <a href="https://developers.facebook.com/apps/" target="_blank">Meta for Developers</a> page.
 1. Click the **Create App** button.
-1. Select **None** as the **App Type**, and fill in the rest of the details to create the app.
+1. Select **I don’t want to connect a business portfolio yet.** and click the **Next** button.
+1. Select **Other** and click the **Next** button.
+1. Select **Business** and click the **Next** button.
+1. Fill in the **App Name** and **App Contact Email**. The **Business Portfolio** is optional.
+
+### Step 4: Setup Instagram Graph API
 1. Once created, in the left-hand sidebar, click the **Add Product** button.
-1. Under **Facebook Login** click the **Set Up** button.
-1. Select **Web** as the type and your website address into **Site URL**, and click the **Save** button.
-1. Navigate to the **Facebook Login** section in the left-hand sidebar, click **Settings**.
-1. For the **Valid OAuth Redirect URIs** setting, enter the value from the **Redirect URI** field in Social Poster.
-1. Click the **Save Changes** button.
-1. In the left-hand sidebar, click the **Add Product** button.
 1. Under **Instagram Graph API** click the **Set Up** button.
+
+### Step 5: Setup Facebook Login for Business
+1. In the left-hand sidebar, click the **Add Product** button.
+1. Under **Facebook Login for Business** click the **Set Up** button.
+1. Navigate to the **Facebook Login for Business** section in the left-hand sidebar, click **Settings**.
+1. For the **Valid OAuth Redirect URIs** setting, enter the value from the **Redirect URI** field in Social Feeds.
+1. Click the **Save Changes** button.
 1. Navigate to **App Settings** → **Basic** item in the left-hand sidebar.
 1. Enter your domain name to the **App Domains** field.
+1. Enter your **Privacy Policy URL** and **Terms of Service URL**.
 1. Click the **Save Changes** button.
 1. Copy the **App ID** from Facebook and paste in the **Client ID** field in Social Poster.
 1. Copy the **App Secret** from Facebook and paste in the **Client Secret** field in Social Poster.
