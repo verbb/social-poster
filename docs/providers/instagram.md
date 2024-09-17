@@ -50,9 +50,9 @@ Despite not posting to your Facebook page, you must link your Instagram Business
 1. Copy the **App Secret** from Facebook and paste in the **Client Secret** field in Social Poster.
 1. Save the Social Poster account, ready to connect.
 
-## Step 4: Connect to Instagram
+## Step 6: Connect to Instagram
 1. In the Social Poster account settings, click the **Connect** button and login to Instagram.
 
-## Step 5: Select your Facebook Page
+## Step 7: Select your Facebook Page
 1. Select the **Facebook Page** that has access to your Instagram Business Account.
 1. Click the **Save** button for the account.
