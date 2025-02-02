@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.4 - 2025-02-02
+
+### Changed
+- Update LinkedIn API version.
+
 ## 5.0.3 - 2024-09-07
 
 ### Fixed
