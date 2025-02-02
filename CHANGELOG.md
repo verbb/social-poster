@@ -32,6 +32,11 @@
 - Update `elementChip()` references.
 - Fix an error when uninstalling.
 
+## 4.0.14 - 2025-02-02
+
+### Changed
+- Update LinkedIn API version.
+
 ## 4.0.13 - 2024-09-07
 
 ### Fixed
