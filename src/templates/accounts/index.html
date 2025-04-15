@@ -42,21 +42,21 @@
             if (value) {
                 return '<span class="status on"></span>' + Craft.t('social-poster', 'Enabled');
             } else {
-                return '<span class="status"></span>' + Craft.t('social-poster', 'Disabled');
+                return '<span class="status disabled"></span>' + Craft.t('social-poster', 'Disabled');
             }
         } },
         { name: 'autoPost', title: Craft.t('app', 'Auto-Post'), callback: function(value) {
             if (value) {
                 return '<span class="status on"></span>' + Craft.t('social-poster', 'Enabled');
             } else {
-                return '<span class="status"></span>' + Craft.t('social-poster', 'Disabled');
+                return '<span class="status disabled"></span>' + Craft.t('social-poster', 'Disabled');
             }
         } },
         { name: 'connected', title: Craft.t('app', 'Connected'), callback: function(value) {
             if (value) {
                 return '<span class="status on"></span>' + Craft.t('social-poster', 'Connected');
             } else {
-                return '<span class="status"></span>' + Craft.t('social-poster', 'Disconnected');
+                return '<span class="status disabled"></span>' + Craft.t('social-poster', 'Disconnected');
             }
         } },
         { name: 'provider', title: Craft.t('app', 'Name'), callback: function(provider) {
