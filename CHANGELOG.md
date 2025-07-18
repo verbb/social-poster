@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.5 - 2025-07-18
+
+### Changed
+- Update English translations.
+- Update status indicator.
+- Bump `verbb/auth`.
+
 ## 5.0.4 - 2025-02-02
 
 ### Changed
