@@ -37,6 +37,11 @@
 - Update `elementChip()` references.
 - Fix an error when uninstalling.
 
+## 4.0.15 - 2025-07-18
+
+### Changed
+- Update English translations.
+
 ## 4.0.14 - 2025-02-02
 
 ### Changed
@@ -82,6 +87,7 @@
 - Implement `Element::trackChanges()` for Blitz compatibility.
 
 ## 4.0.6 - 2023-10-06
+
 > {note} If you are using LinkedIn, your LinkedIn app will need to include new products. Refer to the [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linkedin).
 
 ### Changed
@@ -123,6 +129,7 @@
 - Fix Redirect URI not working correctly for multi-sites.
 
 ## 4.0.0 - 2023-02-01
+
 > {note} This is a major release with big changes on how Accounts and Providers work. Please read the [migration](https://verbb.io/craft-plugins/social-poster/docs/get-started/migrating-from-v2) docs. You will be required to update your provider OAuth app settings and re-connect your accounts.
 
 ### Added
