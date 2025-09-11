@@ -28,8 +28,9 @@
                 {% endfor %}
             </div>
 
-            <button type="button" class="btn menubtn hidden" title="List all tabs" aria-label="List all tabs"></button>
-            <div class="menu">
+            <button type="button" class="btn menubtn hidden" title="List all tabs" aria-label="List all tabs" aria-controls="sp-tab-menu" data-disclosure-trigger="true" aria-expanded="false"></button>
+
+            <div id="sp-tab-menu" class="menu menu--disclosure">
                 <ul class="padded" role="listbox">
                     {% for account in accounts %}
                         <li>
