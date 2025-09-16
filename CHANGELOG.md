@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.6 - 2025-09-16
+
+### Fixed
+- Fix sidebar widget not toggling tabs correctly.
+
 ## 5.0.5 - 2025-07-18
 
 ### Changed
