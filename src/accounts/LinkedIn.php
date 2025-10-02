@@ -52,7 +52,7 @@ class LinkedIn extends OAuthAccount
         // Use the "Posts API"
         // https://learn.microsoft.com/en-us/linkedin/marketing/integrations/community-management/shares/posts-api
         $config['restProtocolVersion'] = '2.0.0';
-        $config['restVersion'] = '202409';
+        $config['restVersion'] = '202509';
 
         // We need to reset the default scopes, because different ones are required depending on whether
         // posting to a personal page, or an organization. This is because the "Community Management API"
