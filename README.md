@@ -1,4 +1,4 @@
-<p align="center"><img src="https://verbb.imgix.net/plugins/social-poster/social-poster-icon.svg" width="100" height="100" alt="Social Poster icon"></p>
+<p align="center"><img src="https://assets.verbb.io/plugins/social-poster/social-poster-icon.svg" width="100" height="100" alt="Social Poster icon"></p>
 <h1 align="center">Social Poster for Craft CMS</h1>
 
 Social Poster is a Craft CMS plugin for automatically posting entries to social media.
