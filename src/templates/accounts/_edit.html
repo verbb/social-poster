@@ -171,7 +171,7 @@
             </div>
 
             <div class="input ltr">
-                <a class="btn small formsubmit" data-action="social-poster/auth/connect" data-param="account" data-value="{{ account.handle }}" data-redirect="{{ 'social-poster/accounts/' ~ account.handle | hash }}">{{ 'Connect' | t('social-poster') }}</a>
+                <a class="btn small formsubmit" data-action="social-poster/auth/connect" data-param="account" data-value="{{ account.handle }}" data-redirect="{{ ('social-poster/accounts/' ~ account.handle) | hash }}">{{ 'Connect' | t('social-poster') }}</a>
             </div>
         </div>
     {% endif %}
