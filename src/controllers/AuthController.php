@@ -43,6 +43,13 @@ class AuthController extends Controller
                 return $this->asFailure(Craft::t('social-poster', 'Unable to find account “{account}”.', ['account' => $accountHandle]));
             }
 
+            // Handle redirection correctly for CP-based requests, as we need to session-store it.
+            if ($this->request->getIsCpRequest()) {
+                if ($redirect = $this->request->getValidatedBodyParam('redirect')) {
+                    Session::set('redirect', $this->getView()->renderObjectTemplate($redirect, $account));
+                }
+            }
+
             // Keep track of which account instance is for, so we can fetch it in the callback
             Session::set('accountHandle', $accountHandle);
 
