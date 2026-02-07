@@ -119,7 +119,7 @@ class AuthController extends Controller
 
         Session::setNotice('social-poster', Craft::t('social-poster', '{provider} connected.', ['provider' => $account->providerName]), true);
 
-        return $this->redirect($redirect);
+        return $this->redirect($this->getView()->renderObjectTemplate($redirect, $account));
     }
 
     public function actionDisconnect(): ?Response
