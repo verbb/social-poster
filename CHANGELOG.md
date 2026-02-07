@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.0.8 - 2026-02-07
+
+### Fixed
+- Fix a redirect error when connecting to an account in the control panel.
+- Fix an error when creating a new account.
+
 ## 5.0.7 - 2025-11-06
 
 ### Changed
