@@ -27,7 +27,7 @@
     "require": {
         "php": "^8.2",
         "craftcms/cms": "^5.0.0",
-        "verbb/auth": "^2.0.19",
+        "verbb/auth": "^2.0.34",
         "verbb/base": "^3.0.0"
     },
     "autoload": {

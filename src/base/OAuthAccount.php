@@ -1,12 +1,14 @@
 <?php
 namespace verbb\socialposter\base;
 
+use verbb\socialposter\SocialPoster;
+
 use Craft;
-use craft\helpers\UrlHelper;
 
 use verbb\auth\Auth;
 use verbb\auth\base\OAuthProviderInterface;
 use verbb\auth\base\OAuthProviderTrait;
+use verbb\auth\helpers\RedirectUri;
 use verbb\auth\models\Token;
 
 abstract class OAuthAccount extends Account implements OAuthProviderInterface
@@ -42,14 +44,7 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
 
     public function getRedirectUri(): ?string
     {
-        $siteId = Craft::$app->getSites()->getCurrentSite()->id ?? Craft::$app->getSites()->getPrimarySite()->id;
-
-        // Check for Headless Mode and use the Action URL, or when `cpTrigger` is empty to signify split front/back-end
-        if (Craft::$app->getConfig()->getGeneral()->headlessMode || !Craft::$app->getConfig()->getGeneral()->cpTrigger) {
-            return UrlHelper::cpUrl('social-poster/auth/callback', null, null, $siteId);
-        }
-
-        return UrlHelper::siteUrl('social-poster/auth/callback', null, null, $siteId);
+        return RedirectUri::getCallbackUri(SocialPoster::$plugin->getSettings()->redirectUri, 'social-poster/auth/callback');
     }
 
     public function getDefaultScopes(): array

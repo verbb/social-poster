@@ -11,6 +11,7 @@ class Settings extends Model
     public string $pluginName = 'Social Poster';
     public bool $hasCpSection = false;
     public mixed $enabledSections = '*';
+    public ?string $redirectUri = null;
     
 
     // Public Methods

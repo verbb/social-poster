@@ -57,6 +57,17 @@
     warning: macros.configWarning('enabledSections', 'social-poster'),
 }) }}
 
+{{ forms.autosuggestField({
+    label: 'Redirect URI Override' | t('social-poster'),
+    instructions: 'Set the OAuth Redirect URI, if you need to change it from the default.' | t('social-poster'),
+    id: 'redirectUri',
+    name: 'redirectUri',
+    suggestEnvVars: true,
+    value: settings.redirectUri,
+    errors: settings.getErrors('redirectUri'),
+    warning: macros.configWarning('redirectUri', 'social-poster'),
+}) }}
+
 {% endnamespace %}
 
 {% endblock %}
