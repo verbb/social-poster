@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.9 - 2026-03-28
+
+### Added
+- Add the ability to override the default Redirect URI as a plugin setting.
+
 ## 5.0.8 - 2026-02-07
 
 ### Fixed
