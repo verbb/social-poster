@@ -65,6 +65,11 @@
 - Update `elementChip()` references.
 - Fix an error when uninstalling.
 
+## 4.0.17 - 2026-05-03
+
+### Changed
+- Bump `verbb/auth` to allow `firebase/php-jwt` 7.x.
+
 ## 4.0.16 - 2025-11-06
 
 ### Changed
