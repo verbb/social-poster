@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.10 - 2026-05-03
+
+### Changed
+- Bump `verbb/auth` to allow `firebase/php-jwt` 7.x.
+
 ## 5.0.9 - 2026-03-28
 
 ### Added
