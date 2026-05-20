@@ -85,13 +85,13 @@ abstract class Account extends SavableComponent implements AccountInterface
     public ?int $sortOrder = null;
     public array $cache = [];
 
-    public ?string $showTitle = null;
+    public bool $showTitle = true;
     public ?string $title = null;
-    public ?string $showUrl = null;
+    public bool $showUrl = true;
     public ?string $url = null;
-    public ?string $showMessage = null;
+    public bool $showMessage = true;
     public ?string $message = null;
-    public ?string $showImageField = null;
+    public bool $showImageField = true;
     public ?string $imageField = null;
     
     // Set via config files
