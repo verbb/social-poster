@@ -173,7 +173,7 @@
 
 ## 4.0.0 - 2023-02-01
 
-> {note} This is a major release with big changes on how Accounts and Providers work. Please read the [migration](https://verbb.io/craft-plugins/social-poster/docs/get-started/migrating-from-v2) docs. You will be required to update your provider OAuth app settings and re-connect your accounts.
+> {note} This is a major release with big changes on how Accounts and Providers work. You will be required to update your provider OAuth app settings and re-connect your accounts.
 
 ### Added
 - Add `Payload` and `PostResponse` models for sending Posts to accounts for better consistency with how things are sent and received.
@@ -269,7 +269,7 @@
 ## 2.1.1 - 2020-04-13
 
 ### Added
-- Add support LinkedIn for company pages. See [docs](https://verbb.io/craft-plugins/social-poster/docs/providers/linked-in).
+- Add support LinkedIn for company pages. See [docs](docs/providers/linkedin).
 - Updated Facebook and LinkedIn provider docs with more detailed instructions.
 
 ### Changed
