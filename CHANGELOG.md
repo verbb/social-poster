@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.11 - 2026-05-30
+
+### Fixed
+- Fix an issue with some boolean settings not saving correctly.
+
 ## 5.0.10 - 2026-05-03
 
 ### Changed
