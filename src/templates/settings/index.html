@@ -1,24 +1,17 @@
-{% extends 'social-poster/_layouts' %}
+{% extends 'social-poster/_layouts/settings' %}
+
 {% import '_includes/forms' as forms %}
 {% import 'verbb-base/_macros' as macros %}
 
 {% requireAdmin %}
 
-{% set crumbs = [
-    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
-    { label: 'Settings' | t('app'), url: url('social-poster/settings') }
-] %}
-
 {% set fullPageForm = true %}
-{% set selectedSubnavItem = 'settings' %}
+{% set selectedTab = 'general' %}
+{% set pageTitle = 'General Settings' | t('social-poster') %}
+{% set pageAction = 'plugins/save-plugin-settings' %}
+{% set pageUrl = 'social-poster/settings' %}
 
-{% block blockContent %}
-
-<input type="hidden" name="action" value="plugins/save-plugin-settings">
-<input type="hidden" name="pluginHandle" value="social-poster">
-
-{% namespace 'settings' %}
-
+{% block settingsContent %}
 {% set sections = [] %}
 {% for section in craft.app.entries.allSections %}
     {% set sections = [{ value: section.uid, label: section.name | e }] | merge(sections) %}
@@ -30,8 +23,9 @@
     id: 'pluginName',
     name: 'pluginName',
     value: settings.pluginName,
-    first: true,
     autofocus: true,
+    required: true,
+    errors: settings.getErrors('pluginName'),
     warning: macros.configWarning('pluginName', 'social-poster'),
 }) }}
 
@@ -67,7 +61,4 @@
     errors: settings.getErrors('redirectUri'),
     warning: macros.configWarning('redirectUri', 'social-poster'),
 }) }}
-
-{% endnamespace %}
-
 {% endblock %}

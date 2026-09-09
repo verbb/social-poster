@@ -1,0 +1,25 @@
+{% extends 'verbb-base/_layouts/settings' %}
+
+{% import '_includes/forms' as forms %}
+{% import 'verbb-base/_macros' as macros %}
+
+{% requireAdmin %}
+
+{% set crumbs = [
+    { label: 'Settings' | t('app'), url: url('settings') },
+    { label: 'Plugins' | t('app'), url: url('settings/plugins') },
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster/settings') },
+] | merge(crumbs ?? []) %}
+
+{% set pageTabs = {
+    general: { title: 'General Settings' | t('social-poster'), url: url('social-poster/settings') },
+} %}
+
+{% set pageTitle = pageTitle ?? false %}
+{% if title is not defined and pageTitle %}
+    {% set title = pageTitle %}
+{% endif %}
+
+{% block settingsMeta %}
+    {{ hiddenInput('pluginHandle', 'social-poster') }}
+{% endblock %}
