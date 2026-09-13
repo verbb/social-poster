@@ -1,27 +1,56 @@
 # Configuration
-Create a `social-poster.php` file under your `/config` directory with the following options available to you. You can also use multi-environment options to change these per environment.
 
-The below shows the defaults already used by Social Poster, so you don't need to add these options unless you want to modify the values.
+You can customise Social Poster’s settings using a PHP configuration file. This is optional: each setting has a default, so you only need to include the values you want to change.
+
+To override a setting, create `social-poster.php` in your Craft project’s `/config` directory and return an array of setting names and values. For example, the following will change the name displayed in the control panel:
 
 ```php
 <?php
 
 return [
-    '*' => [
-        'pluginName' => 'Social Poster',
-        'hasCpSection' => false,
-        'enabledSections' => '*',
-        'redirectUri' => null,
-        'accounts' => [],
-    ]
+    'pluginName' => 'Social Poster Tools',
 ];
 ```
 
-## Configuration options
-- `pluginName` - If you wish to customise the plugin name.
-- `hasCpSection` - Whether to have the plugin pages appear on the main CP sidebar menu.
-- `enabledSections` - An array of section UIDs to enable social poster on. Use '\*' for all.
-- `redirectUri` - Optionally override the OAuth redirect URI for detached or multi-domain setups. This applies to all accounts.
+All other settings keep their defaults. Add any further settings you want to change to the same array. The options below explain the available settings and their defaults.
+
+## Configuration Options
+
+::: reference
+### `pluginName`
+
+**Type:** `string` · **Default:** `'Social Poster'`
+
+If you wish to customise the plugin name.
+:::
+
+
+::: reference
+### `hasCpSection`
+
+**Type:** `bool` · **Default:** `false`
+
+Whether to have the plugin pages appear on the main CP sidebar menu.
+:::
+
+
+::: reference
+### `enabledSections`
+
+**Type:** `mixed` · **Default:** `'*'`
+
+An array of section UIDs to enable social poster on. Use '\*' for all.
+:::
+
+
+::: reference
+### `redirectUri`
+
+**Type:** `string|null` · **Default:** `null`
+
+Optionally override the OAuth redirect URI for detached or multi-domain setups. This applies to all accounts.
+:::
+
 - `accounts` - A collection of options for each account.
 
 ### Redirect URI Override

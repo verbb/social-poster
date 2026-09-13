@@ -3,7 +3,7 @@ Social Poster provides a collection of events for extending its functionality. M
 
 ## Post Events
 
-### The `beforeSavePost` event
+### The `beforeSavePost` Event
 The event that is triggered before a post is saved. You can set `$event->isValid` to false to prevent saving.
 
 ```php
@@ -18,7 +18,7 @@ Event::on(Post::class, Post::EVENT_BEFORE_SAVE, function(ModelEvent $event) {
 });
 ```
 
-### The `afterSavePost` event
+### The `afterSavePost` Event
 The event that is triggered after a post is saved.
 
 ```php
@@ -32,7 +32,7 @@ Event::on(Post::class, Post::EVENT_AFTER_SAVE, function(ModelEvent $event) {
 });
 ```
 
-### The `beforeDeletePost` event
+### The `beforeDeletePost` Event
 The event that is triggered before a post is deleted.
 
 The `isValid` event property can be set to `false` to prevent the deletion from proceeding.
@@ -48,7 +48,9 @@ Event::on(Post::class, Post::EVENT_BEFORE_DELETE, function(Event $event) {
 });
 ```
 
-### The `afterDeleteForm` event
+<span id="the-afterdeleteform-event"></span>
+
+### The `afterDeletePost` Event
 The event that is triggered after a post is deleted.
 
 ```php
@@ -61,7 +63,7 @@ Event::on(Post::class, Post::EVENT_AFTER_DELETE, function(Event $event) {
 });
 ```
 
-### The `beforeSendPost` event
+### The `beforeSendPost` Event
 The event that is triggered before an account sends a post.
 
 The `isValid` event property can be set to `false` to prevent the post from being sent.
@@ -81,10 +83,10 @@ Event::on(Twitter::class, Twitter::EVENT_BEFORE_SEND_POST, function(SendPostEven
 });
 ```
 
-### The `afterSendPost` event
+### The `afterSendPost` Event
 The event that is triggered after an account sends a post.
 
-The `isValid` event property can be set to `false` to flag a post-sending response.
+Set `$event->isValid` to `false` to make the send operation return a failure result after receiving the provider response. The remote request has already happened: this does not delete or undo a post on the provider. Check the remote result before retrying.
 
 ```php
 use verbb\socialposter\accounts\Twitter;
@@ -103,7 +105,7 @@ Event::on(Twitter::class, Twitter::EVENT_AFTER_SEND_POST, function(SendPostEvent
 
 ## Account Events
 
-### The `beforeSaveAccount` event
+### The `beforeSaveAccount` Event
 The event that is triggered before an account is saved.
 
 ```php
@@ -118,7 +120,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_SAVE_ACCOUNT, function(Account
 });
 ```
 
-### The `afterSaveAccount` event
+### The `afterSaveAccount` Event
 The event that is triggered after an account is saved.
 
 ```php
@@ -133,7 +135,7 @@ Event::on(Accounts::class, Accounts::EVENT_AFTER_SAVE_ACCOUNT, function(AccountE
 });
 ```
 
-### The `beforeDeleteAccount` event
+### The `beforeDeleteAccount` Event
 The event that is triggered before an account is deleted.
 
 ```php
@@ -147,7 +149,7 @@ Event::on(Accounts::class, Accounts::EVENT_BEFORE_DELETE_ACCOUNT, function(Accou
 });
 ```
 
-### The `afterDeleteAccount` event
+### The `afterDeleteAccount` Event
 The event that is triggered after an account is deleted.
 
 ```php

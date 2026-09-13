@@ -36,7 +36,7 @@ In order to post to a Facebook Page, you must be an Admin for the page you want 
 1. In the Social Poster account settings, click the **Connect** button and login to Facebook.
 1. Ensure you pick either the Facebook Page you have admin access to.
 
-## Step 5: Select your Facebook Page
+## Step 5: Select Your Facebook Page
 1. Select either a **Facebook Page** that you'd like connected to.
 1. Click the **Save** button for the account.
 
@@ -46,7 +46,7 @@ Ensure that you pick **Facebook Login** and not **Facebook Login for Business**,
 
 ## Troubleshooting
 
-### No Pages appear in the dropdown
+### No Pages Appear in the Dropdown
 Some users are unable to choose any Pages from the dropdown for the settings of an account, once their app has been authorized. This is due to how your Facebook app has been setup in relation to the Pages it has access to. This may also be due to selecting the **Facebook Login for Business** and not **Facebook Login**.
 
 If you're finding this is the case for you, ensure that you provide the `business_management` additional scope. You'll need to disconnect and reconnect your account. You can do this by adding the following to your [configuration file](docs:get-started/configuration).

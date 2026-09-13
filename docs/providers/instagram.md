@@ -19,7 +19,7 @@ If you already have a personal account on Instagram, you can easily convert it t
 
 [How to Set Up a Business Account on Instagram](https://help.instagram.com/502981923235522)
 
-## Step 2: Connect a Facebook Page to your Instagram Business Account
+## Step 2: Connect a Facebook Page to Your Instagram Business Account
 Despite not posting to your Facebook page, you must link your Instagram Business Account with a Facebook page.
 
 [How to Connect a Facebook Page to Your Instagram Business Account](https://help.instagram.com/399237934150902)
@@ -53,6 +53,6 @@ Despite not posting to your Facebook page, you must link your Instagram Business
 ## Step 6: Connect to Instagram
 1. In the Social Poster account settings, click the **Connect** button and login to Instagram.
 
-## Step 7: Select your Facebook Page
+## Step 7: Select Your Facebook Page
 1. Select the **Facebook Page** that has access to your Instagram Business Account.
 1. Click the **Save** button for the account.

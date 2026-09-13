@@ -30,7 +30,7 @@
         "title": "Template Guides",
         "collapsable": false,
         "children": [
-            "template-guides/available-variables",
+            "template-guides/finding-posts",
             "template-guides/front-end-submission"
         ]
     },
