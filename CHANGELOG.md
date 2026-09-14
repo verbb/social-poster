@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.13 - 2026-09-14
 
 ### Changed
 - Align documentation filenames with page titles and update internal links.
