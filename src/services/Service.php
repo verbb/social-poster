@@ -77,7 +77,7 @@ class Service extends Component
     public function onAfterSaveEntry(ModelEvent $event): void
     {
         $request = Craft::$app->getRequest();
-        $view = Craft::$app->getView();
+        $templates = SocialPoster::$plugin->getTemplates();
         $elementsService = Craft::$app->getElements();
         $accountsService = SocialPoster::$plugin->getAccounts();
 
@@ -120,9 +120,9 @@ class Service extends Component
 
             $payload = new Payload();
             $payload->element = $entry;
-            $payload->title = $view->renderObjectTemplate((string)$account->title, $entry);
-            $payload->url = $view->renderObjectTemplate((string)$account->url, $entry);
-            $payload->message = $view->renderObjectTemplate((string)$account->message, $entry);
+            $payload->title = $templates->renderSandboxedObjectTemplate((string)$account->title, $entry);
+            $payload->url = $templates->renderSandboxedObjectTemplate((string)$account->url, $entry);
+            $payload->message = $templates->renderSandboxedObjectTemplate((string)$account->message, $entry);
 
             if ($account->imageField) {
                 try {
