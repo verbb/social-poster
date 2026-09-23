@@ -5,6 +5,7 @@ use verbb\socialposter\SocialPoster;
 use verbb\socialposter\services\Accounts;
 use verbb\socialposter\services\Posts;
 use verbb\socialposter\services\Service;
+use verbb\socialposter\services\Templates;
 
 use verbb\base\LogTrait;
 use verbb\base\helpers\Plugin;
@@ -37,6 +38,7 @@ trait PluginTrait
                 'accounts' => Accounts::class,
                 'posts' => Posts::class,
                 'service' => Service::class,
+                'templates' => Templates::class,
             ],
         ];
     }
@@ -58,6 +60,11 @@ trait PluginTrait
     public function getService(): Service
     {
         return $this->get('service');
+    }
+
+    public function getTemplates(): Templates
+    {
+        return $this->get('templates');
     }
 
 }
