@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.14 - 2026-09-23
 
 ### Changed
 - Render social post title, URL and message templates in Twig sandbox.
