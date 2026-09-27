@@ -7,6 +7,7 @@
 - Update LinkedIn API version. ([#62](https://github.com/verbb/social-poster/issues/62))
 
 ### Fixed
+- Fixed entry submissions being able to override stored social account configuration.
 - Fixed OAuth callback transaction validation.
 - Fixed authorization for connecting and disconnecting OAuth accounts.
 - Fixed OAuth callback redirects being evaluated as Twig templates.
