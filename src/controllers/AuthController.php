@@ -43,17 +43,17 @@ class AuthController extends Controller
                 return $this->asFailure(Craft::t('social-poster', 'Unable to find account “{account}”.', ['account' => $accountHandle]));
             }
 
-            // Handle redirection correctly for CP-based requests, as we need to session-store it.
+            $context = [
+                'accountHandle' => $accountHandle,
+            ];
+
             if ($this->request->getIsCpRequest()) {
                 if ($redirect = $this->request->getValidatedBodyParam('redirect')) {
-                    Session::set('redirect', $this->getView()->renderObjectTemplate($redirect, $account));
+                    $context['redirect'] = $this->getView()->renderObjectTemplate($redirect, $account);
                 }
             }
 
-            // Keep track of which account instance is for, so we can fetch it in the callback
-            Session::set('accountHandle', $accountHandle);
-
-            return Auth::getInstance()->getOAuth()->connect('social-poster', $account);
+            return Auth::getInstance()->getOAuth()->connect('social-poster', $account, $account->id, $context);
         } catch (Throwable $e) {
             SocialPoster::error('Unable to authorize connect “{account}”: “{message}” {file}:{line}', [
                 'account' => $accountHandle,
@@ -68,8 +68,13 @@ class AuthController extends Controller
 
     public function actionCallback(): ?Response
     {
-        // Restore the session data that we saved before authorization redirection from the cache back to session
-        Session::restoreSession($this->request->getParam('state'));
+        $oauth = Auth::getInstance()->getOAuth();
+
+        if ($response = $oauth->prepareCallback('social-poster')) {
+            return $response;
+        }
+
+        $oauth->claimCallback('social-poster');
         
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
@@ -90,7 +95,7 @@ class AuthController extends Controller
 
         try {
             // Fetch the access token from the account and create a Token for us to use
-            $token = Auth::getInstance()->getOAuth()->callback('social-poster', $account);
+            $token = $oauth->callback('social-poster', $account, $account->id);
 
             if (!$token) {
                 Session::setError('social-poster', Craft::t('social-poster', 'Unable to fetch token.'), true);
