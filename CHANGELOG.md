@@ -9,6 +9,7 @@
 ### Fixed
 - Fixed OAuth callback transaction validation.
 - Fixed authorization for connecting and disconnecting OAuth accounts.
+- Fixed OAuth callback redirects being evaluated as Twig templates.
 
 ## 5.0.14 - 2026-09-23
 
