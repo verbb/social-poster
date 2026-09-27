@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Changed
+- Route plugin settings through the plugin’s authorized settings controller.
 - Update LinkedIn API version. ([#62](https://github.com/verbb/social-poster/issues/62))
 
 ## 5.0.14 - 2026-09-23
