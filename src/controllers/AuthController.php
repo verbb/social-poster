@@ -4,6 +4,7 @@ namespace verbb\socialposter\controllers;
 use verbb\socialposter\SocialPoster;
 
 use Craft;
+use craft\elements\User;
 use craft\web\Controller;
 
 use yii\web\Response;
@@ -18,7 +19,7 @@ class AuthController extends Controller
     // Properties
     // =========================================================================
 
-    protected array|int|bool $allowAnonymous = ['connect', 'callback'];
+    protected array|int|bool $allowAnonymous = ['callback'];
 
 
     // Public Methods
@@ -36,6 +37,9 @@ class AuthController extends Controller
 
     public function actionConnect(): ?Response
     {
+        $this->requirePermission('socialPoster-accounts');
+        $this->requirePostRequest();
+
         $accountHandle = $this->request->getRequiredParam('account');
 
         try {
@@ -74,7 +78,7 @@ class AuthController extends Controller
             return $response;
         }
 
-        $oauth->claimCallback('social-poster');
+        $oauth->claimAuthorizedCallback('social-poster', fn(User $user): bool => $user->can('socialPoster-accounts'));
         
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
@@ -129,6 +133,9 @@ class AuthController extends Controller
 
     public function actionDisconnect(): ?Response
     {
+        $this->requirePermission('socialPoster-accounts');
+        $this->requirePostRequest();
+
         $accountHandle = $this->request->getRequiredParam('account');
 
         if (!($account = SocialPoster::$plugin->getAccounts()->getAccountByHandle($accountHandle))) {

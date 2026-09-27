@@ -8,6 +8,7 @@
 
 ### Fixed
 - Fixed OAuth callback transaction validation.
+- Fixed authorization for connecting and disconnecting OAuth accounts.
 
 ## 5.0.14 - 2026-09-23
 
