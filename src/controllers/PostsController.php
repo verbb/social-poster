@@ -14,6 +14,18 @@ class PostsController extends Controller
     // Public Methods
     // =========================================================================
 
+    public function beforeAction($action): bool
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->requireCpRequest();
+        $this->requirePermission('socialPoster-posts');
+
+        return true;
+    }
+
     public function actionIndex(): Response
     {
         return $this->renderTemplate('social-poster/posts');

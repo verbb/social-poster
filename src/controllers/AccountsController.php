@@ -18,6 +18,18 @@ class AccountsController extends Controller
     // Public Methods
     // =========================================================================
 
+    public function beforeAction($action): bool
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->requireCpRequest();
+        $this->requirePermission('socialPoster-accounts');
+
+        return true;
+    }
+
     public function actionIndex(): Response
     {
         $accounts = SocialPoster::$plugin->getAccounts()->getAllAccounts();
@@ -138,6 +150,7 @@ class AccountsController extends Controller
 
     public function actionRefreshSettings(): Response
     {
+        $this->requirePostRequest();
         $this->requireAcceptsJson();
 
         $accountsService = SocialPoster::$plugin->getAccounts();

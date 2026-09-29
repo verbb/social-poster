@@ -151,27 +151,27 @@ class Post extends Element
 
     public function canView(User $user): bool
     {
-        return true;
+        return $user->can('socialPoster-posts');
     }
 
     public function canSave(User $user): bool
     {
-        return true;
+        return $user->can('socialPoster-posts');
     }
 
     public function canDuplicate(User $user): bool
     {
-        return true;
+        return $user->can('socialPoster-posts');
     }
 
     public function canDelete(User $user): bool
     {
-        return true;
+        return $user->can('socialPoster-posts');
     }
 
     public function canCreateDrafts(User $user): bool
     {
-        return true;
+        return $user->can('socialPoster-posts');
     }
 
     public function getOwner()
