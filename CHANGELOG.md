@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.15 - 2026-09-30
 
 ### Changed
 - Route plugin settings through the plugin’s authorized settings controller.
