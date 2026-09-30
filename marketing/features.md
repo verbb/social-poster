@@ -7,7 +7,7 @@ Post entries to supported social channels as part of the publishing workflow. Ch
 
 Enable social publishing only for the content types that need it. Each entry gets a publishing panel with an account-by-account status; start from project-defined Twig defaults, adjust the message, choose where it should go and opt in or out for that particular entry.
 
-![Social Poster’s publishing controls in a Craft entry.](../screenshots/output/feature-tour/social-poster-composer.png)
+![Social Poster’s publishing controls in a Craft entry.](../screenshots/social-poster-composer.png)
 
 <!-- feature-section-end -->
 
@@ -16,7 +16,7 @@ Enable social publishing only for the content types that need it. Each entry get
 
 Once an entry has posted successfully, ordinary saves will not send it again. Trigger another post deliberately when the content needs a second outing, with the earlier status still available for reference.
 
-![A successful post with the option to post it again.](../screenshots/output/feature-tour/social-poster-success.png)
+![A successful post with the option to post it again.](../screenshots/social-poster-success.png)
 
 <!-- feature-section-end -->
 
@@ -25,7 +25,7 @@ Once an entry has posted successfully, ordinary saves will not send it again. Tr
 
 Social Poster keeps a record of what was sent, when it went out and which account handled it. Successful posts and provider errors sit together in a familiar Craft element index, so you can spot a problem without checking every social network separately.
 
-![Social Poster’s Craft index listing posts across Facebook, LinkedIn, Twitter and Instagram.](../screenshots/output/feature-tour/social-poster-posts-index.png)
+![Social Poster’s Craft index listing posts across Facebook, LinkedIn, Twitter and Instagram.](../screenshots/social-poster-posts-index.png)
 
 <!-- feature-section-end -->
 
@@ -34,6 +34,6 @@ Social Poster keeps a record of what was sent, when it went out and which accoun
 
 Open a failed post to inspect the provider response, correct the problem and send it again. Provider events allow project-specific destinations or behaviour to join the same workflow.
 
-![A failed social post with its provider response and retry action.](../screenshots/output/feature-tour/social-poster-error.png)
+![A failed social post with its provider response and retry action.](../screenshots/social-poster-error.png)
 
 <!-- feature-section-end -->
