@@ -20,12 +20,12 @@ class Facebook extends OAuthAccount
         return FacebookProvider::class;
     }
 
-    
+
     // Properties
     // =========================================================================
 
     public static string $providerHandle = 'facebook';
-    
+
     public ?string $pageId = null;
 
 
@@ -38,7 +38,7 @@ class Facebook extends OAuthAccount
 
         parent::__construct($config);
     }
-    
+
     public function getOAuthProviderConfig(): array
     {
         $config = parent::getOAuthProviderConfig();
@@ -110,7 +110,7 @@ class Facebook extends OAuthAccount
                 if ($pageAccessToken && $token = $this->getToken()) {
                     $token->accessToken = $pageAccessToken;
 
-                        Auth::getInstance()->getTokens()->saveToken($token);
+                    Auth::getInstance()->getTokens()->saveToken($token);
                 }
             } catch (Throwable $e) {
                 $this->getPostExceptionResponse($e);

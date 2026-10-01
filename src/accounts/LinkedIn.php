@@ -87,8 +87,8 @@ class LinkedIn extends OAuthAccount
                 $response = $this->request('GET', 'userinfo');
                 $profileId = $response['sub'] ?? null;
 
-                $ownerUrn = 'urn:li:person:' . $profileId;  
-            } else if ($endpoint === 'organization') {
+                $ownerUrn = 'urn:li:person:' . $profileId;
+            } elseif ($endpoint === 'organization') {
                 $ownerUrn = 'urn:li:organization:' . $this->organizationId;
             }
 

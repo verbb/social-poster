@@ -102,7 +102,7 @@ class AccountsController extends Controller
 
         if ($accountId) {
             $oldAccount = $accountsService->getAccountById($accountId);
-            
+
             if (!$oldAccount) {
                 throw new BadRequestHttpException("Invalid account ID: $accountId");
             }
@@ -159,7 +159,7 @@ class AccountsController extends Controller
         $setting = $this->request->getRequiredBodyParam('setting');
 
         $account = $accountsService->getAccountByHandle($accountHandle);
-        
+
         if (!$account) {
             throw new BadRequestHttpException("Invalid account: $accountHandle");
         }

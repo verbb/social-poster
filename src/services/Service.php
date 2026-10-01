@@ -27,7 +27,7 @@ class Service extends Component
     public function renderEntrySidebar(DefineHtmlEvent $event): void
     {
         $entry = $event->sender->getCanonical();
-        
+
         if (!$this->_isEnabledForEntry($entry)) {
             SocialPoster::info('Entry not in allowed section.');
 

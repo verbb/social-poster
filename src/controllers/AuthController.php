@@ -79,7 +79,7 @@ class AuthController extends Controller
         }
 
         $oauth->claimAuthorizedCallback('social-poster', fn(User $user): bool => $user->can('socialPoster-accounts'));
-        
+
         // Get both the origin (failure) and redirect (success) URLs
         $origin = Session::get('origin');
         $redirect = Session::get('redirect');

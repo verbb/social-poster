@@ -267,7 +267,7 @@ class Post extends Element
             $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Error');
 
             return '<span class="status off"></span> ' . $message;
-        } else if ($attribute == 'success') {
+        } elseif ($attribute == 'success') {
             if ($this->success) {
                 $message = $this->response['reasonPhrase'] ?? Craft::t('social-poster', 'Success');
 

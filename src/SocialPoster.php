@@ -72,7 +72,7 @@ class SocialPoster extends Plugin
         if (Craft::$app->getRequest()->getIsSiteRequest()) {
             $this->_registerSiteRoutes();
         }
-        
+
         if (Craft::$app->getEdition() !== Craft::Solo) {
             $this->_registerPermissions();
         }

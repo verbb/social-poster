@@ -93,7 +93,7 @@ abstract class Account extends SavableComponent implements AccountInterface
     public ?string $message = null;
     public bool $showImageField = true;
     public ?string $imageField = null;
-    
+
     // Set via config files
     public array $authorizationOptions = [];
     public array $scopes = [];

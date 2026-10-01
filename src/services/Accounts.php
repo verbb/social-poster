@@ -80,7 +80,7 @@ class Accounts extends Component
 
                 $config['settings'] = array_merge($settings, $configOverrides);
             }
-        }                
+        }
 
         try {
             return ComponentHelper::createComponent($config, AccountInterface::class);

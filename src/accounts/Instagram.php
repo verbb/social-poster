@@ -20,7 +20,7 @@ class Instagram extends OAuthAccount
         return InstagramProvider::class;
     }
 
-    
+
     // Properties
     // =========================================================================
 

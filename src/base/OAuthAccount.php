@@ -17,7 +17,7 @@ abstract class OAuthAccount extends Account implements OAuthProviderInterface
     // =========================================================================
 
     use OAuthProviderTrait;
-    
+
 
     // Public Methods
     // =========================================================================
