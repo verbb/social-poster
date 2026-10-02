@@ -150,6 +150,16 @@ namespace craft\elements {
     }
 }
 
+namespace craft\helpers {
+    class Html
+    {
+        public static function encode(?string $content, bool $doubleEncode = true): string
+        {
+            return htmlspecialchars((string)$content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', $doubleEncode);
+        }
+    }
+}
+
 namespace verbb\socialposter\base {
     interface AccountInterface
     {
@@ -174,6 +184,7 @@ namespace {
     use craft\controllers\RelationalFieldsController;
     use craft\elements\User;
     use verbb\socialposter\SocialPoster;
+    use verbb\socialposter\base\AccountInterface;
     use verbb\socialposter\controllers\AccountsController;
     use verbb\socialposter\controllers\PostsController;
     use verbb\socialposter\elements\Post;
@@ -213,8 +224,17 @@ namespace {
         }
     }
 
-    class FixtureAccount
+    class FixtureAccount implements AccountInterface
     {
+        public string $icon = '<svg class="fixture-icon"></svg>';
+        public string $name;
+        public string $primaryColor = '#123456';
+
+        public function __construct(string $name = 'Fixture')
+        {
+            $this->name = $name;
+        }
+
         public function getAccountSettings(string $setting, bool $useCache): array
         {
             return [
@@ -250,6 +270,17 @@ namespace {
 
     class FixturePost extends Post
     {
+        public ?AccountInterface $fixtureAccount = null;
+
+        public function getAccount(): ?AccountInterface
+        {
+            return $this->fixtureAccount;
+        }
+
+        public function renderAttribute(string $attribute): string
+        {
+            return $this->attributeHtml($attribute);
+        }
     }
 
     function check(string $label, bool $condition): void
@@ -302,6 +333,20 @@ namespace {
         check("Post {$method} allows the registered post-management role", $post->$method($permittedUser));
         check("Post {$method} rejects users without the post-management role", !$post->$method($unpermittedUser));
     }
+
+    $maliciousName = 'A &amp; B <img src=x onerror="alert(1)">';
+    $fixturePost = new FixturePost();
+    $fixturePost->fixtureAccount = new FixtureAccount($maliciousName);
+    $accountHtml = $fixturePost->renderAttribute('account');
+
+    check('Post account labels encode persisted account names',
+        !str_contains($accountHtml, '<img') &&
+        str_contains($accountHtml, 'A &amp;amp; B &lt;img src=x onerror=&quot;alert(1)&quot;&gt;')
+    );
+    check('Post account labels retain trusted provider markup',
+        str_contains($accountHtml, '<svg class="fixture-icon"></svg>') &&
+        str_contains($accountHtml, 'style="--bg-color: #123456"')
+    );
 
     $plugin = new SocialPoster();
     $registerElementPermissions = new ReflectionMethod($plugin, '_registerElementPermissions');

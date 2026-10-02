@@ -10,8 +10,8 @@ use Craft;
 use craft\base\Element;
 use craft\elements\actions\Delete;
 use craft\elements\User;
+use craft\helpers\Html;
 use craft\helpers\Json;
-use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 
 use yii\base\Exception;
@@ -254,7 +254,7 @@ class Post extends Element
 
                 return '<div class="sp-provider" style="--bg-color: ' . $account->primaryColor . '">' .
                     $icon .
-                    '<span class="sp-provider-label">' . $account->name . '</span>' .
+                    '<span class="sp-provider-label">' . Html::encode($account->name) . '</span>' .
                     '</div>';
             }
 
