@@ -1,6 +1,6 @@
 {% extends '_layouts/elementindex' %}
 
-{% do view.registerAssetBundle('verbb\\socialposter\\assetbundles\\SocialPosterAsset') %}
+{% do view.registerAssetBundle('verbb\\socialposter\\web\\assets\\cp\\SocialPosterAsset') %}
 
 {% set crumbs = [
     { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },

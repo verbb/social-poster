@@ -1,6 +1,6 @@
 {% extends parentLayout ?? '_layouts/cp' %}
 
-{% do view.registerAssetBundle('verbb\\socialposter\\assetbundles\\SocialPosterAsset') %}
+{% do view.registerAssetBundle('verbb\\socialposter\\web\\assets\\cp\\SocialPosterAsset') %}
 
 {% if title is not defined %}
     {% set title = craft.socialPoster.getPluginName() | t('social-poster') %}

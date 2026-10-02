@@ -1,10 +1,10 @@
 <?php
-namespace verbb\socialposter\assetbundles;
+namespace verbb\socialposter\web\assets\cp;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
-use verbb\base\assetbundles\CpAsset as VerbbCpAsset;
+use verbb\base\web\assets\cp\CpAsset as VerbbCpAsset;
 
 class SocialPosterAsset extends AssetBundle
 {
@@ -13,7 +13,7 @@ class SocialPosterAsset extends AssetBundle
 
     public function init(): void
     {
-        $this->sourcePath = "@verbb/socialposter/resources/dist";
+        $this->sourcePath = '@verbb/socialposter/web/assets/cp/dist';
 
         $this->depends = [
             VerbbCpAsset::class,
@@ -21,11 +21,11 @@ class SocialPosterAsset extends AssetBundle
         ];
 
         $this->css = [
-            'css/social-poster.css',
+            'social-poster.css',
         ];
 
         $this->js = [
-            'js/social-poster.js',
+            'social-poster.js',
         ];
 
         parent::init();
