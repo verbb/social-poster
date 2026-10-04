@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.17 - 2026-10-05
 
 ### Fixed
 - Fixed a medium-severity stored cross-site scripting vulnerability.
