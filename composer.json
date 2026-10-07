@@ -2,7 +2,7 @@
     "name": "verbb/social-poster",
     "description": "A Craft CMS plugin for posting entries to connected social accounts.",
     "type": "craft-plugin",
-    "version": "5.0.17",
+    "version": "5.0.18",
     "keywords": [
         "craft",
         "cms",
