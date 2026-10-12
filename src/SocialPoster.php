@@ -22,6 +22,7 @@ use craft\events\DefineConsoleActionsEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterUserPermissionsEvent;
+use craft\enums\CmsEdition;
 use craft\helpers\UrlHelper;
 use craft\services\Elements;
 use craft\services\UserPermissions;
@@ -73,7 +74,7 @@ class SocialPoster extends Plugin
             $this->_registerSiteRoutes();
         }
 
-        if (Craft::$app->getEdition() !== Craft::Solo) {
+        if (Craft::$app->edition !== CmsEdition::Solo) {
             $this->_registerPermissions();
         }
 

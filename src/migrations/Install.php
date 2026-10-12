@@ -2,7 +2,6 @@
 namespace verbb\socialposter\migrations;
 
 use craft\db\Migration;
-use craft\helpers\MigrationHelper;
 
 use verbb\auth\Auth;
 
@@ -91,11 +90,9 @@ class Install extends Migration
     public function dropForeignKeys(): void
     {
         if ($this->db->tableExists('{{%socialposter_posts}}')) {
-            MigrationHelper::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
+            $this->dropForeignKeyIfExists('{{%socialposter_posts}}', 'id');
+            $this->dropForeignKeyIfExists('{{%socialposter_posts}}', 'ownerId');
         }
 
-        if ($this->db->tableExists('{{%socialposter_posts}}')) {
-            MigrationHelper::dropAllForeignKeysOnTable('{{%socialposter_posts}}', $this);
-        }
     }
 }
