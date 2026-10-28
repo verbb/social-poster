@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- Fixed LinkedIn image posts failing when asset URLs were relative or images could not be uploaded correctly.
+
 ## 5.0.20 - 2026-10-22
 
 ### Changed

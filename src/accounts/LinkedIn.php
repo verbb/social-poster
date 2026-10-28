@@ -5,8 +5,12 @@ use verbb\socialposter\base\OAuthAccount;
 use verbb\socialposter\models\Payload;
 use verbb\socialposter\models\PostResponse;
 
+use Craft;
+
 use Throwable;
 
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\UriResolver;
 use verbb\auth\providers\LinkedIn as LinkedInProvider;
 
 class LinkedIn extends OAuthAccount
@@ -113,7 +117,6 @@ class LinkedIn extends OAuthAccount
                         'action' => 'initializeUpload',
                     ],
                     'json' => [
-                        'owner' => $ownerUrn,
                         'initializeUploadRequest' => [
                             'owner' => $ownerUrn,
                         ],
@@ -124,11 +127,12 @@ class LinkedIn extends OAuthAccount
                 $imageUrn = $response['value']['image'] ?? null;
 
                 if ($uploadUrl && $imageUrn) {
-                    // Use Guzzle to get the content, just to support local dev/SSL issues
-                    $imageBody = $this->request('GET', $payload->picture);
+                    // Resolve asset URLs against the entry's site and download without LinkedIn credentials.
+                    $imageUrl = UriResolver::resolve(new Uri($payload->element->getSite()->getBaseUrl()), new Uri($payload->picture));
+                    $imageBody = Craft::createGuzzleClient()->request('GET', (string)$imageUrl)->getBody();
 
                     // Upload the image itself
-                    $response = $this->request('POST', $uploadUrl, [
+                    $response = $this->request('PUT', $uploadUrl, [
                         'body' => $imageBody,
                     ]);
 
