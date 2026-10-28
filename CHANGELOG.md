@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Updated the required version of `verbb/auth` to 2.0.58.
+
 ### Fixed
 - Fixed LinkedIn image posts failing when asset URLs were relative or images could not be uploaded correctly.
 
