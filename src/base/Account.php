@@ -249,7 +249,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         $this->trigger(self::EVENT_BEFORE_SEND_POST, $event);
 
         if (!$event->isValid) {
-            self::info($this, 'Sending post cancelled by event hook.');
+            self::log($this, 'Sending post cancelled by event hook.');
         }
 
         // Allow events to alter some props
@@ -273,7 +273,7 @@ abstract class Account extends SavableComponent implements AccountInterface
         $this->trigger(self::EVENT_AFTER_SEND_POST, $event);
 
         if (!$event->isValid) {
-            self::info($this, 'Post marked as invalid by event hook.');
+            self::log($this, 'Post marked as invalid by event hook.');
         }
 
         return $event->isValid;

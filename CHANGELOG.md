@@ -10,6 +10,7 @@
 - Fixed re-posting a post always reporting success, even when the post failed.
 - Fixed the Delete button on the account edit page not deleting the account.
 - Fixed an error when sorting posts by account.
+- Fixed an error when a `beforeSendPost` or `afterSendPost` event handler marked a post as invalid.
 
 ## 5.0.20 - 2026-10-22
 
