@@ -7,6 +7,7 @@
 
 ### Fixed
 - Fixed LinkedIn image posts failing when asset URLs were relative or images could not be uploaded correctly.
+- Fixed re-posting a post always reporting success, even when the post failed.
 
 ## 5.0.20 - 2026-10-22
 

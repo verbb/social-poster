@@ -57,7 +57,7 @@ class PostsController extends Controller
         $payload = new Payload($post->settings);
         $payload->element = $post->getOwner();
 
-        if ($account && $account->sendPost($payload)) {
+        if ($account && $account->sendPost($payload)->success) {
             Craft::$app->getSession()->setNotice(Craft::t('social-poster', 'Re-posted successfully.'));
         } else {
             Craft::$app->getSession()->setError(Craft::t('social-poster', 'Couldn’t re-post.'));
