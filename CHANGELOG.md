@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.21 - 2026-11-01
 
 ### Changed
 - Updated the required version of `verbb/auth` to 2.0.58.
