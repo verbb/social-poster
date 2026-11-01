@@ -78,7 +78,11 @@ class Post extends Element
     {
         $attributes = [];
         $attributes['success'] = Craft::t('social-poster', 'Response');
-        $attributes['account'] = Craft::t('social-poster', 'Account');
+        $attributes[] = [
+            'label' => Craft::t('social-poster', 'Account'),
+            'orderBy' => 'socialposter_posts.accountId',
+            'attribute' => 'account',
+        ];
         $attributes['elements.dateCreated'] = Craft::t('social-poster', 'Date Posted');
         $attributes['elements.dateUpdated'] = Craft::t('social-poster', 'Date Updated');
 
