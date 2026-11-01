@@ -139,7 +139,6 @@ class AccountsController extends Controller
     public function actionDelete(): Response
     {
         $this->requirePostRequest();
-        $this->requireAcceptsJson();
 
         $accountId = $this->request->getRequiredBodyParam('id');
 
