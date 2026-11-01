@@ -11,6 +11,7 @@
 - Fixed the Delete button on the account edit page not deleting the account.
 - Fixed an error when sorting posts by account.
 - Fixed an error when a `beforeSendPost` or `afterSendPost` event handler marked a post as invalid.
+- Fixed the Date Created and Date Updated labels on the post edit page using the wrong translation category.
 
 ## 5.0.20 - 2026-10-22
 
