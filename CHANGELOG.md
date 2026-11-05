@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.22 - 2026-11-05
 
 ### Fixed
 - Fixed a database error when saving an account with a handle that’s already in use, which now shows a validation error.
