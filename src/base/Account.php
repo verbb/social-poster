@@ -6,6 +6,7 @@ use verbb\socialposter\events\SendPostEvent;
 use verbb\socialposter\helpers\SocialPosterHelper;
 use verbb\socialposter\models\Payload;
 use verbb\socialposter\models\PostResponse;
+use verbb\socialposter\records\Account as AccountRecord;
 
 use Craft;
 use craft\base\ElementInterface;
@@ -15,6 +16,7 @@ use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 use craft\validators\HandleValidator;
+use craft\validators\UniqueValidator;
 
 use verbb\auth\helpers\Provider as ProviderHelper;
 
@@ -302,6 +304,8 @@ abstract class Account extends SavableComponent implements AccountInterface
                 'uid',
             ],
         ];
+
+        $rules[] = [['handle'], UniqueValidator::class, 'targetClass' => AccountRecord::class];
 
         return $rules;
     }
