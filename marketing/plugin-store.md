@@ -17,4 +17,4 @@ Enable Social Poster for selected sections and add a posting panel to the entry 
 - Facebook
 - Instagram
 - LinkedIn
-- Twitter
+- X (Twitter)

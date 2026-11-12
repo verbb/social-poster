@@ -5,7 +5,7 @@ Post entries to supported social channels as part of the publishing workflow. Ch
 <!-- feature-section media-size="small" -->
 ## Control your social posts
 
-Enable social publishing only for the content types that need it. Each entry gets a publishing panel with an account-by-account status; start from project-defined Twig defaults, adjust the message, choose where it should go and opt in or out for that particular entry.
+Enable social publishing only for the content types that need it. Each entry gets a publishing panel with an account-by-account status. Start from project-defined Twig defaults, adjust the message, choose where it should go and opt in or out for that particular entry.
 
 ![Social Poster’s publishing controls in a Craft entry.](../screenshots/social-poster-composer.png)
 
@@ -30,7 +30,7 @@ Social Poster keeps a record of what was sent, when it went out and which accoun
 <!-- feature-section-end -->
 
 <!-- feature-section media-size="small" -->
-## Error indicators
+## Fix and resend failed posts
 
 Open a failed post to inspect the provider response, correct the problem and send it again. Provider events allow project-specific destinations or behaviour to join the same workflow.
 

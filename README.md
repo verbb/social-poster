@@ -16,17 +16,20 @@ Enable Social Poster for selected sections and add a posting panel to the entry 
 - See which accounts accepted a post and which returned an error.
 - Correct a provider problem and send the failed post again from the entry.
 
-## Supports
+## Providers
+
 - Facebook
 - Instagram
 - LinkedIn
-- Twitter
+- X (Twitter)
 
 ## Documentation
+
 Visit the [Social Poster Plugin page](https://verbb.io/craft-plugins/social-poster) for all documentation, guides, pricing and developer resources.
 
 ## Support
-Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a Github issue](https://github.com/verbb/social-poster/issues)
+
+Get in touch with us via the [Social Poster Support page](https://verbb.io/craft-plugins/social-poster/support) or by [creating a GitHub issue](https://github.com/verbb/social-poster/issues).
 
 <h2></h2>
 
