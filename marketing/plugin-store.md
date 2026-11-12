@@ -13,7 +13,8 @@ Enable Social Poster for selected sections and add a posting panel to the entry 
 - See which accounts accepted a post and which returned an error.
 - Correct a provider problem and send the failed post again from the entry.
 
-## Supports
+## Providers
+
 - Facebook
 - Instagram
 - LinkedIn
