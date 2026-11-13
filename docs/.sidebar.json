@@ -46,10 +46,16 @@
         "title": "Developers",
         "collapsable": false,
         "children": [
-            "developers/account",
-            "developers/account-provider",
-            "developers/post",
-            "developers/events"
+            "developers/events",
+            "developers/custom-providers"
+        ]
+    },
+    {
+        "title": "Reference",
+        "collapsable": false,
+        "children": [
+            "reference/post",
+            "reference/account"
         ]
     }
 ]
