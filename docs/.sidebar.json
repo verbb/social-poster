@@ -13,7 +13,8 @@
         "collapsable": false,
         "children": [
             "feature-tour/accounts",
-            "feature-tour/entry-widget"
+            "feature-tour/entry-widget",
+            "feature-tour/permissions"
         ]
     },
     {
