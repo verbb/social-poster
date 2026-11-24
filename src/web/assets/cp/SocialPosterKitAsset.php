@@ -18,6 +18,11 @@ class SocialPosterKitAsset extends AssetBundle
             CpAsset::class,
         ];
 
+        // Plugin Kit's stylesheet, in <head> so its FOUCE rules hide pk-* elements until their components load.
+        $this->css = [
+            'social-poster-kit.css',
+        ];
+
         $this->js = [
             'social-poster-kit.js',
         ];
