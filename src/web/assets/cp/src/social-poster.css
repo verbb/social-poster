@@ -274,3 +274,10 @@ body.ltr .sp-sidebar .sp-pane-tabs:first-child [role=tablist] [role=tab]:first-c
 .btn.sp-loading {
     color: transparent !important;
 }
+
+/* Pages made of their own cards, such as the Posts setup checklist, drop Craft's content pane around them. */
+.sp-bare-content #content.content-pane {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}

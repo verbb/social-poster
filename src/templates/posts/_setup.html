@@ -1,0 +1,98 @@
+{# The Posts page until the first entry is posted, in place of the Posts index. #}
+{% extends 'social-poster/_layouts' %}
+
+{% do view.registerAssetBundle('verbb\\socialposter\\web\\assets\\cp\\SocialPosterKitAsset') %}
+
+{% set crumbs = [
+    { label: craft.socialPoster.getPluginName() | t('social-poster'), url: url('social-poster') },
+    { label: 'Posts' | t('social-poster'), url: url('social-poster/posts') }
+] %}
+
+{% set title = 'Posts' | t('social-poster') %}
+{% set selectedSubnavItem = 'posts' %}
+{% set bareContent = true %}
+{% set hidePluginFooter = true %}
+
+{% block blockContent %}
+{% set canManageAccounts = currentUser.can('socialPoster-accounts') %}
+{% set account = setup.account %}
+{# Shown on the account page after a failed connection, so show it here when connecting started from this page. #}
+{% set connectError = craft.app.session.getFlash('social-poster:callback-error') %}
+
+<pk-setup-checklist
+    heading="{{ 'Start Posting Entries' | t('social-poster') }}"
+    count-label="{{ '{done} of {total} done' | t('social-poster') }}"
+    done-label="{{ '(done)' | t('social-poster') }}"
+>
+    <span slot="intro">
+        {{ 'Entries posted to social media will show here. Each step ticks itself off once it’s done.' | t('social-poster') }}
+        {% if not canManageAccounts %}
+            {{ 'Someone who can manage Social Poster accounts can finish these steps.' | t('social-poster') }}
+        {% endif %}
+    </span>
+
+    <pk-setup-step heading="{{ 'Add an account' | t('social-poster') }}"{{ setup.ready ? ' done' }}>
+        {% if setup.ready %}
+            {{ '{name} posts to {provider}.' | t('social-poster', { name: account.name, provider: account.providerName }) }}
+        {% elseif account and not account.enabled %}
+            {{ 'Enable {name} so entries can post to it.' | t('social-poster', { name: account.name }) }}
+        {% elseif account %}
+            {{ '{name} still needs the client ID and secret from your {provider} app.' | t('social-poster', { name: account.name, provider: account.providerName }) }}
+        {% else %}
+            {{ 'Choose a provider such as LinkedIn or Facebook, then enter the client ID and secret from the app you made there.' | t('social-poster') }}
+        {% endif %}
+
+        {% if canManageAccounts %}
+            {% if account %}
+                <a slot="action" class="btn" href="{{ account.cpEditUrl }}">{{ 'Edit account' | t('social-poster') }}</a>
+            {% else %}
+                <a slot="action" class="btn" href="{{ url('social-poster/accounts/new') }}">{{ 'New account' | t('social-poster') }}</a>
+            {% endif %}
+
+            {% if account %}
+                <a slot="change" href="{{ account.cpEditUrl }}">{{ 'Change' | t('social-poster') }}</a>
+            {% endif %}
+        {% endif %}
+    </pk-setup-step>
+
+    <pk-setup-step heading="{{ 'Connect the account' | t('social-poster') }}"{{ setup.connected ? ' done' }}>
+        {% if setup.connected %}
+            {{ '{name} is connected to {provider}.' | t('social-poster', { name: account.name, provider: account.providerName }) }}
+        {% elseif connectError %}
+            <span class="error">{{ connectError }}</span>
+        {% elseif setup.ready %}
+            {{ 'Sign in to {provider} so entries can post to it.' | t('social-poster', { provider: account.providerName }) }}
+        {% else %}
+            {{ 'Sign in to the provider so entries can post to it.' | t('social-poster') }}
+        {% endif %}
+
+        {# Without a redirect, connecting returns to this page whether it works or not. #}
+        {% if canManageAccounts and setup.ready and not setup.connected %}
+            <form slot="action" method="post" accept-charset="UTF-8">
+                {{ csrfInput() }}
+                {{ actionInput('social-poster/auth/connect') }}
+                {{ hiddenInput('account', account.handle) }}
+                <button type="submit" class="btn">{{ 'Connect' | t('social-poster') }}</button>
+            </form>
+        {% endif %}
+    </pk-setup-step>
+
+    <pk-setup-step heading="{{ 'Post an entry' | t('social-poster') }}">
+        {% if not setup.canPost %}
+            {{ 'No sections can post yet. Choose them in Social Poster’s settings.' | t('social-poster') }}
+
+            {% if currentUser.admin and craft.app.config.general.allowAdminChanges %}
+                <a slot="action" class="btn" href="{{ url('social-poster/settings') }}">{{ 'Settings' | t('app') }}</a>
+            {% endif %}
+        {% elseif setup.failedPost %}
+            {% set failedAccount = setup.failedPost.account %}
+            {{ 'The last post to {provider} failed, and its response says why.' | t('social-poster', { provider: failedAccount ? failedAccount.providerName : 'social media' | t('social-poster') }) }}
+            <a slot="action" class="btn" href="{{ setup.failedPost.cpEditUrl }}">{{ 'View post' | t('social-poster') }}</a>
+        {% elseif setup.connected %}
+            {{ 'Turn on Post to {provider} in a live entry’s sidebar and save it.' | t('social-poster', { provider: account.providerName }) }}
+        {% else %}
+            {{ 'Turn on posting in a live entry’s sidebar and save it.' | t('social-poster') }}
+        {% endif %}
+    </pk-setup-step>
+</pk-setup-checklist>
+{% endblock %}

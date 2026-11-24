@@ -28,6 +28,13 @@ class PostsController extends Controller
 
     public function actionIndex(): Response
     {
+        // Until an entry is posted, the setup checklist takes the place of the Posts index.
+        if ($setup = SocialPoster::$plugin->getPosts()->getSetupSteps()) {
+            return $this->renderTemplate('social-poster/posts/_setup', [
+                'setup' => $setup,
+            ]);
+        }
+
         return $this->renderTemplate('social-poster/posts');
     }
 

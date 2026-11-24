@@ -2,6 +2,11 @@
 
 {% do view.registerAssetBundle('verbb\\socialposter\\web\\assets\\cp\\SocialPosterAsset') %}
 
+{# Pages made of their own cards, such as the setup checklist, sit straight on the page background. #}
+{% if bareContent ?? false %}
+    {% set bodyClass = (bodyClass ?? [])|explodeClass|push('sp-bare-content') %}
+{% endif %}
+
 {% if title is not defined %}
     {% set title = craft.socialPoster.getPluginName() | t('social-poster') %}
 {% endif %}
@@ -11,6 +16,7 @@
 
     {% endblock %}
 
+    {% if not (hidePluginFooter ?? false) %}
     <hr>
     
     <div id="plugin-footer">
@@ -34,4 +40,5 @@
             </a>
         </div>
     </div>
+    {% endif %}
 {% endblock %}

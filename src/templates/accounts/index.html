@@ -15,7 +15,16 @@
 
 {% block blockContent %}
 
-<div id="accounts-vue-admin-table"></div>
+{# The admin table can't hold a state panel, so an empty list shows one in its place. #}
+{% if accounts %}
+    <div id="accounts-vue-admin-table"></div>
+{% else %}
+    {% do view.registerAssetBundle('verbb\\socialposter\\web\\assets\\cp\\SocialPosterKitAsset') %}
+
+    <pk-state-panel heading="{{ 'No accounts yet' | t('social-poster') }}" heading-level="2">
+        {{ 'Add an account for each social media profile you want to post entries to.' | t('social-poster') }}
+    </pk-state-panel>
+{% endif %}
 
 {% endblock %}
 
@@ -34,6 +43,7 @@
     }]) %}
 {% endfor %}
 
+{% if accounts %}
 {% js %}
     var columns = [
         { name: '__slot:title', title: Craft.t('app', 'Name') },
@@ -86,3 +96,4 @@
         tableData: {{ tableData | json_encode | raw }},
     });
 {% endjs %}
+{% endif %}

@@ -5,6 +5,31 @@ import { defineConfig } from 'vite';
 const root = resolve(import.meta.dirname, 'src/web/assets/cp');
 
 export default defineConfig(({ mode }) => {
+    // Plugin Kit's components are an ES module with lazy chunks, published apart from the main IIFE bundle.
+    if (mode === 'kit') {
+        return {
+            root,
+            // Relative, so lazy chunks resolve beside the entry wherever Craft publishes it.
+            base: '',
+            build: {
+                outDir: resolve(root, 'dist/kit'),
+                emptyOutDir: true,
+                assetsDir: '',
+                minify: 'oxc',
+                sourcemap: false,
+                rolldownOptions: {
+                    input: resolve(root, 'src/social-poster-kit.js'),
+                    output: {
+                        entryFileNames: '[name].js',
+                        chunkFileNames: '[name]-[hash].js',
+                        assetFileNames: '[name]-[hash][extname]',
+                        format: 'es',
+                    },
+                },
+            },
+        };
+    }
+
     const isCssBuild = mode === 'css';
 
     if (!isCssBuild && mode !== 'js') {
