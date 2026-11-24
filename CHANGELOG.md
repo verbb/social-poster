@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.1.0 - 2026-11-24
 
 ### Added
 - Added a setup checklist to the Posts page for new installs, which ticks off adding an account, connecting it and posting the first entry, and gives way to the posts list once the first post is made.
