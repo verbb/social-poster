@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Added
-- Added a setup checklist to the Posts page, which ticks off adding an account, connecting it and posting the first entry, and links to the last failed post until one succeeds.
+- Added a setup checklist to the Posts page for new installs, which ticks off adding an account, connecting it and posting the first entry, and gives way to the posts list once the first post is made.
 - Added a “No accounts yet” empty state to the Accounts page.
 
 ## 5.0.22 - 2026-11-05

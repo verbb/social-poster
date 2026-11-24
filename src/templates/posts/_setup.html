@@ -84,10 +84,6 @@
             {% if currentUser.admin and craft.app.config.general.allowAdminChanges %}
                 <a slot="action" class="btn" href="{{ url('social-poster/settings') }}">{{ 'Settings' | t('app') }}</a>
             {% endif %}
-        {% elseif setup.failedPost %}
-            {% set failedAccount = setup.failedPost.account %}
-            {{ 'The last post to {provider} failed, and its response says why.' | t('social-poster', { provider: failedAccount ? failedAccount.providerName : 'social media' | t('social-poster') }) }}
-            <a slot="action" class="btn" href="{{ setup.failedPost.cpEditUrl }}">{{ 'View post' | t('social-poster') }}</a>
         {% elseif setup.connected %}
             {{ 'Turn on Post to {provider} in a live entry’s sidebar and save it.' | t('social-poster', { provider: account.providerName }) }}
         {% else %}
