@@ -3,6 +3,7 @@ namespace verbb\socialposter\controllers;
 
 use verbb\socialposter\SocialPoster;
 use verbb\socialposter\base\AccountInterface;
+use verbb\socialposter\records\Account as AccountRecord;
 
 use Craft;
 use craft\helpers\ArrayHelper;
@@ -12,6 +13,9 @@ use craft\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+
+use verbb\base\helpers\EnvironmentSettings;
+use verbb\base\models\EnvironmentSettingsViolation;
 
 class AccountsController extends Controller
 {
@@ -108,15 +112,28 @@ class AccountsController extends Controller
             }
         }
 
+        $handle = $this->request->getParam('handle');
+        $settings = $this->request->getParam("types.$type");
+
         $account = $accountsService->createAccount([
             'id' => $accountId,
             'type' => $type,
             'name' => $this->request->getParam('name'),
-            'handle' => $this->request->getParam('handle'),
+            'handle' => $handle,
             'enabled' => (bool)$this->request->getParam('enabled'),
             'autoPost' => (bool)$this->request->getParam('autoPost'),
-            'settings' => $this->request->getParam("types.$type"),
+            'settings' => $settings,
         ]);
+
+        if ($violation = $this->_environmentSettingsViolation($account, $handle, $settings)) {
+            $message = $violation->reason === EnvironmentSettingsViolation::REFERENCE
+                ? Craft::t('social-poster', 'Only admins can use environment variables here.')
+                : Craft::t('social-poster', 'Enter the credentials again after changing where this connects.');
+
+            $account->addError($violation->getAttribute() ?? 'clientId', $message);
+
+            return $this->asModelFailure($account, Craft::t('social-poster', 'Couldn’t save account.'), 'account');
+        }
 
         if (!$accountsService->saveAccount($account)) {
             return $this->asModelFailure($account, Craft::t('social-poster', 'Couldn’t save account.'), 'account');
@@ -164,5 +181,32 @@ class AccountsController extends Controller
         }
 
         return $this->asJson($account->getAccountSettings($setting, false));
+    }
+
+
+    // Private Methods
+    // =========================================================================
+
+    private function _environmentSettingsViolation(AccountInterface $account, mixed $handle, mixed $settings): ?EnvironmentSettingsViolation
+    {
+        // Read the settings the way `createAccount()` merges them into the account.
+        if (is_string($settings)) {
+            $settings = Json::decodeIfJson($settings);
+        }
+
+        $posted = is_array($settings) ? $settings : [];
+
+        // Config file settings replace posted values in `createAccount()`, so the user can't change them here.
+        $overrides = is_string($handle) && $handle !== '' ? SocialPoster::$plugin->getAccounts()->getAccountOverrides($handle) : [];
+        $posted = array_diff_key($posted, $overrides);
+        $credentials = array_values(array_diff(['clientId', 'clientSecret'], array_keys($overrides)));
+
+        // Compare against what's saved in the database, as loaded accounts already include config file settings.
+        $record = $account->id ? AccountRecord::findOne(['id' => $account->id]) : null;
+        $stored = $record ? Json::decodeIfJson($record->settings ?? '') : [];
+        $providerChanged = $record && $record->type !== get_class($account);
+
+        // Provider hosts are fixed, so only a change of provider can send saved credentials somewhere new.
+        return EnvironmentSettings::violation($posted, is_array($stored) ? $stored : [], $credentials, false, $providerChanged, []);
     }
 }
